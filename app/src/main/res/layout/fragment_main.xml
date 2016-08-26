@@ -10,7 +10,7 @@
                 tools:context="gr.uoa.ec.shopeeng.MainActivityFragment">
 
     <TextView
-            android:text="Hello World!"
+            android:text="Τόσο φθηνά όσο Κινεζικά!"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
