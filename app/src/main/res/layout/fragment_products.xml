@@ -6,16 +6,12 @@
                 android:paddingRight="@dimen/activity_horizontal_margin"
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:showIn="@layout/activity_main"
-                tools:context="gr.uoa.ec.shopeeng.MainActivityFragment">
+                tools:context=".ProductsFragment">
 
-    <TextView
-            android:text="Τόσο φθηνά όσο Κινεζικά!"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" android:id="@+id/textView"/>
-    <ImageView
+    <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/imageView" android:layout_below="@+id/textView" android:layout_centerHorizontal="true" android:src="@drawable/shopeeng_logo"/>
-
+            android:id="@+id/listView"
+            android:layout_centerVertical="true" android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"/>
 </RelativeLayout>
