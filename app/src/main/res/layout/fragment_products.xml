@@ -11,13 +11,13 @@
     <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/listView"
+            android:id="@+id/list"
             android:layout_centerVertical="true" android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"/>
-    <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="New Text"
-            android:id="@+id/alekos_textView" android:layout_alignTop="@+id/listView" android:layout_centerHorizontal="true"
-            android:layout_marginTop="52dp"/>
+    <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="New Text"-->
+            <!--android:id="@+id/alekos_textView" android:layout_alignTop="@+id/listView" android:layout_centerHorizontal="true"-->
+            <!--android:layout_marginTop="52dp"/>-->
 </RelativeLayout>

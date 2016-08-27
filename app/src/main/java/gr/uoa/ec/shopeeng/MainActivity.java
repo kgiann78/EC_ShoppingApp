@@ -6,10 +6,15 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import gr.uoa.ec.shopeeng.SearchFragment.OnSearchClickedListener;
+import org.springframework.http.converter.StringHttpMessageConverter;
+import org.springframework.web.client.RestTemplate;
+
+import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity
         implements OnSearchClickedListener {
@@ -82,17 +87,38 @@ public class MainActivity extends AppCompatActivity
         // Create fragment and give it an argument specifying the article it should show
         ProductsFragment newFragment = new ProductsFragment();
         Bundle args = new Bundle();
-        args.putString("SEARCH_TEXT", searchText);
-        newFragment.setArguments(args);
+        String url = "";
+        try {
+            url = Util.getProperty("products", getApplicationContext()) + searchText;
+            if (url != null) {
 
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                // Create a new RestTemplate instance
+                RestTemplate restTemplate = new RestTemplate();
 
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragment_container, newFragment);
-        transaction.addToBackStack(null);
+                // Add the String message converter
+                restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 
-        // Commit the transaction
-        transaction.commit();
+                // Make the HTTP GET request, marshaling the response to a String
+                String result = restTemplate.getForObject(url, String.class, "Android");
+
+
+                args.putString("SEARCH_RESULT", result);
+
+
+                newFragment.setArguments(args);
+
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack so the user can navigate back
+                transaction.replace(R.id.fragment_container, newFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+            }
+        } catch (IOException e) {
+            Log.e(MainActivity.class.toString(), e.getMessage());
+        }
     }
 }
