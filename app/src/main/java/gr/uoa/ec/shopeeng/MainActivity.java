@@ -3,13 +3,16 @@ package gr.uoa.ec.shopeeng;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import gr.uoa.ec.shopeeng.SearchFragment.OnSearchClickedListener;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements OnSearchClickedListener {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,5 +75,24 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSearchClicked(String searchText) {
+        // Create fragment and give it an argument specifying the article it should show
+        ProductsFragment newFragment = new ProductsFragment();
+        Bundle args = new Bundle();
+        args.putString("SEARCH_TEXT", searchText);
+        newFragment.setArguments(args);
+
+        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+        // Replace whatever is in the fragment_container view with this fragment,
+        // and add the transaction to the back stack so the user can navigate back
+        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.addToBackStack(null);
+
+        // Commit the transaction
+        transaction.commit();
     }
 }
