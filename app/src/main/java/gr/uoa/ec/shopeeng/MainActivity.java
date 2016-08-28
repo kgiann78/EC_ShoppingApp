@@ -15,7 +15,6 @@ import gr.uoa.ec.shopeeng.requests.ProductRequest;
 
 public class MainActivity extends AppCompatActivity implements OnSearchClickedListener {
 
-    private static final String RESULTS_STRING = "SEARCH_RESULT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
