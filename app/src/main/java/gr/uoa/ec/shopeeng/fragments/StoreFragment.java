@@ -75,11 +75,11 @@ public class StoreFragment extends ListFragment {
     private void getRatingScoreViews() {
 
         TextView ratingView = new TextView(applicationContext);
-        ratingView.setText(ratingScore.toString());
-
+        ratingView.setText("Store Rating: " + ratingScore.toString() + "( " + ratings.size() + " )");
         ViewGroup.LayoutParams layoutParams = new ViewPager.LayoutParams();
         getFragmentManager().findFragmentById(R.id.fragment_container).getActivity()
                 .addContentView(ratingView, layoutParams);
+
     }
 
     //TODO fix this - add store info correctly

@@ -80,4 +80,8 @@ public class Rating implements Serializable, Parcelable {
         this.storeId = storeId;
     }
 
+    @Override
+    public String toString() {
+        return "Rating : " + rating + "/10 by " + userId;
+    }
 }

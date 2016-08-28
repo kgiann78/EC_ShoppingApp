@@ -13,6 +13,9 @@ public class Comment implements Serializable, Parcelable {
     private String comment;
     private String date;
 
+    public Comment() {
+    }
+
     public Comment(String userId, String storeId, String commentId, String comment, String date) {
         this.userId = userId;
         this.storeId = storeId;
@@ -91,5 +94,11 @@ public class Comment implements Serializable, Parcelable {
 
     public void setCommentId(String commentId) {
         this.commentId = commentId;
+    }
+
+    @Override
+    public String toString() {
+        return "Comment By " + userId + " on " + date + " :" + comment;
+
     }
 }
