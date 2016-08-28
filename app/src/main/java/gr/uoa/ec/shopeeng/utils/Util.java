@@ -1,4 +1,4 @@
-package gr.uoa.ec.shopeeng;
+package gr.uoa.ec.shopeeng.utils;
 
 
 import android.content.Context;

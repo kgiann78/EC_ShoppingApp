@@ -16,7 +16,9 @@ public class Store implements Parcelable, Serializable {
     private String rating;
 
     public Store() {
-    };
+    }
+
+    ;
 
     public Store(String storeId, String name, String address, String country, String site, String logo, String price, String rating) {
         this.storeId = storeId;
@@ -124,5 +126,19 @@ public class Store implements Parcelable, Serializable {
 
     public void setRating(String rating) {
         this.rating = rating;
+    }
+
+    @Override
+    public String toString() {
+        return "Store{" +
+                "storeId='" + storeId + '\'' +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
+                ", country='" + country + '\'' +
+                ", site='" + site + '\'' +
+                ", logo='" + logo + '\'' +
+                ", price='" + price + '\'' +
+                ", rating='" + rating + '\'' +
+                '}';
     }
 }

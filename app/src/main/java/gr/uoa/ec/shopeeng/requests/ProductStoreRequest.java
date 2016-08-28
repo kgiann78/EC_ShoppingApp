@@ -7,26 +7,34 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import gr.uoa.ec.shopeeng.R;
-import gr.uoa.ec.shopeeng.utils.Util;
+
+import gr.uoa.ec.shopeeng.fragments.ProductStoresFragment;
 import gr.uoa.ec.shopeeng.fragments.ProductsFragment;
 import gr.uoa.ec.shopeeng.models.Product;
+import gr.uoa.ec.shopeeng.models.Store;
+import gr.uoa.ec.shopeeng.models.StoreProductRequestObject;
+import gr.uoa.ec.shopeeng.utils.Util;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static gr.uoa.ec.shopeeng.utils.Constants.PRODUCT_RESULT;
+import static gr.uoa.ec.shopeeng.utils.Constants.SELECTED_PRODUCT;
+import static gr.uoa.ec.shopeeng.utils.Constants.STORES_PRODUCT_RESULT;
 
 
-public class ProductRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
-    private String searchText;
+public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
+
+    private Product product;
+    private StoreProductRequestObject storeProductRequestObject;
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
 
-    public ProductRequest(String keywords, FragmentManager fragmentManager, Context applicationContext) {
-        this.searchText = keywords;
+    public ProductStoreRequest(StoreProductRequestObject storeProductRequestObject, Product product, FragmentManager fragmentManager, Context applicationContext) {
+        this.product = product;
+        this.storeProductRequestObject = storeProductRequestObject;
         this.fragmentManager = fragmentManager;
         this.applicationContext = applicationContext;
     }
@@ -35,67 +43,53 @@ public class ProductRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
     protected ArrayList doInBackground(Void... params) {
         try {
 
-            //+ searchText;
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             ArrayList results = new ArrayList();
-            Log.e("res string", Arrays.toString(restTemplate.getForObject(buildUrl(this.searchText), Product[].class)));
 
-            results.addAll(Arrays.asList(restTemplate.getForObject((buildUrl(this.searchText)), Product[].class)));
-            Log.e("res list", Arrays.toString(results.toArray()));
+            results.addAll(Arrays.asList(restTemplate.getForObject((buildUrl(this.storeProductRequestObject)), Store[].class)));
+            Log.e("Stores list", Arrays.toString(results.toArray()));
 
             return results;
 
         } catch (Exception e) {
             Log.e("MainActivity", e.getMessage(), e);
         }
-
         return null;
     }
 
     @Override
-    protected void onPostExecute(ArrayList products) {
+    protected void onPostExecute(ArrayList stores) {
 
         // Create fragment and give it an argument specifying the article it should show
-        ProductsFragment newFragment = new ProductsFragment();
-        newFragment.setApplicationContext(applicationContext);
-        newFragment.setFragmentManager(fragmentManager);
+        ProductStoresFragment productsFragment = new ProductStoresFragment();
+        productsFragment.setApplicationContext(applicationContext);
+        productsFragment.setFragmentManager(fragmentManager);
 
 
         Bundle args = new Bundle();
-        Log.e("parcelable list", Arrays.toString(products.toArray()));
-
-        args.putParcelableArrayList(PRODUCT_RESULT, products);
-        newFragment.setArguments(args);
-
+        Log.e("parcelable store list", Arrays.toString(stores.toArray()));
+        args.putParcelableArrayList(STORES_PRODUCT_RESULT, stores);
+        args.putParcelable(SELECTED_PRODUCT, product);
+        productsFragment.setArguments(args);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-
-        // Replace whatever is in the fragment_container view with this fragment,
-        // and add the transaction to the back stack so the user can navigate back
-        transaction.replace(R.id.fragment_container, newFragment);
+        transaction.replace(R.id.fragment_container, productsFragment);
         transaction.addToBackStack(null);
-        // Commit the transaction
         transaction.commit();
     }
 
 
-    private String buildUrl(String keywords) throws Exception {
+    private String buildUrl(StoreProductRequestObject requestObject) throws Exception {
 
+        //search?keywords=%s&distance=%s&unit=%s&transportMode=%s&userLocation=%s&orderBy=%s
         StringBuilder url = new StringBuilder();
         url.append(Util.getProperty("endpoint", applicationContext));
-        url.append(Util.getProperty("products", applicationContext));
-        return String.format(url.toString(), keywords);
+        url.append(Util.getProperty("storesDistance", applicationContext));
+        return String.format(url.toString(), requestObject.getProductName(), requestObject.getDistance(), requestObject.getUnit(), requestObject.getTransportMode(), requestObject.getUserLocation(), requestObject.getOrderBy());
+
 
     }
 
-
-    public String getSearchText() {
-        return searchText;
-    }
-
-    public void setSearchText(String searchText) {
-        this.searchText = searchText;
-    }
 
     public FragmentManager getFragmentManager() {
         return fragmentManager;

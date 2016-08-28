@@ -1,33 +1,30 @@
 package gr.uoa.ec.shopeeng.fragments;
 
+import android.Manifest;
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.StrictMode;
-import android.support.v4.app.Fragment;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.TextView;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import gr.uoa.ec.shopeeng.R;
-import gr.uoa.ec.shopeeng.Util;
 import gr.uoa.ec.shopeeng.models.Product;
-import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
-import org.springframework.web.client.RestTemplate;
+import gr.uoa.ec.shopeeng.models.StoreProductRequestObject;
+import gr.uoa.ec.shopeeng.requests.ProductStoreRequest;
+import gr.uoa.ec.shopeeng.utils.Constants;
 
-import java.io.IOException;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static android.provider.AlarmClock.EXTRA_MESSAGE;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -35,17 +32,30 @@ import static android.provider.AlarmClock.EXTRA_MESSAGE;
 public class ProductsFragment extends ListFragment {
 
 
-    private static final String RESULTS_STRING = "SEARCH_RESULT";
-
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
 
     ArrayList products = new ArrayList();
+    GoogleApiClient mGoogleApiClient;
+
 
     @Override
+
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+
+        // Create an instance of GoogleAPIClient.
+
+        if (mGoogleApiClient == null) {
+            mGoogleApiClient = new GoogleApiClient.Builder(applicationContext)
+                    .addApi(LocationServices.API)
+                    .build();
+
+        }
+        ;
+
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8) {
@@ -53,13 +63,9 @@ public class ProductsFragment extends ListFragment {
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
             //your codes here
-
         }
 
-
         Log.i("FragmentLifecycle", "onCreateView");
-
-
     }
 
     @Override
@@ -71,11 +77,10 @@ public class ProductsFragment extends ListFragment {
         // applied to the fragment at this point so we can safely call the method
         // below that sets the article text.
 
-        Bundle args = getArguments();
-        products = args.getParcelableArrayList(RESULTS_STRING);
+        final Bundle args = getArguments();
+        products = args.getParcelableArrayList(Constants.PRODUCT_RESULT);
 
         if (args != null) {
-            Log.i("SEARCH_RESULT", Arrays.toString(args.getParcelableArrayList("SEARCH_RESULT").toArray()));
             Log.i("Saved search results", Arrays.toString(products.toArray()));
         }
 
@@ -91,8 +96,36 @@ public class ProductsFragment extends ListFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Product product = (Product) parent.getAdapter().getItem(position);
                 Log.i("retrieved product", product.toString());
+
+                String userLocation = "Εθνικής Αντιστάσεως 48, Χαλάνδρι";
+                String distance = "100";
+                String duration = "-1";
+                String unit = "KM";
+                String orderBy = "DISTANCE";
+                String transportMode = "DRIVING";
+
+             //   mGoogleApiClient.connect();
+              /*  if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    return;
+                }*/
+
+             //   Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
+
+               /* if (mLastLocation != null) {
+
+                    String latitude = String.valueOf(mLastLocation.getLatitude());
+                    String longitude = String.valueOf(mLastLocation.getLongitude());
+                    userLocation = latitude + "," + longitude;
+                }*/
+
+                //TODO just for testing- going to clean thit up later
+                new ProductStoreRequest(
+                        new StoreProductRequestObject(product.getName(), userLocation, distance, duration, unit, orderBy, transportMode),
+                        product, fragmentManager, applicationContext).execute();
             }
+
         });
+
     }
 
 
