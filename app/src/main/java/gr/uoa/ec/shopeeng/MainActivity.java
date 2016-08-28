@@ -1,5 +1,6 @@
 package gr.uoa.ec.shopeeng;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -7,17 +8,21 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import gr.uoa.ec.shopeeng.SearchFragment.OnSearchClickedListener;
-import org.springframework.http.converter.StringHttpMessageConverter;
+import gr.uoa.ec.shopeeng.models.Product;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity
-        implements OnSearchClickedListener {
+public class MainActivity extends AppCompatActivity implements OnSearchClickedListener {
+
+    private static final String RESULTS_STRING = "SEARCH_RESULT";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,41 +89,79 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onSearchClicked(String searchText) {
-        // Create fragment and give it an argument specifying the article it should show
-        ProductsFragment newFragment = new ProductsFragment();
-        Bundle args = new Bundle();
-        String url = "";
+
         try {
-            url = Util.getProperty("products", getApplicationContext()) + searchText;
-            if (url != null) {
 
-                // Create a new RestTemplate instance
-                RestTemplate restTemplate = new RestTemplate();
+//TOOD remove
+            searchText = "Macbook";
+            new HttpRequestTask(searchText).execute();
 
-                // Add the String message converter
-                restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+        } catch (Exception e)
 
-                // Make the HTTP GET request, marshaling the response to a String
-                String result = restTemplate.getForObject(url, String.class, "Android");
-
-
-                args.putString("SEARCH_RESULT", result);
-
-
-                newFragment.setArguments(args);
-
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack so the user can navigate back
-                transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack(null);
-
-                // Commit the transaction
-                transaction.commit();
-            }
-        } catch (IOException e) {
+        {
             Log.e(MainActivity.class.toString(), e.getMessage());
         }
+    }
+
+    private class HttpRequestTask extends AsyncTask<Void, Void, ArrayList<Product>> {
+
+        private String searchText;
+
+
+        public HttpRequestTask(String keywords) {
+            this.searchText = keywords;
+        }
+
+        @Override
+        protected ArrayList doInBackground(Void... params) {
+            try {
+                String url = Util.getProperty("products", getApplicationContext()) + searchText;
+                RestTemplate restTemplate = new RestTemplate();
+                restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
+                ArrayList results = new ArrayList();
+                Log.e("res string", Arrays.toString(restTemplate.getForObject(url, Product[].class)));
+
+                results.addAll(Arrays.asList(restTemplate.getForObject(url, Product[].class)));
+                Log.e("res list", Arrays.toString(results.toArray()));
+
+                return results;
+
+            } catch (Exception e) {
+                Log.e("MainActivity", e.getMessage(), e);
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList products) {
+        /*    TextView productsText = (TextView) findViewById(R.id.id_value);
+            TextView greetingContentText = (TextView) findViewById(R.id.content_value);
+            greetingIdText.setText(greeting.getId());
+            greetingContentText.setText(greeting.getContent());
+        */
+
+            // Create fragment and give it an argument specifying the article it should show
+            ProductsFragment newFragment = new ProductsFragment();
+            Bundle args = new Bundle();
+
+            Log.e("parcelable list", Arrays.toString(products.toArray()));
+
+            args.putParcelableArrayList(RESULTS_STRING, products);
+            newFragment.setArguments(args);
+
+            FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+            // Replace whatever is in the fragment_container view with this fragment,
+            // and add the transaction to the back stack so the user can navigate back
+            transaction.replace(R.id.fragment_container, newFragment);
+            transaction.addToBackStack(null);
+
+            // Commit the transaction
+            transaction.commit();
+
+        }
+
+
     }
 }

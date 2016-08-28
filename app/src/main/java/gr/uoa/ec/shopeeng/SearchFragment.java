@@ -18,7 +18,9 @@ public class SearchFragment extends Fragment {
 
     // The container Activity must implement this interface so the frag can deliver messages
     interface OnSearchClickedListener {
-        /** Called by HeadlinesFragment when a list item is selected */
+        /**
+         * Called by HeadlinesFragment when a list item is selected
+         */
         void onSearchClicked(String searchText);
     }
 
