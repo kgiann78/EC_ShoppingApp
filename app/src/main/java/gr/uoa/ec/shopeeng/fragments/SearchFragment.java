@@ -1,4 +1,4 @@
-package gr.uoa.ec.shopeeng;
+package gr.uoa.ec.shopeeng.fragments;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -9,20 +9,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import gr.uoa.ec.shopeeng.R;
+import gr.uoa.ec.shopeeng.listeners.OnSearchClickedListener;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class SearchFragment extends Fragment {
     private OnSearchClickedListener mCallback;
-
-    // The container Activity must implement this interface so the frag can deliver messages
-    interface OnSearchClickedListener {
-        /**
-         * Called by HeadlinesFragment when a list item is selected
-         */
-        void onSearchClicked(String searchText);
-    }
 
     public SearchFragment() {
     }
