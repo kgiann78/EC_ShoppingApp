@@ -7,101 +7,93 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import gr.uoa.ec.shopeeng.R;
-import gr.uoa.ec.shopeeng.models.Product;
+import gr.uoa.ec.shopeeng.models.Rating;
 import gr.uoa.ec.shopeeng.models.Store;
-import gr.uoa.ec.shopeeng.requests.ReviewRequest;
+import gr.uoa.ec.shopeeng.utils.Constants;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static gr.uoa.ec.shopeeng.utils.Constants.SELECTED_PRODUCT;
-import static gr.uoa.ec.shopeeng.utils.Constants.STORES_PRODUCT_RESULT;
-
 /**
  * A placeholder fragment containing a simple view.
  */
-public class ProductStoresFragment extends ListFragment {
 
+public class StoreFragment extends ListFragment {
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
+    private Store store;
 
+    ArrayList comments = new ArrayList();
+    ArrayList ratings = new ArrayList();
 
-    ArrayList stores = new ArrayList();
-    Product product;
+    Double ratingScore = 0.00;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
         if (SDK_INT > 8) {
             StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
                     .permitAll().build();
             StrictMode.setThreadPolicy(policy);
-
+            //your codes here
         }
-
+        Log.i("FragmentLifecycle", "onCreateView");
     }
 
     @Override
     public void onStart() {
         super.onStart();
 
-        //get data from bundles
         getData();
-
-        //show item info
-        getItemView();
-
-        //show list of stores
-        getStoresListView();
-
-        //catch event when user clicks on a store name-> redirect to store page
-        // for rating, comments and store info
-
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Store store = (Store) parent.getAdapter().getItem(position);
-                Log.i("clicked store", store.toString());
-
-                //add request for reviews and ratings here!!
-                new ReviewRequest(store, getFragmentManager(), applicationContext).execute();
-
-            }
-        });
+        getStoreInfoView();
+        getRatingScoreViews();
+        getListViews();
     }
 
 
     private void getData() {
-        Bundle args = getArguments();
-        stores = args.getParcelableArrayList(STORES_PRODUCT_RESULT);
-        product = args.getParcelable(SELECTED_PRODUCT);
+        final Bundle args = getArguments();
+        comments = args.getParcelableArrayList(Constants.COMMENTS_RESULTS);
+        Log.i("comments results", Arrays.toString(comments.toArray()));
 
+        ratings = args.getParcelableArrayList(Constants.RATING_RESULTS);
+        Log.i("ratings results", Arrays.toString(ratings.toArray()));
+
+        ratingScore = args.getDouble(Constants.RATING_SCORE);
+        store = args.getParcelable(Constants.STORE_RESULT);
     }
 
-    private void getItemView() {
+
+    private void getRatingScoreViews() {
 
         TextView ratingView = new TextView(applicationContext);
-        ratingView.setText(product.toString());
+        ratingView.setText(ratingScore.toString());
 
         ViewGroup.LayoutParams layoutParams = new ViewPager.LayoutParams();
         getFragmentManager().findFragmentById(R.id.fragment_container).getActivity()
                 .addContentView(ratingView, layoutParams);
     }
 
-    private void getStoresListView() {
+    private void getStoreInfoView() {
 
-        //Get result list
-        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, stores));
+        TextView ratingView = new TextView(applicationContext);
+        ratingView.setText(store.toString());
+        ViewGroup.LayoutParams layoutParams = new ViewPager.LayoutParams();
+        getFragmentManager().findFragmentById(R.id.fragment_container).getActivity()
+                .addContentView(ratingView, layoutParams);
+    }
+
+    private void getListViews() {
+        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, comments));
+        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, ratings));
         if (getFragmentManager().findFragmentById(R.id.fragment_container) != null) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
@@ -111,10 +103,8 @@ public class ProductStoresFragment extends ListFragment {
         this.fragmentManager = fragmentManager;
     }
 
-
     public void setApplicationContext(Context applicationContext) {
         this.applicationContext = applicationContext;
     }
-
 
 }
