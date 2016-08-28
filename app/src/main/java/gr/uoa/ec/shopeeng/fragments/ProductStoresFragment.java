@@ -59,7 +59,8 @@ public class ProductStoresFragment extends ListFragment {
         getData();
 
         //show item info
-        getItemView();
+        //TODO - fix this so its displayed correctly
+        //  getItemView();
 
         //show list of stores
         getStoresListView();

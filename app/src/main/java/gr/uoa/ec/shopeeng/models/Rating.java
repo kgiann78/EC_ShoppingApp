@@ -11,11 +11,17 @@ public class Rating implements Serializable, Parcelable {
     private String userId;
     private String storeId;
 
+    public Rating() {
+    }
+
+    ;
+
     public Rating(String rating, String userId, String storeId) {
         this.rating = rating;
         this.userId = userId;
         this.storeId = storeId;
     }
+
 
 // Parcelling part
 

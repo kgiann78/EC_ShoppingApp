@@ -53,7 +53,7 @@ public class StoreFragment extends ListFragment {
         super.onStart();
 
         getData();
-        getStoreInfoView();
+        // getStoreInfoView();
         getRatingScoreViews();
         getListViews();
     }
@@ -81,6 +81,8 @@ public class StoreFragment extends ListFragment {
         getFragmentManager().findFragmentById(R.id.fragment_container).getActivity()
                 .addContentView(ratingView, layoutParams);
     }
+
+    //TODO fix this - add store info correctly
 
     private void getStoreInfoView() {
 

@@ -44,7 +44,7 @@ public class ReviewRequest extends AsyncTask<Void, Void, ReviewData> {
             ReviewData reviewData = new ReviewData();
 
             Comment[] commentResults = restTemplate.getForObject((buildCommentUrl(store.getStoreId())), Comment[].class);
-            Rating[] ratingResults = restTemplate.getForObject((buildCommentUrl(store.getStoreId())), Rating[].class);
+            Rating[] ratingResults = restTemplate.getForObject((buildRatingUrl(store.getStoreId())), Rating[].class);
 
             reviewData.getComments().addAll(Arrays.asList(commentResults));
             reviewData.getRatings().addAll(Arrays.asList(ratingResults));
@@ -78,9 +78,7 @@ public class ReviewRequest extends AsyncTask<Void, Void, ReviewData> {
 
         args.putDouble(RATING_SCORE, ratingScore);
 
-
         storeFragment.setArguments(args);
-
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_container, storeFragment);
         transaction.addToBackStack(null);
@@ -94,6 +92,8 @@ public class ReviewRequest extends AsyncTask<Void, Void, ReviewData> {
         StringBuilder url = new StringBuilder();
         url.append(Util.getProperty("endpoint", applicationContext));
         url.append(Util.getProperty("ratings", applicationContext));
+
+        Log.i("rating url", String.format(url.toString(), storeId));
         return String.format(url.toString(), storeId);
 
     }
@@ -103,6 +103,8 @@ public class ReviewRequest extends AsyncTask<Void, Void, ReviewData> {
         StringBuilder url = new StringBuilder();
         url.append(Util.getProperty("endpoint", applicationContext));
         url.append(Util.getProperty("comments", applicationContext));
+        Log.i("comment url", String.format(url.toString(), storeId));
+
         return String.format(url.toString(), storeId);
 
     }
