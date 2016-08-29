@@ -3,21 +3,28 @@ package gr.uoa.ec.shopeeng;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import gr.uoa.ec.shopeeng.fragments.ProductsFragment;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
+import gr.uoa.ec.shopeeng.fragments.ShoppingListFragment;
+import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
 import gr.uoa.ec.shopeeng.listeners.OnSearchClickedListener;
+import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.ShoppingList;
 import gr.uoa.ec.shopeeng.requests.ProductRequest;
+import gr.uoa.ec.shopeeng.utils.Constants;
 import gr.uoa.ec.shopeeng.utils.ShoppingListManager;
 
-import java.util.Date;
+import java.util.*;
+import java.util.stream.Collectors;
 
-public class MainActivity extends AppCompatActivity implements OnSearchClickedListener {
+public class MainActivity extends AppCompatActivity implements OnSearchClickedListener, OnAddToShoppingListListener {
 
     ShoppingListManager shoppingListManager;
 
@@ -85,7 +92,27 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        } else if (id == R.id.action_my_shopping_list) {
+            ShoppingListFragment shoppingListFragment = new ShoppingListFragment();
+            Bundle args = new Bundle();
+
+            Object[] productArray = shoppingListManager.getShoppingList()
+                    .getProductsMap().keySet().toArray();
+
+            ArrayList<Product> products = new ArrayList<>(productArray.length);
+            for (Object object : productArray) {
+                products.add((Product) object);
+            }
+
+            args.putParcelableArrayList(Constants.PRODUCTS_IN_SHOPPING_LIST, products);
+            args.putString(Constants.SHOPPING_LIST_NAME, shoppingListManager.getShoppingList().getName());
+            shoppingListFragment.setArguments(args);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, shoppingListFragment)
+                    .addToBackStack(null).commit();
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -94,8 +121,6 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
     public void onSearchClicked(String searchText) {
 
         try {
-            //TODO remove
-            searchText = "Macbook";
             new ProductRequest(searchText, getSupportFragmentManager(), getApplicationContext()).execute();
 
         } catch (Exception e) {
@@ -104,4 +129,14 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
     }
 
 
+    @Override
+    public void onAddProductToShoppingClicked(Product product) {
+        try {
+            Log.i("ADD_PRODUCT", product.toString());
+            shoppingListManager.addProduct(product);
+            Log.i("ADD_PRODUCT", shoppingListManager.getShoppingList().toString());
+        } catch (Exception e) {
+            Log.e(MainActivity.class.toString(), e.getMessage());
+        }
+    }
 }

@@ -1,21 +1,20 @@
 package gr.uoa.ec.shopeeng.models;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ShoppingList {
     private String name;
     private Date creationDate;
-    private Map myShoppingList = new LinkedHashMap();
+    private Map productsMap = new LinkedHashMap();
 
-    public Map getMyShoppingList() {
-        return myShoppingList;
+    public Map getProductsMap() {
+        return productsMap;
     }
 
-    public void setMyShoppingList(Map myShoppingList) {
-        this.myShoppingList = myShoppingList;
+    public void setProductsMap(Map productsMap) {
+        this.productsMap = productsMap;
     }
 
     public String getName() {
@@ -32,5 +31,14 @@ public class ShoppingList {
 
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
+    }
+
+    @Override
+    public String toString() {
+        return "ShoppingList{" +
+                "name='" + name + '\'' +
+                ", creationDate=" + creationDate +
+                ", productsMap=" + productsMap +
+                '}';
     }
 }

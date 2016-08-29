@@ -8,4 +8,7 @@ public class Constants {
     public static final String RATING_RESULTS = "RATING_RESULTS";
     public static final String RATING_SCORE = "RATING_SCORE";
     public static final String STORE_RESULT = "STORE_RESULT";
+    public static final String SHOPPING_LIST_NAME = "SHOPPING_LIST_NAME";
+    public static final String PRODUCTS_IN_SHOPPING_LIST = "PRODUCTS_IN_SHOPPING_LIST";
+    public static final String SEARCH_TEXT = "SEARCH_TEXT";
 }

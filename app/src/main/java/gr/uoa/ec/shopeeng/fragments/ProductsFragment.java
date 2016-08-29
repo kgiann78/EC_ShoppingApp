@@ -17,6 +17,8 @@ import android.widget.ListView;
 //import com.google.android.gms.common.api.GoogleApiClient;
 //import com.google.android.gms.location.LocationServices;
 import gr.uoa.ec.shopeeng.R;
+import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
+import gr.uoa.ec.shopeeng.listeners.OnSearchClickedListener;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.StoreProductRequestObject;
 import gr.uoa.ec.shopeeng.requests.ProductStoreRequest;
@@ -31,6 +33,7 @@ import java.util.Arrays;
  */
 public class ProductsFragment extends ListFragment {
 
+    OnAddToShoppingListListener addToShoppingListListener;
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
@@ -78,9 +81,10 @@ public class ProductsFragment extends ListFragment {
         // below that sets the article text.
 
         final Bundle args = getArguments();
-        products = args.getParcelableArrayList(Constants.PRODUCT_RESULT);
 
         if (args != null) {
+            products = args.getParcelableArrayList(Constants.PRODUCT_RESULT);
+
             Log.i("Saved search results", Arrays.toString(products.toArray()));
         }
 
@@ -118,6 +122,8 @@ public class ProductsFragment extends ListFragment {
                     userLocation = latitude + "," + longitude;
                 }*/
 
+                addToShoppingListListener.onAddProductToShoppingClicked(product);
+
                 //TODO just for testing- going to clean thit up later
                 new ProductStoreRequest(
                         new StoreProductRequestObject(product.getName(), userLocation, distance, duration, unit, orderBy, transportMode),
@@ -128,6 +134,19 @@ public class ProductsFragment extends ListFragment {
 
     }
 
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception.
+        try {
+            addToShoppingListListener = (OnAddToShoppingListListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnAddToShoppingListListener");
+        }
+    }
 
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;

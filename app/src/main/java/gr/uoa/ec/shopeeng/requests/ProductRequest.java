@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import gr.uoa.ec.shopeeng.R;
+import gr.uoa.ec.shopeeng.utils.Constants;
 import gr.uoa.ec.shopeeng.utils.Util;
 import gr.uoa.ec.shopeeng.fragments.ProductsFragment;
 import gr.uoa.ec.shopeeng.models.Product;
@@ -15,8 +16,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
-import static gr.uoa.ec.shopeeng.utils.Constants.PRODUCT_RESULT;
 
 
 public class ProductRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
@@ -65,7 +64,8 @@ public class ProductRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
         Bundle args = new Bundle();
         Log.e("parcelable list", Arrays.toString(products.toArray()));
 
-        args.putParcelableArrayList(PRODUCT_RESULT, products);
+        args.putString(Constants.SEARCH_TEXT, this.searchText);
+        args.putParcelableArrayList(Constants.PRODUCT_RESULT, products);
         productsFragment.setArguments(args);
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
