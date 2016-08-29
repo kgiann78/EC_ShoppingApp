@@ -128,13 +128,10 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
         }
     }
 
-
     @Override
     public void onAddProductToShoppingClicked(Product product) {
         try {
-            Log.i("ADD_PRODUCT", product.toString());
             shoppingListManager.addProduct(product);
-            Log.i("ADD_PRODUCT", shoppingListManager.getShoppingList().toString());
         } catch (Exception e) {
             Log.e(MainActivity.class.toString(), e.getMessage());
         }

@@ -85,6 +85,7 @@ public class ProductsFragment extends ListFragment {
         if (args != null) {
             products = args.getParcelableArrayList(Constants.PRODUCT_RESULT);
 
+
             Log.i("Saved search results", Arrays.toString(products.toArray()));
         }
 
