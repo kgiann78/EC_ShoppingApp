@@ -16,7 +16,7 @@ import gr.uoa.ec.shopeeng.listeners.OnSearchClickedListener;
  * A placeholder fragment containing a simple view.
  */
 public class SearchFragment extends Fragment {
-    private OnSearchClickedListener mCallback;
+    private OnSearchClickedListener searchClickedListener;
 
     public SearchFragment() {
     }
@@ -27,14 +27,14 @@ public class SearchFragment extends Fragment {
         Log.i("FragmentLifecycle", "onCreateView");
         View view = inflater.inflate(R.layout.fragment_search, container, false);
 
-        Button searchButton = (Button) view.findViewById(R.id.button);
-        final EditText editText = (EditText) view.findViewById(R.id.editText);
+        Button searchButton = (Button) view.findViewById(R.id.search_button);
+        final EditText searchText = (EditText) view.findViewById(R.id.search_text);
 
-        if (searchButton != null && editText != null) {
+        if (searchButton != null && searchText != null) {
             searchButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mCallback.onSearchClicked(editText.getText().toString());
+                    searchClickedListener.onSearchClicked(searchText.getText().toString());
                 }
             });
         }
@@ -48,7 +48,7 @@ public class SearchFragment extends Fragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception.
         try {
-            mCallback = (OnSearchClickedListener) context;
+            searchClickedListener = (OnSearchClickedListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
                     + " must implement OnSearchClickedListener");

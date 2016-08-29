@@ -62,18 +62,18 @@ public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Product
     protected void onPostExecute(ArrayList stores) {
 
         // Create fragment and give it an argument specifying the article it should show
-        ProductStoresFragment productsFragment = new ProductStoresFragment();
-        productsFragment.setApplicationContext(applicationContext);
-        productsFragment.setFragmentManager(fragmentManager);
+        ProductStoresFragment productStoresFragment = new ProductStoresFragment();
+        productStoresFragment.setApplicationContext(applicationContext);
+        productStoresFragment.setFragmentManager(fragmentManager);
 
 
         Bundle args = new Bundle();
         Log.e("parcelable store list", Arrays.toString(stores.toArray()));
         args.putParcelableArrayList(STORES_PRODUCT_RESULT, stores);
         args.putParcelable(SELECTED_PRODUCT, product);
-        productsFragment.setArguments(args);
+        productStoresFragment.setArguments(args);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, productsFragment);
+        transaction.replace(R.id.fragment_container, productStoresFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }

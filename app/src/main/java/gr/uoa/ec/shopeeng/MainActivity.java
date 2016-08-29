@@ -11,10 +11,15 @@ import android.view.MenuItem;
 import android.view.View;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.listeners.OnSearchClickedListener;
+import gr.uoa.ec.shopeeng.models.ShoppingList;
 import gr.uoa.ec.shopeeng.requests.ProductRequest;
+import gr.uoa.ec.shopeeng.utils.ShoppingListManager;
+
+import java.util.Date;
 
 public class MainActivity extends AppCompatActivity implements OnSearchClickedListener {
 
+    ShoppingListManager shoppingListManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,16 +38,22 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
             }
 
             // Create a new Fragment to be placed in the activity layout
-            SearchFragment firstFragment = new SearchFragment();
+            SearchFragment searchFragment = new SearchFragment();
 
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
-            firstFragment.setArguments(getIntent().getExtras());
+            searchFragment.setArguments(getIntent().getExtras());
 
             // Add the fragment to the 'fragment_container' FrameLayout
             getSupportFragmentManager().beginTransaction()
-                    .add(R.id.fragment_container, firstFragment).commit();
+                    .add(R.id.fragment_container, searchFragment).commit();
         }
+
+        shoppingListManager = new ShoppingListManager();
+        ShoppingList shoppingList = new ShoppingList();
+        shoppingList.setName("My shopping list");
+        shoppingList.setCreationDate(new Date());
+        shoppingListManager.setShoppingList(shoppingList);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -83,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
     public void onSearchClicked(String searchText) {
 
         try {
-            //TOOD remove
+            //TODO remove
             searchText = "Macbook";
             new ProductRequest(searchText, getSupportFragmentManager(), getApplicationContext()).execute();
 

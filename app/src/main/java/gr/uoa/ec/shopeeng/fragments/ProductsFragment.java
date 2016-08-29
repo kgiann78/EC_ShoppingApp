@@ -14,8 +14,8 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
+//import com.google.android.gms.common.api.GoogleApiClient;
+//import com.google.android.gms.location.LocationServices;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.StoreProductRequestObject;
@@ -37,7 +37,7 @@ public class ProductsFragment extends ListFragment {
 
 
     ArrayList products = new ArrayList();
-    GoogleApiClient mGoogleApiClient;
+//    GoogleApiClient mGoogleApiClient;
 
 
     @Override
@@ -48,13 +48,13 @@ public class ProductsFragment extends ListFragment {
 
         // Create an instance of GoogleAPIClient.
 
-        if (mGoogleApiClient == null) {
-            mGoogleApiClient = new GoogleApiClient.Builder(applicationContext)
-                    .addApi(LocationServices.API)
-                    .build();
+//        if (mGoogleApiClient == null) {
+//            mGoogleApiClient = new GoogleApiClient.Builder(applicationContext)
+//                    .addApi(LocationServices.API)
+//                    .build();
 
-        }
-        ;
+//        }
+//        ;
 
 
         int SDK_INT = android.os.Build.VERSION.SDK_INT;
