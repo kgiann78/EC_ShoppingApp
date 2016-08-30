@@ -6,5 +6,5 @@
     <string name="search_button">Αναζήτηση</string>
     <string name="action_show_shopping_list">Η λίστα μου</string>
     <string name="action_go_to_search">Αναζήτηση</string>
-    <string name="currency_sign">€</string>
+    <string name="product_price">%1$s€</string>
 </resources>

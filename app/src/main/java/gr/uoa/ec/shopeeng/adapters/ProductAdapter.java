@@ -19,7 +19,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
     }
 
     public ProductAdapter(Context context, List<Product> resource) {
-        super(context, R.layout.product_list_item, resource);
+        super(context, R.layout.list_item_product, resource);
     }
 
     @Override
@@ -28,7 +28,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
         if(convertView==null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(R.layout.product_list_item, parent, false);
+            convertView = layoutInflater.inflate(R.layout.list_item_product, parent, false);
 
             productViewHolder = new ProductViewHolder();
             productViewHolder.productName = (TextView) convertView.findViewById(R.id.product_name);
@@ -43,7 +43,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
 
         if (product != null) {
             productViewHolder.productName.setText(product.getName());
-            productViewHolder.productPrice.setText(product.getPrice() + R.string.currency_sign);
+            productViewHolder.productPrice.setText(getContext().getString(R.string.product_price, product.getPrice()));
         }
 
         return convertView;
