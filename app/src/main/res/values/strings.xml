@@ -2,6 +2,9 @@
     <string name="app_name">Sho Peeng</string>
     <string name="action_settings">Settings</string>
     <string name="moto">Πήγαινέ με μαγαζάκι!</string>
+    <string name="logo">Background logo</string>
     <string name="search_button">Αναζήτηση</string>
-    <string name="shopping_list">Η λίστα μου</string>
+    <string name="action_show_shopping_list">Η λίστα μου</string>
+    <string name="action_go_to_search">Αναζήτηση</string>
+    <string name="currency_sign">€</string>
 </resources>

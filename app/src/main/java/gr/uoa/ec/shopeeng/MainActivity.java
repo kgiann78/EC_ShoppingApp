@@ -3,14 +3,12 @@ package gr.uoa.ec.shopeeng;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import gr.uoa.ec.shopeeng.fragments.ProductsFragment;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.fragments.ShoppingListFragment;
 import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
@@ -22,11 +20,10 @@ import gr.uoa.ec.shopeeng.utils.Constants;
 import gr.uoa.ec.shopeeng.utils.ShoppingListManager;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class MainActivity extends AppCompatActivity implements OnSearchClickedListener, OnAddToShoppingListListener {
 
-    ShoppingListManager shoppingListManager;
+    private ShoppingListManager shoppingListManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,7 +89,7 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
-        } else if (id == R.id.action_my_shopping_list) {
+        } else if (id == R.id.action_show_shopping_list) {
             ShoppingListFragment shoppingListFragment = new ShoppingListFragment();
             Bundle args = new Bundle();
 
@@ -110,6 +107,14 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, shoppingListFragment)
+                    .addToBackStack(null).commit();
+
+        } else if (id == R.id.action_go_to_search) {
+            SearchFragment searchFragment = new SearchFragment();
+            searchFragment.setArguments(getIntent().getExtras());
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, searchFragment)
                     .addToBackStack(null).commit();
         }
 

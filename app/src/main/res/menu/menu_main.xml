@@ -6,8 +6,11 @@
           android:title="@string/action_settings"
           android:orderInCategory="100"
           app:showAsAction="never"/>
-    <item android:id="@+id/action_my_shopping_list"
-          android:title="@string/shopping_list"
+    <item android:id="@+id/action_show_shopping_list"
+          android:title="@string/action_show_shopping_list"
           android:orderInCategory="100"
+          app:showAsAction="never"/>
+    <item android:id="@+id/action_go_to_search"
+          android:title="@string/action_go_to_search"
           app:showAsAction="never"/>
 </menu>

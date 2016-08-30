@@ -31,29 +31,27 @@ public class ProductRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
     }
 
     @Override
-    protected ArrayList doInBackground(Void... params) {
+    protected ArrayList<Product> doInBackground(Void... params) {
         try {
 
             //+ searchText;
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             ArrayList results = new ArrayList();
-            Log.e("res string", Arrays.toString(restTemplate.getForObject(buildUrl(this.searchText), Product[].class)));
-
+            Log.i("SEARCH_TEXT", buildUrl(this.searchText));
             results.addAll(Arrays.asList(restTemplate.getForObject((buildUrl(this.searchText)), Product[].class)));
-            Log.e("res list", Arrays.toString(results.toArray()));
 
             return results;
 
         } catch (Exception e) {
-            Log.e("MainActivity", e.getMessage(), e);
+            Log.e(ProductRequest.class.getName(), e.getMessage(), e);
         }
 
         return null;
     }
 
     @Override
-    protected void onPostExecute(ArrayList products) {
+    protected void onPostExecute(ArrayList<Product> products) {
 
         // Create fragment and give it an argument specifying the article it should show
         ProductsFragment productsFragment = new ProductsFragment();
@@ -80,12 +78,9 @@ public class ProductRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
 
 
     private String buildUrl(String keywords) throws Exception {
-
-        StringBuilder url = new StringBuilder();
-        url.append(Util.getProperty("endpoint", applicationContext));
-        url.append(Util.getProperty("products", applicationContext));
-        return String.format(url.toString(), keywords);
-
+        String url = Util.getProperty("endpoint", applicationContext);
+        url += Util.getProperty("products", applicationContext);
+        return String.format(url, keywords);
     }
 
 

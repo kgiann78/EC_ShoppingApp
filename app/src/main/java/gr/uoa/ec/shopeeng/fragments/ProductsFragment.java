@@ -17,6 +17,7 @@ import android.widget.ListView;
 //import com.google.android.gms.common.api.GoogleApiClient;
 //import com.google.android.gms.location.LocationServices;
 import gr.uoa.ec.shopeeng.R;
+import gr.uoa.ec.shopeeng.adapters.ProductAdapter;
 import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
 import gr.uoa.ec.shopeeng.listeners.OnSearchClickedListener;
 import gr.uoa.ec.shopeeng.models.Product;
@@ -33,13 +34,13 @@ import java.util.Arrays;
  */
 public class ProductsFragment extends ListFragment {
 
-    OnAddToShoppingListListener addToShoppingListListener;
+    private OnAddToShoppingListListener addToShoppingListListener;
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
 
-    ArrayList products = new ArrayList();
+    private ArrayList<Product> products = new ArrayList<>();
 //    GoogleApiClient mGoogleApiClient;
 
 
@@ -84,13 +85,10 @@ public class ProductsFragment extends ListFragment {
 
         if (args != null) {
             products = args.getParcelableArrayList(Constants.PRODUCT_RESULT);
-
-
-            Log.i("Saved search results", Arrays.toString(products.toArray()));
         }
 
         // Create an array adapter for the list view, using the Ipsum headlines array
-        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, products));
+        setListAdapter(new ProductAdapter(getActivity(), products));
 
         if (getFragmentManager().findFragmentById(R.id.fragment_container) != null) {
             getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
@@ -162,7 +160,7 @@ public class ProductsFragment extends ListFragment {
         return products;
     }
 
-    public void setProducts(ArrayList products) {
+    public void setProducts(ArrayList<Product> products) {
         this.products = products;
     }
 }

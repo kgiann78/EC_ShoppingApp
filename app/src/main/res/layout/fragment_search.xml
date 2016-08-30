@@ -14,8 +14,9 @@
         <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/backgroundImageView"
+        android:id="@+id/background_logo"
         android:scaleType = "centerInside"
+        android:contentDescription="@string/logo"
         android:src="@drawable/shopeeng_logo"/>
     </FrameLayout>
     <LinearLayout
@@ -29,7 +30,7 @@
                 android:layout_gravity="center"/>
         <Space
                 android:layout_width="314dp"
-                android:layout_height="165dp"
+                android:layout_height="257dp"
         />
         <LinearLayout
                 android:orientation="horizontal"

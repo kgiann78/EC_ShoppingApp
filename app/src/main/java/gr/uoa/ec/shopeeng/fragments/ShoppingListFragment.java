@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import gr.uoa.ec.shopeeng.R;
+import gr.uoa.ec.shopeeng.adapters.ProductAdapter;
+import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.utils.Constants;
 
 import java.util.ArrayList;
@@ -31,11 +33,12 @@ public class ShoppingListFragment extends Fragment {
 
         if (getArguments() != null) {
             Bundle args = getArguments();
-            ListView shoppingListView = (ListView) view.findViewById(R.id.list);
+            ListView shoppingListView = (ListView) view.findViewById(R.id.shopping_list);
             TextView shoppingListNameTextView = (TextView) view.findViewById(R.id.shopping_list_name);
             shoppingListNameTextView.setText(args.getString(Constants.SHOPPING_LIST_NAME));
-            ArrayList products = args.getParcelableArrayList(Constants.PRODUCTS_IN_SHOPPING_LIST);
-            shoppingListView.setAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, products));
+            ArrayList<Product> products = args.getParcelableArrayList(Constants.PRODUCTS_IN_SHOPPING_LIST);
+
+            shoppingListView.setAdapter(new ProductAdapter(getActivity(), products));
             shoppingListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
 
