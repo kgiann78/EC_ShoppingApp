@@ -18,6 +18,8 @@ import gr.uoa.ec.shopeeng.utils.Constants;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import static android.R.attr.button;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -102,22 +104,13 @@ public class StoreFragment extends ListFragment {
         }
     }
 
-    private void addRateButton(
-            final Button button =(Button) findViewById(R.id.rateButton);
-              button.setOnClickListener(new View.OnClickListener()
 
-    public void onClick(View v) {
-        // Perform action on click
+    public void setFragmentManager(FragmentManager fragmentManager) {
+        this.fragmentManager = fragmentManager;
     }
-});
-        }
 
-public void setFragmentManager(FragmentManager fragmentManager){
-        this.fragmentManager=fragmentManager;
-        }
+    public void setApplicationContext(Context applicationContext) {
+        this.applicationContext = applicationContext;
+    }
 
-public void setApplicationContext(Context applicationContext){
-        this.applicationContext=applicationContext;
-        }
-
-        }
+}
