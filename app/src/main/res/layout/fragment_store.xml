@@ -14,21 +14,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Large Text"
-            android:id="@+id/storeName"/>
+            android:text="@string/store_name_label"
+            android:id="@+id/store_name_text_view"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Σχόλια Χρηστών"
-            android:id="@+id/textView3"
+            android:text="@string/user_comments_label"
+            android:id="@+id/comments_text_view"
             android:layout_marginTop="53dp"/>
 
     <RatingBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/ratingBar"
+            android:id="@+id/store_rating_bar"
             android:layout_marginTop="17dp"/>
 
     <TextView
@@ -36,30 +36,25 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:text="Medium Text"
-            android:id="@+id/storeAddress"
+            android:id="@+id/store_address_text_view"
             android:layout_marginTop="32dp"/>
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
-            android:text="Small Text"
-            android:id="@+id/ratingScore"/>
+            android:text="@string/rating_score_label"
+            android:id="@+id/rating_score_text_view"/>
 
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/show_directions_label"
-            android:id="@+id/show_directions_button" android:layout_gravity="center_horizontal"/>
+            android:id="@+id/show_directions_button"
+            android:layout_gravity="center_horizontal"/>
     <ListView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:id="@+id/comments_list"
             android:layout_marginTop="21dp"/>
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="New Text"-->
-    <!--android:id="@+id/alekos_textView" android:layout_alignTop="@+id/listView" android:layout_centerHorizontal="true"-->
-    <!--android:layout_marginTop="52dp"/>-->
 </LinearLayout>

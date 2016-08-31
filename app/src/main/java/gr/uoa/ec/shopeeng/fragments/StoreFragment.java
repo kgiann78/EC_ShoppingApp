@@ -18,6 +18,7 @@ import gr.uoa.ec.shopeeng.models.Comment;
 import gr.uoa.ec.shopeeng.models.Rating;
 import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.utils.Constants;
+import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +29,12 @@ public class StoreFragment extends Fragment {
     private Context applicationContext;
     private Store store;
 
+    TextView storeName;
+    RatingBar ratingBar;
+    TextView storeAddress;
+    TextView ratingScoreText;
     ListView commentsList;
+
     ArrayList<Comment> comments = new ArrayList<>();
     ArrayList<Rating> ratings = new ArrayList<>();
 
@@ -39,9 +45,11 @@ public class StoreFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         View view = inflater.inflate(R.layout.fragment_store, container, false);
-
+        storeName = (TextView) view.findViewById(R.id.store_name_text_view);
+        ratingBar = (RatingBar) view.findViewById(R.id.store_rating_bar);
+        storeAddress = (TextView) view.findViewById(R.id.store_address_text_view);
+        ratingScoreText = (TextView) view.findViewById(R.id.rating_score_text_view);
         commentsList = (ListView) view.findViewById(R.id.comments_list);
-
         return view;
     }
 
@@ -50,44 +58,29 @@ public class StoreFragment extends Fragment {
         super.onStart();
 
         getData();
-        // getStoreInfoView();
-        getRatingScoreViews();
+
+        ratingScoreText.setText(getContext().getString(R.string.rating_score_value, ratingScore.toString(), ratings.size()));
         getListViews();
     }
 
 
     private void getData() {
         final Bundle args = getArguments();
-        comments = args.getParcelableArrayList(Constants.COMMENTS_RESULTS);
-        Log.i("comments results", Arrays.toString(comments.toArray()));
 
-        ratings = args.getParcelableArrayList(Constants.RATING_RESULTS);
-        Log.i("ratings results", Arrays.toString(ratings.toArray()));
+        if (args != null) {
+            comments = args.getParcelableArrayList(Constants.COMMENTS_RESULTS);
+            Log.i("comments results", Arrays.toString(comments.toArray()));
 
-        ratingScore = args.getDouble(Constants.RATING_SCORE);
-        store = args.getParcelable(Constants.STORE_RESULT);
-    }
+            ratings = args.getParcelableArrayList(Constants.RATING_RESULTS);
+            Log.i("ratings results", Arrays.toString(ratings.toArray()));
 
+            ratingScore = args.getDouble(Constants.RATING_SCORE);
+            store = args.getParcelable(Constants.STORE_RESULT);
 
-    private void getRatingScoreViews() {
-
-        TextView ratingView = new TextView(applicationContext);
-        ratingView.setText("Store Rating: " + ratingScore.toString() + "( " + ratings.size() + " )");
-        ViewGroup.LayoutParams layoutParams = new ViewPager.LayoutParams();
-        getFragmentManager().findFragmentById(R.id.fragment_container).getActivity()
-                .addContentView(ratingView, layoutParams);
-
-    }
-
-    //TODO fix this - add store info correctly
-
-    private void getStoreInfoView() {
-
-        TextView ratingView = new TextView(applicationContext);
-        ratingView.setText(store.toString());
-        ViewGroup.LayoutParams layoutParams = new ViewPager.LayoutParams();
-        getFragmentManager().findFragmentById(R.id.fragment_container).getActivity()
-                .addContentView(ratingView, layoutParams);
+            storeName.setText(store.getName());
+            storeAddress.setText(store.getAddress());
+            ratingBar.setRating(ratingScore.floatValue());
+        }
     }
 
     private void getListViews() {
