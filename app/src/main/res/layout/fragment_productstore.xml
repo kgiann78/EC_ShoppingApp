@@ -9,7 +9,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:text="Ονομα Προιόντος"
+                android:text="@string/product_name_label"
                 android:id="@+id/product_name_text_view"
                 android:textAlignment="center"
                 android:textSize="30dp"
@@ -18,7 +18,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Πληροφορίες"
+                android:text="@string/product_details_label"
                 android:id="@+id/product_details_text_view"
                 android:textAlignment="center"/>
         <TextView
@@ -30,15 +30,15 @@
         <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Τιμή"
-                android:id="@+id/orderByPrice"
+                android:text="@string/price_check_box_label"
+                android:id="@+id/price_check_box"
                 android:checked="true"/>
 
         <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Απόσταση"
-                android:id="@+id/orderByDistance"
+                android:text="@string/distance_check_box_label"
+                android:id="@+id/distance_check_box"
                 android:checked="false"/>
 
 
@@ -46,24 +46,27 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Καταστήματα"
+                android:text="@string/stores_label"
                 android:id="@+id/stores_label"
+                android:textAlignment="center"
                 android:textIsSelectable="true"/>
+        <LinearLayout
+                android:orientation="horizontal" android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/show_only_on_distance"
+                    android:id="@+id/show_only_on_distance_label"/>
 
-        <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/show_only_on_distance"
-                android:id="@+id/show_only_on_distance_label"/>
-
-        <EditText
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:inputType="number"
-                android:ems="10"
-                android:id="@+id/input_distance_text_edit"/>
-
+            <EditText
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:inputType="number"
+                    android:ems="10"
+                    android:id="@+id/input_distance_text_edit"/>
+        </LinearLayout>
         <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

@@ -3,13 +3,18 @@ package gr.uoa.ec.shopeeng.fragments;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.StrictMode;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import gr.uoa.ec.shopeeng.R;
+import gr.uoa.ec.shopeeng.adapters.CommentAdapter;
+import gr.uoa.ec.shopeeng.models.Comment;
 import gr.uoa.ec.shopeeng.models.Rating;
 import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.utils.Constants;
@@ -17,35 +22,27 @@ import gr.uoa.ec.shopeeng.utils.Constants;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-
-public class StoreFragment extends ListFragment {
+public class StoreFragment extends Fragment {
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
     private Store store;
 
-    ArrayList comments = new ArrayList();
-    ArrayList ratings = new ArrayList();
+    ListView commentsList;
+    ArrayList<Comment> comments = new ArrayList<>();
+    ArrayList<Rating> ratings = new ArrayList<>();
 
     Double ratingScore = 0.00;
 
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
+        View view = inflater.inflate(R.layout.fragment_store, container, false);
 
-        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            //your codes here
-        }
-        Log.i("FragmentLifecycle", "onCreateView");
+        commentsList = (ListView) view.findViewById(R.id.comments_list);
+
+        return view;
     }
 
     @Override
@@ -94,10 +91,9 @@ public class StoreFragment extends ListFragment {
     }
 
     private void getListViews() {
-        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, comments));
-        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, ratings));
+        commentsList.setAdapter(new CommentAdapter(getContext(), comments));
         if (getFragmentManager().findFragmentById(R.id.fragment_container) != null) {
-            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            commentsList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
     }
 

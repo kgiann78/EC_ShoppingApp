@@ -44,7 +44,7 @@ public class StoreAdapter extends ArrayAdapter<Store> {
 
         if (store != null) {
             storeViewHolder.storeName.setText(store.getName());
-            storeViewHolder.storeRating.setText(store.getRating());
+            storeViewHolder.storeRating.setText("@@@@");//store.getName());
         }
 
         return convertView;

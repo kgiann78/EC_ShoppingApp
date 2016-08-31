@@ -52,7 +52,7 @@ public class ReviewRequest extends AsyncTask<Void, Void, ReviewData> {
             return reviewData;
 
         } catch (Exception e) {
-            Log.e("MainActivity", e.getMessage(), e);
+            Log.e(ReviewRequest.class.getName(), e.getMessage(), e);
         }
 
         return null;
@@ -63,12 +63,11 @@ public class ReviewRequest extends AsyncTask<Void, Void, ReviewData> {
         StoreFragment storeFragment = new StoreFragment();
         storeFragment.setApplicationContext(applicationContext);
         storeFragment.setFragmentManager(fragmentManager);
-        Bundle args = new Bundle();
 
+        Bundle args = new Bundle();
         args.putParcelableArrayList(COMMENTS_RESULTS, reviewData.getComments());
         args.putParcelableArrayList(RATING_RESULTS, reviewData.getRatings());
         args.putParcelable(STORE_RESULT, store);
-
 
         double ratingScore = 0.0;
         for (Object rating : reviewData.getRatings()) {
