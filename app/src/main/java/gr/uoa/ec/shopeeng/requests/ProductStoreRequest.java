@@ -9,10 +9,9 @@ import android.util.Log;
 import gr.uoa.ec.shopeeng.R;
 
 import gr.uoa.ec.shopeeng.fragments.ProductStoresFragment;
-import gr.uoa.ec.shopeeng.fragments.ProductsFragment;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.Store;
-import gr.uoa.ec.shopeeng.models.StoreProductRequestObject;
+import gr.uoa.ec.shopeeng.models.ProductStoreRequestObject;
 import gr.uoa.ec.shopeeng.utils.Util;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -24,43 +23,44 @@ import static gr.uoa.ec.shopeeng.utils.Constants.SELECTED_PRODUCT;
 import static gr.uoa.ec.shopeeng.utils.Constants.STORES_PRODUCT_RESULT;
 
 
-public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
+public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Store>> {
 
     private Product product;
-    private StoreProductRequestObject storeProductRequestObject;
+    private ProductStoreRequestObject productStoreRequestObject;
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
 
-    public ProductStoreRequest(StoreProductRequestObject storeProductRequestObject, Product product, FragmentManager fragmentManager, Context applicationContext) {
+    public ProductStoreRequest(ProductStoreRequestObject productStoreRequestObject,
+                               Product product,
+                               FragmentManager fragmentManager,
+                               Context applicationContext) {
         this.product = product;
-        this.storeProductRequestObject = storeProductRequestObject;
+        this.productStoreRequestObject = productStoreRequestObject;
         this.fragmentManager = fragmentManager;
         this.applicationContext = applicationContext;
     }
 
     @Override
-    protected ArrayList doInBackground(Void... params) {
+    protected ArrayList<Store> doInBackground(Void... params) {
         try {
 
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-            ArrayList results = new ArrayList();
+            ArrayList<Store> results = new ArrayList();
 
-            results.addAll(Arrays.asList(restTemplate.getForObject((buildUrl(this.storeProductRequestObject)), Store[].class)));
-            Log.e("Stores list", Arrays.toString(results.toArray()));
+            results.addAll(Arrays.asList(restTemplate.getForObject((buildUrl(this.productStoreRequestObject)), Store[].class)));
 
             return results;
 
         } catch (Exception e) {
-            Log.e("MainActivity", e.getMessage(), e);
+            Log.e(ProductStoreRequest.class.getName(), e.getMessage(), e);
         }
         return null;
     }
 
     @Override
-    protected void onPostExecute(ArrayList stores) {
-
+    protected void onPostExecute(ArrayList<Store> stores) {
         // Create fragment and give it an argument specifying the article it should show
         ProductStoresFragment productStoresFragment = new ProductStoresFragment();
         productStoresFragment.setApplicationContext(applicationContext);
@@ -68,10 +68,10 @@ public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Product
 
 
         Bundle args = new Bundle();
-        Log.e("parcelable store list", Arrays.toString(stores.toArray()));
         args.putParcelableArrayList(STORES_PRODUCT_RESULT, stores);
         args.putParcelable(SELECTED_PRODUCT, product);
         productStoresFragment.setArguments(args);
+
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_container, productStoresFragment);
         transaction.addToBackStack(null);
@@ -79,7 +79,7 @@ public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Product
     }
 
 
-    private String buildUrl(StoreProductRequestObject requestObject) throws Exception {
+    private String buildUrl(ProductStoreRequestObject requestObject) throws Exception {
 
         //search?keywords=%s&distance=%s&unit=%s&transportMode=%s&userLocation=%s&orderBy=%s
         StringBuilder url = new StringBuilder();
@@ -89,7 +89,6 @@ public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Product
 
 
     }
-
 
     public FragmentManager getFragmentManager() {
         return fragmentManager;

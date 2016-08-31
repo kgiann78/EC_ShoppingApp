@@ -1,12 +1,6 @@
 package gr.uoa.ec.shopeeng.models;
 
-
-import android.os.Parcel;
-import android.os.Parcelable;
-
-import java.io.Serializable;
-
-public class StoreProductRequestObject {
+public class ProductStoreRequestObject {
 
     private String productName;
     private String userLocation;
@@ -16,7 +10,7 @@ public class StoreProductRequestObject {
     private String orderBy;
     private String transportMode;
 
-    public StoreProductRequestObject(String productName, String userLocation, String distance, String duration, String unit, String orderBy, String transportMode) {
+    public ProductStoreRequestObject(String productName, String userLocation, String distance, String duration, String unit, String orderBy, String transportMode) {
         this.productName = productName;
         this.userLocation = userLocation;
         this.distance = distance;

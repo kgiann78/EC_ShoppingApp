@@ -1,136 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:weightSum="1">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <LinearLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent">
         <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="Ονομα Προιόντος"
-                android:id="@+id/productName"
-                android:layout_marginTop="21dp"
+                android:id="@+id/product_name_text_view"
                 android:textAlignment="center"
                 android:textSize="30dp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true" android:layout_alignParentEnd="true"
-                android:layout_alignLeft="@+id/textView4" android:layout_alignStart="@+id/textView4"/>
+                android:layout_marginTop="44dp"/>
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Πληροφορίες"
+                android:id="@+id/product_details_text_view"
+                android:textAlignment="center"/>
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/ordering_label"
+                android:id="@+id/ordering_text_view"/>
+        <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Τιμή"
+                android:id="@+id/orderByPrice"
+                android:checked="true"/>
+
+        <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Απόσταση"
+                android:id="@+id/orderByDistance"
+                android:checked="false"/>
+
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Καταστήματα"
+                android:id="@+id/stores_label"
+                android:textIsSelectable="true"/>
 
         <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Πληροφορίες"
-                android:id="@+id/productDetails"
-                android:layout_marginTop="16dp"
-                android:textAlignment="center"
-                android:layout_below="@+id/productName"
-                android:layout_alignRight="@+id/productName"
-                android:layout_alignEnd="@+id/productName" android:layout_alignLeft="@+id/productName"
-                android:layout_alignStart="@+id/productName"/>
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Τιμή"
-            android:id="@+id/orderByPrice"
-            android:checked="true"
-            android:layout_alignBaseline="@+id/textView4"
-            android:layout_alignBottom="@+id/textView4"
-            android:layout_centerHorizontal="true" />
-
-        <CheckBox
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Απόσταση"
-            android:id="@+id/orderByDistance"
-            android:checked="false"
-            android:layout_alignTop="@+id/orderByPrice"
-            android:layout_toRightOf="@+id/orderByPrice"
-            android:layout_toEndOf="@+id/orderByPrice"
-            android:layout_marginLeft="21dp"
-            android:layout_marginStart="21dp" />
-
-        <ExpandableListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/storeList"
-            android:layout_marginTop="21dp"
-            android:layout_below="@+id/textView" android:layout_alignRight="@+id/productDetails"
-            android:layout_alignEnd="@+id/productDetails"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Καταστήματα"
-            android:id="@+id/textView"
-            android:layout_marginTop="35dp"
-            android:layout_below="@+id/switch1"
-            android:layout_centerHorizontal="true"
-            android:textIsSelectable="true"
-            android:textSize="25dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Ταξινόμηση"
-            android:id="@+id/textView4"
-            android:layout_marginTop="38dp"
-            android:layout_below="@+id/productDetails"
-            android:layout_toLeftOf="@+id/textView"
-            android:layout_toStartOf="@+id/textView" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Δείξε μονο όσα απέχουν"
-            android:id="@+id/textView5"
-            android:layout_marginTop="19dp"
-            android:layout_below="@+id/orderByPrice"
-            android:layout_alignLeft="@+id/switch1"
-            android:layout_alignStart="@+id/switch1" />
+                android:text="@string/show_only_on_distance"
+                android:id="@+id/show_only_on_distance_label"/>
 
         <EditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="number"
-            android:ems="10"
-            android:id="@+id/editText3"
-            android:layout_alignBaseline="@+id/textView5"
-            android:layout_alignBottom="@+id/textView5"
-            android:layout_alignLeft="@+id/orderByDistance"
-            android:layout_alignStart="@+id/orderByDistance"
-            android:layout_alignRight="@+id/orderByDistance"
-            android:layout_alignEnd="@+id/orderByDistance" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                android:ems="10"
+                android:id="@+id/input_distance_text_edit"/>
 
         <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Οδηγώντας / Περπατώντας"
-            android:id="@+id/switch1"
-            android:checked="false"
-            android:layout_below="@+id/editText3"
-            android:layout_alignLeft="@+id/textView4"
-            android:layout_alignStart="@+id/textView4"
-            android:layout_marginTop="28dp" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/walking_or_driving"
+                android:id="@+id/switch1"
+                android:checked="false"/>
 
         <Switch
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Χιλιόμετρα /  Ώρες"
-            android:id="@+id/switch2"
-            android:checked="false"
-            android:layout_below="@+id/editText3"
-            android:layout_alignLeft="@+id/switch1"
-            android:layout_alignStart="@+id/switch1" />
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/km_or_hour"
+                android:id="@+id/switch2"
+                android:checked="false"/>
 
-    </RelativeLayout>
-</LinearLayout>
+        <ListView
+                android:layout_width="match_parent"
+                android:layout_height="260dp"
+                android:id="@+id/store_list"/>
+    </LinearLayout>
+</ScrollView>

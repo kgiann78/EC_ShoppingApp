@@ -2,53 +2,50 @@ package gr.uoa.ec.shopeeng.fragments;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.os.StrictMode;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import gr.uoa.ec.shopeeng.R;
+import gr.uoa.ec.shopeeng.adapters.StoreAdapter;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.requests.ReviewRequest;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 
 import static gr.uoa.ec.shopeeng.utils.Constants.SELECTED_PRODUCT;
 import static gr.uoa.ec.shopeeng.utils.Constants.STORES_PRODUCT_RESULT;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class ProductStoresFragment extends ListFragment {
+public class ProductStoresFragment extends Fragment {
 
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
-
-    ArrayList stores = new ArrayList();
+    ListView storesList;
+    TextView productName;
+    TextView productDetails;
+    List<Store> stores;
     Product product;
 
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-
-        }
-
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_productstore, container, false);
+        storesList = (ListView) view.findViewById(R.id.store_list);
+        productName = (TextView) view.findViewById(R.id.product_name_text_view);
+        productDetails = (TextView) view.findViewById(R.id.product_details_text_view);
+        stores = new ArrayList<>();
+        return view;
     }
 
     @Override
@@ -58,9 +55,7 @@ public class ProductStoresFragment extends ListFragment {
         //get data from bundles
         getData();
 
-        //show item info
-        //TODO - fix this so its displayed correctly
-        //  getItemView();
+        //TODO: show product information / store information correctly (rating -reviews etc)
 
         //show list of stores
         getStoresListView();
@@ -68,7 +63,7 @@ public class ProductStoresFragment extends ListFragment {
         //catch event when user clicks on a store name-> redirect to store page
         // for rating, comments and store info
 
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        storesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Store store = (Store) parent.getAdapter().getItem(position);
@@ -84,8 +79,12 @@ public class ProductStoresFragment extends ListFragment {
 
     private void getData() {
         Bundle args = getArguments();
-        stores = args.getParcelableArrayList(STORES_PRODUCT_RESULT);
-        product = args.getParcelable(SELECTED_PRODUCT);
+        if (args != null) {
+            stores = args.getParcelableArrayList(STORES_PRODUCT_RESULT);
+            product = args.getParcelable(SELECTED_PRODUCT);
+            productName.setText(product.getName());
+            productDetails.setText(product.getDescription());
+        }
 
     }
 
@@ -100,11 +99,9 @@ public class ProductStoresFragment extends ListFragment {
     }
 
     private void getStoresListView() {
-
-        //Get result list
-        setListAdapter(new ArrayAdapter<String>(getActivity(), android.R.layout.simple_list_item_1, stores));
+        storesList.setAdapter(new StoreAdapter(getContext(), stores));
         if (getFragmentManager().findFragmentById(R.id.fragment_container) != null) {
-            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            storesList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
     }
 
