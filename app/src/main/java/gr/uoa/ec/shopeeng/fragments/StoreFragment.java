@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import gr.uoa.ec.shopeeng.R;
@@ -101,12 +102,22 @@ public class StoreFragment extends ListFragment {
         }
     }
 
-    public void setFragmentManager(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
-    }
+    private void addRateButton(
+            final Button button =(Button) findViewById(R.id.rateButton);
+              button.setOnClickListener(new View.OnClickListener()
 
-    public void setApplicationContext(Context applicationContext) {
-        this.applicationContext = applicationContext;
+    public void onClick(View v) {
+        // Perform action on click
     }
+});
+        }
 
-}
+public void setFragmentManager(FragmentManager fragmentManager){
+        this.fragmentManager=fragmentManager;
+        }
+
+public void setApplicationContext(Context applicationContext){
+        this.applicationContext=applicationContext;
+        }
+
+        }

@@ -8,6 +8,12 @@
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 tools:context=".fragments.StoreFragment">
 
+    <ScrollView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/scrollView"
+            android:layout_alignParentTop="true" android:layout_alignParentStart="true"
+            android:layout_alignParentEnd="true"/>
     <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -31,8 +37,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Σχόλια Χρηστών"
         android:id="@+id/textView3"
-        android:layout_marginTop="53dp"
-        android:layout_below="@+id/getDirections" />
+        android:layout_marginTop="36dp"
+        android:layout_below="@+id/directionsButton" android:layout_alignParentStart="true"/>
 
     <RatingBar
         android:layout_width="wrap_content"
@@ -42,37 +48,33 @@
         android:layout_below="@+id/storeName" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
-        android:id="@+id/storeAddress"
-        android:layout_marginTop="32dp"
-        android:layout_below="@+id/ratingScore"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_alignStart="@+id/textView3" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
-        android:text="Small Text"
-        android:id="@+id/ratingScore"
-        android:layout_below="@+id/ratingBar"
-        android:layout_alignLeft="@+id/storeAddress"
-        android:layout_alignStart="@+id/storeAddress" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Medium Text"
+            android:id="@+id/storeAddress"
+            android:layout_below="@+id/rateButton" android:layout_alignParentStart="true" android:layout_marginTop="29dp"/>
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="ΟΔΗΓΙΕΣ ΠΡΟΣΒΑΣΗΣ"
-        android:id="@+id/getDirections"
-        android:layout_below="@+id/storeAddress"
-        android:layout_alignLeft="@+id/storeAddress"
-        android:layout_alignStart="@+id/storeAddress"
-        android:layout_marginTop="29dp"
-        android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
-        android:textColor="@color/abc_background_cache_hint_selector_material_light" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ΟΔΗΓΙΕΣ ΠΡΟΣΒΑΣΗΣ"
+            android:id="@+id/directionsButton"
+            android:layout_marginTop="17dp"
+            android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
+            android:textColor="@color/abc_background_cache_hint_selector_material_light"
+            android:layout_below="@+id/storeAddress" android:layout_alignParentStart="true"/>
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Βαθμολόγησε"
+            android:id="@+id/rateButton"
+            android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
+            android:textColor="@color/abc_background_cache_hint_selector_material_light"
+            android:layout_marginTop="17dp" android:layout_below="@+id/ratingBar"
+            android:layout_toEndOf="@+id/storeAddress"/>
+    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Προσθηκη"
+            android:id="@+id/button" android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
+            android:textColor="@color/abc_background_cache_hint_selector_material_light"
+            android:layout_alignBaseline="@+id/textView3" android:layout_alignBottom="@+id/textView3"
+            android:layout_toEndOf="@+id/ratingBar"/>
     <!--<TextView-->
     <!--android:layout_width="wrap_content"-->
     <!--android:layout_height="wrap_content"-->
