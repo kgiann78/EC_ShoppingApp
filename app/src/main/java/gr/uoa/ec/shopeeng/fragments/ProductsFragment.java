@@ -1,75 +1,49 @@
 package gr.uoa.ec.shopeeng.fragments;
 
-import android.Manifest;
 import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.Location;
 import android.os.Bundle;
-import android.os.StrictMode;
-import android.support.v4.app.ActivityCompat;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.ListFragment;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-//import com.google.android.gms.common.api.GoogleApiClient;
-//import com.google.android.gms.location.LocationServices;
+import android.widget.TextView;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.adapters.ProductAdapter;
 import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
-import gr.uoa.ec.shopeeng.listeners.OnSearchClickedListener;
 import gr.uoa.ec.shopeeng.models.Product;
-import gr.uoa.ec.shopeeng.models.StoreProductRequestObject;
+import gr.uoa.ec.shopeeng.models.ProductStoreRequestObject;
 import gr.uoa.ec.shopeeng.requests.ProductStoreRequest;
 import gr.uoa.ec.shopeeng.utils.Constants;
 
-import java.text.BreakIterator;
 import java.util.ArrayList;
-import java.util.Arrays;
 
-/**
- * A placeholder fragment containing a simple view.
- */
-public class ProductsFragment extends ListFragment {
+public class ProductsFragment extends Fragment {
 
     private OnAddToShoppingListListener addToShoppingListListener;
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
+    private ListView productsList;
+    private TextView searchText;
+    private ArrayList<Product> products;
 
-    private ArrayList<Product> products = new ArrayList<>();
-//    GoogleApiClient mGoogleApiClient;
 
-
+    @Nullable
     @Override
-
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-
-        // Create an instance of GoogleAPIClient.
-
-//        if (mGoogleApiClient == null) {
-//            mGoogleApiClient = new GoogleApiClient.Builder(applicationContext)
-//                    .addApi(LocationServices.API)
-//                    .build();
-
-//        }
-//        ;
-
-
-        int SDK_INT = android.os.Build.VERSION.SDK_INT;
-        if (SDK_INT > 8) {
-            StrictMode.ThreadPolicy policy = new StrictMode.ThreadPolicy.Builder()
-                    .permitAll().build();
-            StrictMode.setThreadPolicy(policy);
-            //your codes here
-        }
-
-        Log.i("FragmentLifecycle", "onCreateView");
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_products, container, false);
+        productsList = (ListView) view.findViewById(R.id.product_list);
+        searchText = (TextView) view.findViewById(R.id.search_text_editText);
+        products = new ArrayList<>();
+        return view;
     }
 
     @Override
@@ -77,29 +51,40 @@ public class ProductsFragment extends ListFragment {
         super.onStart();
 
         // During startup, check if there are arguments passed to the fragment.
-        // onStart is a good place to do this because the layout has already been
-        // applied to the fragment at this point so we can safely call the method
-        // below that sets the article text.
-
         final Bundle args = getArguments();
 
         if (args != null) {
             products = args.getParcelableArrayList(Constants.PRODUCT_RESULT);
+            searchText.setText(args.getString(Constants.SEARCH_TEXT));
         }
 
-        // Create an array adapter for the list view, using the Ipsum headlines array
-        setListAdapter(new ProductAdapter(getActivity(), products));
+        final ProductAdapter productAdapter = new ProductAdapter(getActivity(), products);
+        searchText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            }
 
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                productAdapter.getFilter().filter(charSequence.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            }
+        });
+
+        productsList.setAdapter(productAdapter);
         if (getFragmentManager().findFragmentById(R.id.fragment_container) != null) {
-            getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            productsList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
 
-        getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        productsList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Product product = (Product) parent.getAdapter().getItem(position);
-                Log.i("retrieved product", product.toString());
 
+                //TODO: use user location to search for stores for each product
                 String userLocation = "Εθνικής Αντιστάσεως 48, Χαλάνδρι";
                 String distance = "100";
                 String duration = "-1";
@@ -107,25 +92,11 @@ public class ProductsFragment extends ListFragment {
                 String orderBy = "DISTANCE";
                 String transportMode = "DRIVING";
 
-             //   mGoogleApiClient.connect();
-              /*  if (ActivityCompat.checkSelfPermission(applicationContext, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                    return;
-                }*/
-
-             //   Location mLastLocation = LocationServices.FusedLocationApi.getLastLocation(mGoogleApiClient);
-
-               /* if (mLastLocation != null) {
-
-                    String latitude = String.valueOf(mLastLocation.getLatitude());
-                    String longitude = String.valueOf(mLastLocation.getLongitude());
-                    userLocation = latitude + "," + longitude;
-                }*/
-
                 addToShoppingListListener.onAddProductToShoppingClicked(product);
 
-                //TODO just for testing- going to clean thit up later
+                //TODO: just for testing - going to clean this up later
                 new ProductStoreRequest(
-                        new StoreProductRequestObject(product.getName(), userLocation, distance, duration, unit, orderBy, transportMode),
+                        new ProductStoreRequestObject(product.getName(), userLocation, distance, duration, unit, orderBy, transportMode),
                         product, fragmentManager, applicationContext).execute();
             }
 

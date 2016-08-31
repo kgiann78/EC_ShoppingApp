@@ -38,7 +38,6 @@ public class ProductRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             ArrayList results = new ArrayList();
-            Log.i("SEARCH_TEXT", buildUrl(this.searchText));
             results.addAll(Arrays.asList(restTemplate.getForObject((buildUrl(this.searchText)), Product[].class)));
 
             return results;
@@ -60,8 +59,6 @@ public class ProductRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
 
 
         Bundle args = new Bundle();
-        Log.e("parcelable list", Arrays.toString(products.toArray()));
-
         args.putString(Constants.SEARCH_TEXT, this.searchText);
         args.putParcelableArrayList(Constants.PRODUCT_RESULT, products);
         productsFragment.setArguments(args);

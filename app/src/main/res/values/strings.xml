@@ -7,4 +7,8 @@
     <string name="action_show_shopping_list">Η λίστα μου</string>
     <string name="action_go_to_search">Αναζήτηση</string>
     <string name="product_price">%1$s€</string>
+    <string name="ordering_label">Ταξινόμηση</string>
+    <string name="show_only_on_distance">Δείξε μονο όσα απέχουν</string>
+    <string name="km_or_hour">Χιλιόμετρα / Ώρες</string>
+    <string name="walking_or_driving">Οδηγώντας / Περπατώντας</string>
 </resources>
