@@ -1,79 +1,96 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:paddingLeft="@dimen/activity_horizontal_margin"
-                android:paddingRight="@dimen/activity_horizontal_margin"
-                android:paddingTop="@dimen/activity_vertical_margin"
-                android:paddingBottom="@dimen/activity_vertical_margin"
-                tools:context=".fragments.StoreFragment">
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:orientation="vertical"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:paddingLeft="@dimen/activity_horizontal_margin"
+              android:paddingRight="@dimen/activity_horizontal_margin"
+              android:paddingTop="@dimen/activity_vertical_margin"
+              android:paddingBottom="@dimen/activity_vertical_margin"
+              tools:context=".fragments.StoreFragment">
 
-    <ScrollView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/scrollView"
-            android:layout_alignParentTop="true" android:layout_alignParentStart="true"
-            android:layout_alignParentEnd="true"/>
-    <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/product_list"
-        android:layout_marginTop="21dp"
-        android:layout_below="@+id/textView3"
-        android:layout_alignLeft="@+id/textView3"
-        android:layout_alignStart="@+id/textView3" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:text="Large Text"
-        android:id="@+id/storeName"
-        android:layout_alignParentTop="true" />
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="@string/store_name_label"
+            android:textAlignment="center"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/store_name_text_view"/>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Σχόλια Χρηστών"
-        android:id="@+id/textView3"
-        android:layout_marginTop="36dp"
-        android:layout_below="@+id/directionsButton" android:layout_alignParentStart="true"/>
-
-    <RatingBar
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/ratingBar"
-        android:layout_marginTop="17dp"
-        android:layout_below="@+id/storeName" />
 
     <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="Medium Text"
-            android:id="@+id/storeAddress"
-            android:layout_below="@+id/rateButton" android:layout_alignParentStart="true" android:layout_marginTop="29dp"/>
+            android:text="@string/store_address_text_view"
+            android:id="@+id/store_address_text_view"
+            android:layout_marginTop="32dp"/>
+
+    <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="start">
+            <RatingBar
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/store_rating_bar"
+                    android:layout_marginTop="17dp"/>
+
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:text="@string/rating_score_label"
+                    android:id="@+id/rating_score_text_view"/>
+        </LinearLayout>
+        <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="end">
+            <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="17dp"
+                    android:id="@+id/add_to_shopping_list_button"
+                    android:src="@mipmap/ic_cart"
+                    android:contentDescription="@string/add_to_shopping_list_description"
+                    android:clickable="true"
+                    android:adjustViewBounds="true"
+                    android:background="@android:color/transparent"/>
+        </LinearLayout>
+    </LinearLayout>
 
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="ΟΔΗΓΙΕΣ ΠΡΟΣΒΑΣΗΣ"
-            android:id="@+id/directionsButton"
-            android:layout_marginTop="17dp"
-            android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
-            android:textColor="@color/abc_background_cache_hint_selector_material_light"
-            android:layout_below="@+id/storeAddress" android:layout_alignParentStart="true"/>
-    <Button android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Βαθμολόγησε"
-            android:id="@+id/rateButton"
-            android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
-            android:textColor="@color/abc_background_cache_hint_selector_material_light"
-            android:layout_marginTop="17dp" android:layout_below="@+id/ratingBar"
-            android:layout_toEndOf="@+id/storeAddress"/>
-    <!--<TextView-->
-    <!--android:layout_width="wrap_content"-->
-    <!--android:layout_height="wrap_content"-->
-    <!--android:text="New Text"-->
-    <!--android:id="@+id/alekos_textView" android:layout_alignTop="@+id/listView" android:layout_centerHorizontal="true"-->
-    <!--android:layout_marginTop="52dp"/>-->
-</RelativeLayout>
+            android:text="@string/show_directions_label"
+            android:id="@+id/show_directions_button"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"/>
+
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="@string/user_comments_label"
+            android:layout_gravity="center_horizontal"
+            android:id="@+id/comments_text_view"
+            android:textAlignment="center"
+            android:layout_marginTop="20dp"/>
+
+    <ListView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/comments_list"
+            android:layout_marginTop="20dp"/>
+</LinearLayout>

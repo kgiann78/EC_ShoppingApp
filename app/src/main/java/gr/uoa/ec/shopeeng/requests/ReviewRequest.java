@@ -24,12 +24,14 @@ import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 public class ReviewRequest extends AsyncTask<Void, Void, ReviewData> {
     private Store store;
+    private Product product;
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
 
-    public ReviewRequest(Store store, FragmentManager fragmentManager, Context applicationContext) {
+    public ReviewRequest(Store store, Product product, FragmentManager fragmentManager, Context applicationContext) {
         this.store = store;
+        this.product = product;
         this.fragmentManager = fragmentManager;
         this.applicationContext = applicationContext;
     }
@@ -52,7 +54,7 @@ public class ReviewRequest extends AsyncTask<Void, Void, ReviewData> {
             return reviewData;
 
         } catch (Exception e) {
-            Log.e("MainActivity", e.getMessage(), e);
+            Log.e(ReviewRequest.class.getName(), e.getMessage(), e);
         }
 
         return null;
@@ -63,12 +65,12 @@ public class ReviewRequest extends AsyncTask<Void, Void, ReviewData> {
         StoreFragment storeFragment = new StoreFragment();
         storeFragment.setApplicationContext(applicationContext);
         storeFragment.setFragmentManager(fragmentManager);
-        Bundle args = new Bundle();
 
+        Bundle args = new Bundle();
         args.putParcelableArrayList(COMMENTS_RESULTS, reviewData.getComments());
         args.putParcelableArrayList(RATING_RESULTS, reviewData.getRatings());
         args.putParcelable(STORE_RESULT, store);
-
+        args.putParcelable(PRODUCT_RESULT, product);
 
         double ratingScore = 0.0;
         for (Object rating : reviewData.getRatings()) {
@@ -83,7 +85,6 @@ public class ReviewRequest extends AsyncTask<Void, Void, ReviewData> {
         transaction.replace(R.id.fragment_container, storeFragment);
         transaction.addToBackStack(null);
         transaction.commit();
-
     }
 
 
