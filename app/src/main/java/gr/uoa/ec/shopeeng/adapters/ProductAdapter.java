@@ -1,14 +1,16 @@
 package gr.uoa.ec.shopeeng.adapters;
 
 import android.content.Context;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Filter;
-import android.widget.TextView;
+import android.widget.*;
 import gr.uoa.ec.shopeeng.R;
+import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
 import gr.uoa.ec.shopeeng.models.Product;
+import gr.uoa.ec.shopeeng.models.ProductStoreRequestObject;
+import gr.uoa.ec.shopeeng.requests.ProductStoreRequest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class ProductAdapter extends ArrayAdapter<Product> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, final ViewGroup parent) {
         ProductViewHolder productViewHolder;
 
         if (convertView == null) {

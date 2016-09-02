@@ -11,10 +11,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.adapters.StoreAdapter;
+import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.requests.ReviewRequest;
@@ -27,6 +29,7 @@ import static gr.uoa.ec.shopeeng.utils.Constants.STORES_PRODUCT_RESULT;
 
 public class ProductStoresFragment extends Fragment {
 
+    private OnAddToShoppingListListener addToShoppingListListener;
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
@@ -34,6 +37,7 @@ public class ProductStoresFragment extends Fragment {
     ListView storesList;
     TextView productName;
     TextView productDetails;
+    ImageButton addToShoppingList;
     List<Store> stores;
     Product product;
 
@@ -44,6 +48,8 @@ public class ProductStoresFragment extends Fragment {
         storesList = (ListView) view.findViewById(R.id.store_list);
         productName = (TextView) view.findViewById(R.id.product_name_text_view);
         productDetails = (TextView) view.findViewById(R.id.product_details_text_view);
+        addToShoppingList = (ImageButton) view.findViewById(R.id.add_to_shopping_list_button);
+
         stores = new ArrayList<>();
         return view;
     }
@@ -63,6 +69,13 @@ public class ProductStoresFragment extends Fragment {
         //catch event when user clicks on a store name-> redirect to store page
         // for rating, comments and store info
 
+        addToShoppingList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToShoppingListListener.onAddProductToShoppingClicked(product, null);
+            }
+        });
+
         storesList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -70,7 +83,7 @@ public class ProductStoresFragment extends Fragment {
                 Log.i("clicked store", store.toString());
 
                 //add request for reviews and ratings here!!
-                new ReviewRequest(store, getFragmentManager(), applicationContext).execute();
+                new ReviewRequest(store, product, getFragmentManager(), applicationContext).execute();
 
             }
         });
@@ -102,6 +115,20 @@ public class ProductStoresFragment extends Fragment {
         storesList.setAdapter(new StoreAdapter(getContext(), stores));
         if (getFragmentManager().findFragmentById(R.id.fragment_container) != null) {
             storesList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception.
+        try {
+            addToShoppingListListener = (OnAddToShoppingListListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnAddToShoppingListListener");
         }
     }
 

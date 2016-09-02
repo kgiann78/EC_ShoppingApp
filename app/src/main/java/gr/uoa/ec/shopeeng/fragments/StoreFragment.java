@@ -14,7 +14,9 @@ import android.view.ViewGroup;
 import android.widget.*;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.adapters.CommentAdapter;
+import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
 import gr.uoa.ec.shopeeng.models.Comment;
+import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.Rating;
 import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.utils.Constants;
@@ -24,15 +26,18 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class StoreFragment extends Fragment {
+    private OnAddToShoppingListListener addToShoppingListListener;
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
     private Store store;
+    private Product product;
 
     TextView storeName;
-    RatingBar ratingBar;
     TextView storeAddress;
+    RatingBar ratingBar;
     TextView ratingScoreText;
+    ImageButton addToShoppingList;
     ListView commentsList;
 
     ArrayList<Comment> comments = new ArrayList<>();
@@ -50,6 +55,7 @@ public class StoreFragment extends Fragment {
         storeAddress = (TextView) view.findViewById(R.id.store_address_text_view);
         ratingScoreText = (TextView) view.findViewById(R.id.rating_score_text_view);
         commentsList = (ListView) view.findViewById(R.id.comments_list);
+        addToShoppingList = (ImageButton) view.findViewById(R.id.add_to_shopping_list_button);
         return view;
     }
 
@@ -60,6 +66,12 @@ public class StoreFragment extends Fragment {
         getData();
 
         ratingScoreText.setText(getContext().getString(R.string.rating_score_value, ratingScore.toString(), ratings.size()));
+        addToShoppingList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addToShoppingListListener.onAddProductToShoppingClicked(product, store);
+            }
+        });
         getListViews();
     }
 
@@ -76,6 +88,7 @@ public class StoreFragment extends Fragment {
 
             ratingScore = args.getDouble(Constants.RATING_SCORE);
             store = args.getParcelable(Constants.STORE_RESULT);
+            product = args.getParcelable(Constants.PRODUCT_RESULT);
 
             storeName.setText(store.getName());
             storeAddress.setText(store.getAddress());
@@ -87,6 +100,20 @@ public class StoreFragment extends Fragment {
         commentsList.setAdapter(new CommentAdapter(getContext(), comments));
         if (getFragmentManager().findFragmentById(R.id.fragment_container) != null) {
             commentsList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+        }
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception.
+        try {
+            addToShoppingListListener = (OnAddToShoppingListListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement OnAddToShoppingListListener");
         }
     }
 

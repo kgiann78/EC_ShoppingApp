@@ -6,16 +6,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import gr.uoa.ec.shopeeng.R;
-import gr.uoa.ec.shopeeng.adapters.ProductAdapter;
-import gr.uoa.ec.shopeeng.models.Product;
+import gr.uoa.ec.shopeeng.adapters.ShoppingItemAdapter;
+import gr.uoa.ec.shopeeng.models.ShoppingItem;
 import gr.uoa.ec.shopeeng.utils.Constants;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -28,17 +26,14 @@ public class ShoppingListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("FragmentLifecycle", "onCreateView");
         View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
 
         if (getArguments() != null) {
             Bundle args = getArguments();
             ListView shoppingListView = (ListView) view.findViewById(R.id.shopping_list);
-            TextView shoppingListNameTextView = (TextView) view.findViewById(R.id.shopping_list_name);
-            shoppingListNameTextView.setText(args.getString(Constants.SHOPPING_LIST_NAME));
-            ArrayList<Product> products = args.getParcelableArrayList(Constants.PRODUCTS_IN_SHOPPING_LIST);
+            ArrayList<ShoppingItem> shoppingItems = args.getParcelableArrayList(Constants.ITEMS_IN_SHOPPING_LIST);
 
-            shoppingListView.setAdapter(new ProductAdapter(getActivity(), products));
+            shoppingListView.setAdapter(new ShoppingItemAdapter(getActivity(), shoppingItems));
             shoppingListView.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
 

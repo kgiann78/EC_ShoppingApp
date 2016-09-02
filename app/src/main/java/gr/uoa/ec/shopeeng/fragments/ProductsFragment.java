@@ -1,10 +1,22 @@
 package gr.uoa.ec.shopeeng.fragments;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.MediaRouteButton;
+import android.content.ContentResolver;
 import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.*;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.provider.Settings;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -14,6 +26,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.adapters.ProductAdapter;
 import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
@@ -21,12 +34,15 @@ import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.ProductStoreRequestObject;
 import gr.uoa.ec.shopeeng.requests.ProductStoreRequest;
 import gr.uoa.ec.shopeeng.utils.Constants;
+import gr.uoa.ec.shopeeng.utils.ShoppingLocationListener;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 
 public class ProductsFragment extends Fragment {
-
-    private OnAddToShoppingListListener addToShoppingListListener;
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
@@ -34,7 +50,6 @@ public class ProductsFragment extends Fragment {
     private ListView productsList;
     private TextView searchText;
     private ArrayList<Product> products;
-
 
     @Nullable
     @Override
@@ -92,30 +107,13 @@ public class ProductsFragment extends Fragment {
                 String orderBy = "DISTANCE";
                 String transportMode = "DRIVING";
 
-                addToShoppingListListener.onAddProductToShoppingClicked(product);
-
                 //TODO: just for testing - going to clean this up later
                 new ProductStoreRequest(
                         new ProductStoreRequestObject(product.getName(), userLocation, distance, duration, unit, orderBy, transportMode),
                         product, fragmentManager, applicationContext).execute();
             }
-
         });
 
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception.
-        try {
-            addToShoppingListListener = (OnAddToShoppingListListener) context;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString()
-                    + " must implement OnAddToShoppingListListener");
-        }
     }
 
     public void setFragmentManager(FragmentManager fragmentManager) {
@@ -134,4 +132,5 @@ public class ProductsFragment extends Fragment {
     public void setProducts(ArrayList<Product> products) {
         this.products = products;
     }
+
 }

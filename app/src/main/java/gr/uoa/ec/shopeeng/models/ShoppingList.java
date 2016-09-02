@@ -7,13 +7,22 @@ import java.util.Map;
 public class ShoppingList {
     private String name;
     private Date creationDate;
-    private Map productsMap = new LinkedHashMap();
+    private Map<String, Product> productsMap = new LinkedHashMap<>();
+    private Map<String, Store> shoppingMap = new LinkedHashMap<>();
 
-    public Map getProductsMap() {
+    public Map<String, Store> getShoppingMap() {
+        return shoppingMap;
+    }
+
+    public void setShoppingMap(Map shoppingMap) {
+        this.shoppingMap = shoppingMap;
+    }
+
+    public Map<String, Product> getProductsMap() {
         return productsMap;
     }
 
-    public void setProductsMap(Map productsMap) {
+    public void setProductsMap(Map<String, Product> productsMap) {
         this.productsMap = productsMap;
     }
 
@@ -38,6 +47,7 @@ public class ShoppingList {
         return "ShoppingList{" +
                 "name='" + name + '\'' +
                 ", creationDate=" + creationDate +
+                ", shoppingMap=" + shoppingMap +
                 ", productsMap=" + productsMap +
                 '}';
     }

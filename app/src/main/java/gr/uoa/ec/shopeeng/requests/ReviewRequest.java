@@ -70,6 +70,7 @@ public class ReviewRequest extends AsyncTask<Void, Void, ReviewData> {
         args.putParcelableArrayList(COMMENTS_RESULTS, reviewData.getComments());
         args.putParcelableArrayList(RATING_RESULTS, reviewData.getRatings());
         args.putParcelable(STORE_RESULT, store);
+        args.putParcelable(PRODUCT_RESULT, product);
 
         double ratingScore = 0.0;
         for (Object rating : reviewData.getRatings()) {

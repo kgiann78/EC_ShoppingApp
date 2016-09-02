@@ -1,34 +1,55 @@
 package gr.uoa.ec.shopeeng;
 
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.content.Context;
+import android.content.pm.PackageManager;
+import android.location.*;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Toast;
+import gr.uoa.ec.shopeeng.fragments.ProductsFragment;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.fragments.ShoppingListFragment;
 import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
 import gr.uoa.ec.shopeeng.listeners.OnSearchClickedListener;
 import gr.uoa.ec.shopeeng.models.Product;
+import gr.uoa.ec.shopeeng.models.ShoppingItem;
 import gr.uoa.ec.shopeeng.models.ShoppingList;
+import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.requests.ProductRequest;
 import gr.uoa.ec.shopeeng.utils.Constants;
 import gr.uoa.ec.shopeeng.utils.ShoppingListManager;
+import gr.uoa.ec.shopeeng.utils.ShoppingLocationListener;
 
 import java.util.*;
 
 public class MainActivity extends AppCompatActivity implements OnSearchClickedListener, OnAddToShoppingListListener {
 
     private ShoppingListManager shoppingListManager;
+    LocationManager locationManager;
+    LocationListener locationListener;
+    private static final String[] LOCATION_PERMS = {
+            Manifest.permission.ACCESS_FINE_LOCATION,
+            Manifest.permission.ACCESS_COARSE_LOCATION
+    };
+
+    private static final int INITIAL_REQUEST = 1337;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        locationSupport();
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -93,16 +114,9 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
             ShoppingListFragment shoppingListFragment = new ShoppingListFragment();
             Bundle args = new Bundle();
 
-            Object[] productArray = shoppingListManager.getShoppingList()
-                    .getProductsMap().keySet().toArray();
+            ArrayList<ShoppingItem> shoppingItems = shoppingListManager.getShoppingItems();
 
-            ArrayList<Product> products = new ArrayList<>(productArray.length);
-            for (Object object : productArray) {
-                products.add((Product) object);
-            }
-
-            args.putParcelableArrayList(Constants.PRODUCTS_IN_SHOPPING_LIST, products);
-            args.putString(Constants.SHOPPING_LIST_NAME, shoppingListManager.getShoppingList().getName());
+            args.putParcelableArrayList(Constants.ITEMS_IN_SHOPPING_LIST, shoppingItems);
             shoppingListFragment.setArguments(args);
             getSupportFragmentManager()
                     .beginTransaction()
@@ -134,11 +148,60 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
     }
 
     @Override
-    public void onAddProductToShoppingClicked(Product product) {
+    public void onAddProductToShoppingClicked(Product product, Store store) {
         try {
-            shoppingListManager.addProduct(product);
+            if (shoppingListManager.productAlreadyInList(product) && store == null) {
+                Toast.makeText(getApplicationContext(), "Χμμμ! Υπάρχει ήδη στη λίστα!", Toast.LENGTH_SHORT).show();
+                return;
+            } else {
+                shoppingListManager.addProduct(product, store);
+            }
         } catch (Exception e) {
             Log.e(MainActivity.class.toString(), e.getMessage());
+            return;
         }
+
+        if (store != null)
+            Toast.makeText(getApplicationContext(), "Ωραία! Τρέχα να το πάρεις!", Toast.LENGTH_SHORT).show();
+        else
+            Toast.makeText(getApplicationContext(), "Μπράβο! Το έβαλες στη λίστα! 'Ελα να βρούμε μαγαζάκι!", Toast.LENGTH_SHORT).show();
+    }
+
+
+    @TargetApi(Build.VERSION_CODES.M)
+    void locationSupport() {
+        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            //    ActivityCompat#requestPermissions
+            requestPermissions(LOCATION_PERMS, INITIAL_REQUEST);
+            // here to request the missing permissions, and then overriding
+            // public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                        int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            return;
+        }
+
+
+        locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+        boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        Log.i(MainActivity.class.getName(), "gpsStatus=" + gpsStatus);
+
+        locationListener = new ShoppingLocationListener();
+        locationManager.requestLocationUpdates(
+                LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
+
+
+//                Location location = new Location("network");
+//                location.setLatitude(-15.83554363);
+//                location.setLongitude(-48.01770782);
+//                location.setTime(new Date().getTime());
+//                location.setAccuracy(100.0f);
+//                location.setElapsedRealtimeNanos(System.nanoTime());
+//
+//                locationManager.addTestProvider(LocationManager.GPS_PROVIDER, false, false, false, false, true, true, true, Criteria.POWER_LOW, Criteria.ACCURACY_FINE);
+//                locationManager.setTestProviderStatus(LocationManager.GPS_PROVIDER, LocationProvider.AVAILABLE, null, System.currentTimeMillis());
+//                locationManager.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true);
+//                locationManager.setTestProviderLocation(LocationManager.GPS_PROVIDER, location);
     }
 }

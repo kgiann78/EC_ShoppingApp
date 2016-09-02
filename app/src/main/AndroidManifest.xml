@@ -2,9 +2,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="gr.uoa.ec.shopeeng">
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
 
     <application
             android:allowBackup="true"
@@ -23,10 +25,10 @@
             </intent-filter>
         </activity>
 
+        <meta-data
+                android:name="com.google.android.geo.API_KEY"
+                android:value="@string/google_maps_key"/>
 
-        <!-- <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
-        -->
-        <!--  <service android:name=".FetchAddressIntentService" android:exported="false"/>-->
     </application>
 
 </manifest>

@@ -9,7 +9,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.models.Comment;
-import gr.uoa.ec.shopeeng.models.Store;
 
 import java.util.List;
 
