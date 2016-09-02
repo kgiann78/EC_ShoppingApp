@@ -20,6 +20,7 @@ import android.widget.Toast;
 import gr.uoa.ec.shopeeng.fragments.ProductsFragment;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.fragments.ShoppingListFragment;
+import gr.uoa.ec.shopeeng.listeners.LocationUpdateListener;
 import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
 import gr.uoa.ec.shopeeng.listeners.OnSearchClickedListener;
 import gr.uoa.ec.shopeeng.models.Product;
@@ -37,11 +38,12 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
 
     private ShoppingListManager shoppingListManager;
     LocationManager locationManager;
-    LocationListener locationListener;
+    ShoppingLocationListener locationListener;
     private static final String[] LOCATION_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
+    Location loc;
 
     private static final int INITIAL_REQUEST = 1337;
 
@@ -83,14 +85,14 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
+//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+//        fab.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+//                        .setAction("Action", null).show();
+//            }
+//        });
     }
 
     @Override
@@ -188,20 +190,15 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
         Log.i(MainActivity.class.getName(), "gpsStatus=" + gpsStatus);
 
         locationListener = new ShoppingLocationListener();
+        locationListener.onLocationUpdated(new LocationUpdateListener() {
+            @Override
+            public void onLocationUpdated(Location location) {
+                loc = location;
+                Toast.makeText(getApplicationContext(), loc.getLatitude() + " " + loc.getLongitude(), Toast.LENGTH_SHORT).show();
+            }
+        });
+
         locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
-
-
-//                Location location = new Location("network");
-//                location.setLatitude(-15.83554363);
-//                location.setLongitude(-48.01770782);
-//                location.setTime(new Date().getTime());
-//                location.setAccuracy(100.0f);
-//                location.setElapsedRealtimeNanos(System.nanoTime());
-//
-//                locationManager.addTestProvider(LocationManager.GPS_PROVIDER, false, false, false, false, true, true, true, Criteria.POWER_LOW, Criteria.ACCURACY_FINE);
-//                locationManager.setTestProviderStatus(LocationManager.GPS_PROVIDER, LocationProvider.AVAILABLE, null, System.currentTimeMillis());
-//                locationManager.setTestProviderEnabled(LocationManager.GPS_PROVIDER, true);
-//                locationManager.setTestProviderLocation(LocationManager.GPS_PROVIDER, location);
+                LocationManager.GPS_PROVIDER, 7000, 0, locationListener);
     }
 }
