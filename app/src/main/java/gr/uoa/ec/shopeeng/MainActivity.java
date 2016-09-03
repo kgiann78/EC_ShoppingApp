@@ -37,7 +37,11 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
 
     private ShoppingListManager shoppingListManager;
     LocationManager locationManager;
-    LocationListener locationListener;
+    ShoppingLocationListener locationListener;
+
+    String longitude = "0.0";
+    String latitude = "0.0";
+
     private static final String[] LOCATION_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
@@ -87,8 +91,9 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                Snackbar.make(view, "longitude: " + longitude + "latitude :" + latitude, Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+
             }
         });
     }
@@ -190,7 +195,10 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
         locationListener = new ShoppingLocationListener();
         locationManager.requestLocationUpdates(
                 LocationManager.GPS_PROVIDER, 5000, 0, locationListener);
-
+        if (locationListener.getLocation() != null) {
+            longitude = locationListener.getLocation().getLongitude() + "";
+            latitude = locationListener.getLocation().getLatitude() + "";
+        }
 
 //                Location location = new Location("network");
 //                location.setLatitude(-15.83554363);
