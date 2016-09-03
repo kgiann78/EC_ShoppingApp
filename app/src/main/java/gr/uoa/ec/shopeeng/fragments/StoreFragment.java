@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,6 +25,7 @@ import org.w3c.dom.Text;
 import java.util.ArrayList;
 
 import static gr.uoa.ec.shopeeng.utils.Constants.LOCATION;
+import static gr.uoa.ec.shopeeng.utils.Constants.USER_ID;
 
 public class StoreFragment extends Fragment {
     private OnAddToShoppingListListener addToShoppingListListener;
@@ -33,6 +35,8 @@ public class StoreFragment extends Fragment {
     private Store store;
     private Product product;
     private String userlocation;
+    private String userId;
+
 
     TextView storeName;
     TextView storeAddress;
@@ -45,8 +49,6 @@ public class StoreFragment extends Fragment {
     Button directionsButton;
     Button redirectReviewButton;
 
-    PopupWindow addReviewPopup;
-    boolean click = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -59,7 +61,7 @@ public class StoreFragment extends Fragment {
         reviewsList = (ListView) view.findViewById(R.id.comments_list);
         addToShoppingList = (ImageButton) view.findViewById(R.id.add_to_shopping_list_button);
         directionsButton = (Button) view.findViewById(R.id.directionsButton);
-        addReviewPopup = new PopupWindow();
+
 
         //TODO launches google maps on click to get directions
         directionsButton.setOnClickListener(new View.OnClickListener() {
@@ -75,32 +77,14 @@ public class StoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                if (click) {
-                    addReviewPopup.showAtLocation(v, Gravity.BOTTOM, 10, 10);
-                    addReviewPopup.update(50, 50, 300, 80);
-
-                    click = false;
-                } else {
-                    addReviewPopup.dismiss();
-                    click = true;
-                }
-
-
-                /*    AddReviewFragment addReviewFragment = new AddReviewFragment();
-                addReviewFragment.setApplicationContext(applicationContext);
+                AddReviewFragment addReviewFragment = AddReviewFragment.newInstance(userId, store.getStoreId());
                 addReviewFragment.setFragmentManager(fragmentManager);
-
-                //add reviews list so we can update it with the new one (?)
-                Bundle args = new Bundle();
-                args.putParcelableArrayList(REVIEWS_LIST, reviews);
-                args.putInt(Constants.REVIEWS_NUMBER, reviews.size());
-
-                storeFragment.setArguments(args);
+                addReviewFragment.setApplicationContext(applicationContext);
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fragment_container, storeFragment);
+                transaction.replace(R.id.fragment_container, addReviewFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-*/
+
             }
         });
         return view;
@@ -139,6 +123,8 @@ public class StoreFragment extends Fragment {
             storeAddress.setText(store.getAddress());
             ratingBar.setRating(ratingScore.floatValue());
             ratingBar.setNumStars((int) (ratingScore * 5 / 10));
+
+            userId = args.getString(USER_ID);
         }
     }
 

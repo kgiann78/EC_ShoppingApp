@@ -24,6 +24,7 @@ import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 
 public class ReviewRequest extends AsyncTask<Void, Void, ArrayList<Review>> {
+    private final String userId;
     private Store store;
     private Product product;
     private String userlocation;
@@ -31,9 +32,11 @@ public class ReviewRequest extends AsyncTask<Void, Void, ArrayList<Review>> {
     private Context applicationContext;
 
 
-    public ReviewRequest(Store store, Product product, String userlocation, FragmentManager fragmentManager, Context applicationContext) {
+    public ReviewRequest(Store store, Product product, String userlocation, String userId, FragmentManager fragmentManager, Context applicationContext) {
         this.store = store;
         this.product = product;
+
+        this.userId = userId;
         this.userlocation = userlocation;
         this.fragmentManager = fragmentManager;
         this.applicationContext = applicationContext;
@@ -77,6 +80,7 @@ public class ReviewRequest extends AsyncTask<Void, Void, ArrayList<Review>> {
         args.putParcelable(STORE_RESULT, store);
         args.putParcelable(PRODUCT_RESULT, product);
         args.putString(LOCATION, userlocation);
+        args.putString(USER_ID, userId);
 
         storeFragment.setArguments(args);
         FragmentTransaction transaction = fragmentManager.beginTransaction();

@@ -3,12 +3,20 @@ package gr.uoa.ec.shopeeng.fragments;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.RatingBar;
 import gr.uoa.ec.shopeeng.R;
+import gr.uoa.ec.shopeeng.utils.Constants;
+
+import static gr.uoa.ec.shopeeng.utils.Constants.STORE_ID;
+import static gr.uoa.ec.shopeeng.utils.Constants.USER_ID;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,33 +27,26 @@ import gr.uoa.ec.shopeeng.R;
  * create an instance of this fragment.
  */
 public class AddReviewFragment extends Fragment {
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private String userId;
+    private String storeId;
 
-    private String mParam1;
-    private String mParam2;
+    private Button submit;
+    private EditText comment;
+    private RatingBar ratingBar;
 
-    private OnFragmentInteractionListener mListener;
     private Context applicationContext;
     private FragmentManager fragmentManager;
 
     public AddReviewFragment() {
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AddReviewFragment.
-     */
+
     // TODO: Rename and change types and number of parameters
-    public static AddReviewFragment newInstance(String param1, String param2) {
+    public static AddReviewFragment newInstance(String userId, String storeId) {
         AddReviewFragment fragment = new AddReviewFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(STORE_ID, storeId);
+        args.putString(USER_ID, userId);
         fragment.setArguments(args);
         return fragment;
     }
@@ -54,8 +55,8 @@ public class AddReviewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            storeId = getArguments().getString(STORE_ID);
+            userId = getArguments().getString(USER_ID);
         }
     }
 
@@ -63,7 +64,13 @@ public class AddReviewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_add_review, container, false);
+
+
+        View view = inflater.inflate(R.layout.fragment_add_review, container, false);
+
+        submit = (Button) view.findViewById(R.id.submit);
+        ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
+        return view;
     }
 
     // TODO: Rename method, update argument and hook method into UI event

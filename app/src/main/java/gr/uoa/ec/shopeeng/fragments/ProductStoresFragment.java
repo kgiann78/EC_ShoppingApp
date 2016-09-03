@@ -24,14 +24,14 @@ import gr.uoa.ec.shopeeng.requests.ReviewRequest;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gr.uoa.ec.shopeeng.utils.Constants.LOCATION;
-import static gr.uoa.ec.shopeeng.utils.Constants.SELECTED_PRODUCT;
-import static gr.uoa.ec.shopeeng.utils.Constants.STORES_PRODUCT_RESULT;
+import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 public class ProductStoresFragment extends Fragment {
 
     private OnAddToShoppingListListener addToShoppingListListener;
-
+    private Product product;
+    private String location;
+    private String userId;
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
@@ -40,8 +40,6 @@ public class ProductStoresFragment extends Fragment {
     TextView productDetails;
     ImageButton addToShoppingList;
     List<Store> stores;
-    Product product;
-    String location;
 
     @Nullable
     @Override
@@ -69,6 +67,7 @@ public class ProductStoresFragment extends Fragment {
             productName.setText(product.getName());
             productDetails.setText(product.getDescription());
             location = args.getString(LOCATION);
+            userId = args.getString(USER_ID);
 
         }
 
@@ -91,7 +90,7 @@ public class ProductStoresFragment extends Fragment {
                 Store store = (Store) parent.getAdapter().getItem(position);
                 Log.i("clicked store", store.toString());
                 //add request for reviews and reviews here!!
-                new ReviewRequest(store, product, location, getFragmentManager(), applicationContext).execute();
+                new ReviewRequest(store, product, location, userId, getFragmentManager(), applicationContext).execute();
 
             }
         });

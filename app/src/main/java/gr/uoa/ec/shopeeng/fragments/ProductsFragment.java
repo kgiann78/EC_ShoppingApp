@@ -14,6 +14,7 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.util.CircularArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -39,7 +40,6 @@ import java.util.List;
 import java.util.Locale;
 
 public class ProductsFragment extends Fragment {
-
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
@@ -49,6 +49,9 @@ public class ProductsFragment extends Fragment {
 
     LocationManager locationManager;
     ShoppingLocationListener locationListener;
+
+    private String userId;
+
     private static final String[] LOCATION_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
@@ -76,6 +79,7 @@ public class ProductsFragment extends Fragment {
         final Bundle args = getArguments();
 
         if (args != null) {
+            userId = args.getString(Constants.USER_ID);
             products = args.getParcelableArrayList(Constants.PRODUCT_RESULT);
             searchText.setText(args.getString(Constants.SEARCH_TEXT));
 
@@ -131,7 +135,7 @@ public class ProductsFragment extends Fragment {
                     String transportMode = "DRIVING";
 
                     new ProductStoreRequest(
-                            new ProductStoreRequestObject(product.getName(), userLocation, distance, duration, unit, orderBy, transportMode),
+                            new ProductStoreRequestObject(product.getName(), userLocation, distance, duration, unit, orderBy, transportMode, userId),
                             product, fragmentManager, applicationContext).execute();
                 }
             });

@@ -22,13 +22,15 @@ import java.util.Arrays;
 
 
 public class ProductRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
+    private final String userId;
     private String searchText;
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
 
-    public ProductRequest(String keywords, FragmentManager fragmentManager, Context applicationContext) {
+    public ProductRequest(String keywords, String userId, FragmentManager fragmentManager, Context applicationContext) {
         this.searchText = keywords;
+        this.userId = userId;
         this.fragmentManager = fragmentManager;
         this.applicationContext = applicationContext;
     }
@@ -64,10 +66,11 @@ public class ProductRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
         Bundle args = new Bundle();
         args.putString(Constants.SEARCH_TEXT, this.searchText);
         args.putParcelableArrayList(Constants.PRODUCT_RESULT, products);
+        args.putString(Constants.USER_ID, userId);
+
         productsFragment.setArguments(args);
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-
         // Replace whatever is in the fragment_container view with this fragment,
         // and add the transaction to the back stack so the user can navigate back
         transaction.replace(R.id.fragment_container, productsFragment);

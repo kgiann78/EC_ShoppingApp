@@ -37,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
 
     private ShoppingListManager shoppingListManager;
 
+    private String userId = "1";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -122,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
     public void onSearchClicked(String searchText) {
 
         try {
-            new ProductRequest(searchText, getSupportFragmentManager(), getApplicationContext()).execute();
+            new ProductRequest(searchText,userId, getSupportFragmentManager(), getApplicationContext()).execute();
 
         } catch (Exception e) {
             Log.e(MainActivity.class.toString(), e.getMessage());

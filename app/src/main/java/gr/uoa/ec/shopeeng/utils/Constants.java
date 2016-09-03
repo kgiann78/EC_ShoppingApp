@@ -13,6 +13,7 @@ public class Constants {
     public static final String REVIEWS_NUMBER = "REVIEWS_NUMBER";
     public static final String RATING_SCORE = "RATING_SCORE";
     public static final String REVIEWS_LIST = "REVIEWS_LIST";
-
+    public static final String USER_ID = "USER_ID";
+    public static final String STORE_ID = "STORE_ID";
 
 }
