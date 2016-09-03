@@ -14,13 +14,20 @@ public class Store implements Parcelable, Serializable {
     private String logo;
     private String price;
     private String rating;
+    private String distance;
 
     public Store() {
     }
 
-    ;
-
-    public Store(String storeId, String name, String address, String country, String site, String logo, String price, String rating) {
+    public Store(String storeId,
+                 String name,
+                 String address,
+                 String country,
+                 String site,
+                 String logo,
+                 String price,
+                 String rating,
+                 String distance) {
         this.storeId = storeId;
         this.name = name;
         this.address = address;
@@ -29,6 +36,7 @@ public class Store implements Parcelable, Serializable {
         this.logo = logo;
         this.price = price;
         this.rating = rating;
+        this.distance = distance;
     }
 
     // Parcelling part
@@ -42,6 +50,8 @@ public class Store implements Parcelable, Serializable {
         this.logo = data[4];
         this.price = data[5];
         this.rating = data[6];
+        this.distance = data[7];
+
     }
 
     @Override
@@ -51,7 +61,14 @@ public class Store implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{this.storeId, this.name, this.address, this.country, this.logo, this.price, this.rating});
+        dest.writeStringArray(new String[]{this.storeId,
+                this.name,
+                this.address,
+                this.country,
+                this.logo,
+                this.price,
+                this.rating,
+                this.distance});
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -128,6 +145,14 @@ public class Store implements Parcelable, Serializable {
         this.rating = rating;
     }
 
+    public String getDistance() {
+        return distance;
+    }
+
+    public void setDistance(String distance) {
+        this.distance = distance;
+    }
+
     @Override
     public String toString() {
         return "Store{" +
@@ -139,6 +164,7 @@ public class Store implements Parcelable, Serializable {
                 ", logo='" + logo + '\'' +
                 ", price='" + price + '\'' +
                 ", rating='" + rating + '\'' +
+                ", distance='" + distance + '\'' +
                 '}';
     }
 }

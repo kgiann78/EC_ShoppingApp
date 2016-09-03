@@ -7,17 +7,16 @@ import android.content.pm.PackageManager;
 import android.location.*;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+import android.os.Looper;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
-import gr.uoa.ec.shopeeng.fragments.ProductsFragment;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.fragments.ShoppingListFragment;
 import gr.uoa.ec.shopeeng.listeners.LocationUpdateListener;
@@ -37,21 +36,12 @@ import java.util.*;
 public class MainActivity extends AppCompatActivity implements OnSearchClickedListener, OnAddToShoppingListListener {
 
     private ShoppingListManager shoppingListManager;
-    LocationManager locationManager;
-    ShoppingLocationListener locationListener;
-    private static final String[] LOCATION_PERMS = {
-            Manifest.permission.ACCESS_FINE_LOCATION,
-            Manifest.permission.ACCESS_COARSE_LOCATION
-    };
-    Location loc;
-
-    private static final int INITIAL_REQUEST = 1337;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_main);
-        locationSupport();
 
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
@@ -76,23 +66,13 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
                     .add(R.id.fragment_container, searchFragment).commit();
         }
 
+
         shoppingListManager = new ShoppingListManager();
         ShoppingList shoppingList = new ShoppingList();
-        shoppingList.setName("My shopping list");
-        shoppingList.setCreationDate(new Date());
         shoppingListManager.setShoppingList(shoppingList);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
     }
 
     @Override
@@ -167,38 +147,5 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
             Toast.makeText(getApplicationContext(), "Ωραία! Τρέχα να το πάρεις!", Toast.LENGTH_SHORT).show();
         else
             Toast.makeText(getApplicationContext(), "Μπράβο! Το έβαλες στη λίστα! 'Ελα να βρούμε μαγαζάκι!", Toast.LENGTH_SHORT).show();
-    }
-
-
-    @TargetApi(Build.VERSION_CODES.M)
-    void locationSupport() {
-        if (ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
-                && ActivityCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            //    ActivityCompat#requestPermissions
-            requestPermissions(LOCATION_PERMS, INITIAL_REQUEST);
-            // here to request the missing permissions, and then overriding
-            // public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                        int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-
-
-        locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        Log.i(MainActivity.class.getName(), "gpsStatus=" + gpsStatus);
-
-        locationListener = new ShoppingLocationListener();
-        locationListener.onLocationUpdated(new LocationUpdateListener() {
-            @Override
-            public void onLocationUpdated(Location location) {
-                loc = location;
-                Toast.makeText(getApplicationContext(), loc.getLatitude() + " " + loc.getLongitude(), Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        locationManager.requestLocationUpdates(
-                LocationManager.GPS_PROVIDER, 7000, 0, locationListener);
     }
 }

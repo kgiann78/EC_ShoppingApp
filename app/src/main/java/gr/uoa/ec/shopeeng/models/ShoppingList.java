@@ -5,8 +5,6 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 public class ShoppingList {
-    private String name;
-    private Date creationDate;
     private Map<String, Product> productsMap = new LinkedHashMap<>();
     private Map<String, Store> shoppingMap = new LinkedHashMap<>();
 
@@ -26,27 +24,9 @@ public class ShoppingList {
         this.productsMap = productsMap;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Date getCreationDate() {
-        return creationDate;
-    }
-
-    public void setCreationDate(Date creationDate) {
-        this.creationDate = creationDate;
-    }
-
     @Override
     public String toString() {
         return "ShoppingList{" +
-                "name='" + name + '\'' +
-                ", creationDate=" + creationDate +
                 ", shoppingMap=" + shoppingMap +
                 ", productsMap=" + productsMap +
                 '}';

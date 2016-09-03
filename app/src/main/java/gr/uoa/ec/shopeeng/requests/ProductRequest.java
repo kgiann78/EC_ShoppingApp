@@ -1,11 +1,14 @@
 package gr.uoa.ec.shopeeng.requests;
 
 import android.content.Context;
+import android.location.Location;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.utils.Constants;
 import gr.uoa.ec.shopeeng.utils.Util;
@@ -56,7 +59,7 @@ public class ProductRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
         ProductsFragment productsFragment = new ProductsFragment();
         productsFragment.setApplicationContext(applicationContext);
         productsFragment.setFragmentManager(fragmentManager);
-
+        ObjectMapper mapper = new ObjectMapper();
 
         Bundle args = new Bundle();
         args.putString(Constants.SEARCH_TEXT, this.searchText);
