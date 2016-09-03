@@ -26,29 +26,22 @@ public class StoreAdapter extends ArrayAdapter<Store> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         StoreViewHolder storeViewHolder;
-
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
             convertView = layoutInflater.inflate(R.layout.list_item_store, parent, false);
-
             storeViewHolder = new StoreViewHolder();
             storeViewHolder.storeName = (TextView) convertView.findViewById(R.id.store_name);
-            //TODO here fix this
             storeViewHolder.price = (TextView) convertView.findViewById(R.id.price);
-
             convertView.setTag(storeViewHolder);
         } else {
             storeViewHolder = (StoreViewHolder) convertView.getTag();
         }
 
         Store store = getItem(position);
-
         if (store != null) {
             storeViewHolder.storeName.setText(store.getName());
-            //TODO here fix
-            storeViewHolder.price.setText(store.getPrice());//store.getName());
+            storeViewHolder.price.setText(getContext().getString(R.string.product_price, store.getPrice()));
         }
-
         return convertView;
     }
 }
