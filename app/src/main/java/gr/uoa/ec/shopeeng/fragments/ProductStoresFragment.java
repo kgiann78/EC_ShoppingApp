@@ -24,6 +24,7 @@ import gr.uoa.ec.shopeeng.requests.ReviewRequest;
 import java.util.ArrayList;
 import java.util.List;
 
+import static gr.uoa.ec.shopeeng.utils.Constants.LOCATION;
 import static gr.uoa.ec.shopeeng.utils.Constants.SELECTED_PRODUCT;
 import static gr.uoa.ec.shopeeng.utils.Constants.STORES_PRODUCT_RESULT;
 
@@ -40,6 +41,7 @@ public class ProductStoresFragment extends Fragment {
     ImageButton addToShoppingList;
     List<Store> stores;
     Product product;
+    String location;
 
     @Nullable
     @Override
@@ -58,10 +60,17 @@ public class ProductStoresFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        //get data from bundles
-        getData();
 
-        //TODO: show product information / store information correctly (rating -reviews etc)
+        //get data from bundles
+        Bundle args = getArguments();
+        if (args != null) {
+            stores = args.getParcelableArrayList(STORES_PRODUCT_RESULT);
+            product = args.getParcelable(SELECTED_PRODUCT);
+            productName.setText(product.getName());
+            productDetails.setText(product.getDescription());
+            location = args.getString(LOCATION);
+
+        }
 
         //show list of stores
         getStoresListView();
@@ -81,25 +90,13 @@ public class ProductStoresFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Store store = (Store) parent.getAdapter().getItem(position);
                 Log.i("clicked store", store.toString());
-
-                //add request for reviews and ratings here!!
-                new ReviewRequest(store, product, getFragmentManager(), applicationContext).execute();
+                //add request for reviews and reviews here!!
+                new ReviewRequest(store, product, location, getFragmentManager(), applicationContext).execute();
 
             }
         });
     }
 
-
-    private void getData() {
-        Bundle args = getArguments();
-        if (args != null) {
-            stores = args.getParcelableArrayList(STORES_PRODUCT_RESULT);
-            product = args.getParcelable(SELECTED_PRODUCT);
-            productName.setText(product.getName());
-            productDetails.setText(product.getDescription());
-        }
-
-    }
 
     private void getItemView() {
 

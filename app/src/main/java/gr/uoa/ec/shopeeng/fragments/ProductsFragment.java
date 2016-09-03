@@ -2,22 +2,18 @@ package gr.uoa.ec.shopeeng.fragments;
 
 import android.Manifest;
 import android.annotation.TargetApi;
-import android.app.MediaRouteButton;
-import android.content.ContentResolver;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.location.*;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.content.ContextCompat;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,22 +24,17 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import gr.uoa.ec.shopeeng.MainActivity;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.adapters.ProductAdapter;
 import gr.uoa.ec.shopeeng.listeners.LocationUpdateListener;
-import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.ProductStoreRequestObject;
 import gr.uoa.ec.shopeeng.requests.ProductStoreRequest;
 import gr.uoa.ec.shopeeng.utils.Constants;
-import gr.uoa.ec.shopeeng.utils.LocationReceiver;
 import gr.uoa.ec.shopeeng.utils.ShoppingLocationListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -65,8 +56,6 @@ public class ProductsFragment extends Fragment {
     private static final int INITIAL_REQUEST = 1337;
     Location location;
 
-
-    private  LocationReceiver locationReceiver;
 
     @Nullable
     @Override

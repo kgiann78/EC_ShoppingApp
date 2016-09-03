@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:tools="http://schemas.android.com/tools"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".fragments.AddReviewFragment">
+
+    <!-- TODO: Update blank fragment layout -->
+    <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/hello_blank_fragment"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Βαθμολόγησε το Κατάστημα"
+            android:id="@+id/textView"
+            android:layout_marginStart="26dp" android:layout_marginTop="41dp" android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"/>
+    <RatingBar
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/ratingBar"
+            android:layout_marginTop="40dp" android:layout_below="@+id/textView"
+            android:layout_alignStart="@+id/textView"/>
+    <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Άφησε Ένα Σχόλιο"
+            android:id="@+id/textView2"
+            android:layout_marginTop="63dp"
+            android:layout_below="@+id/ratingBar" android:layout_alignStart="@+id/ratingBar"/>
+    <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:ems="10"
+            android:id="@+id/comment" android:layout_below="@+id/textView2"
+            android:layout_marginTop="31dp" android:layout_alignStart="@+id/textView2"
+            android:layout_alignEnd="@+id/textView"/>
+    <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="ΥΠΟΒΟΛΗ"
+            android:id="@+id/submit" android:layout_below="@+id/comment" android:layout_alignStart="@+id/comment"
+            android:layout_marginTop="42dp" android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
+            android:textColor="@color/abc_background_cache_hint_selector_material_light"/>
+
+</RelativeLayout>

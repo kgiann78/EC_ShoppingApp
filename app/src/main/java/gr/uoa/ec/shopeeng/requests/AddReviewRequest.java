@@ -9,9 +9,12 @@ import android.util.Log;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.fragments.StoreFragment;
 import gr.uoa.ec.shopeeng.models.Review;
+import gr.uoa.ec.shopeeng.utils.Constants;
 import gr.uoa.ec.shopeeng.utils.Util;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
+
+import java.util.List;
 
 import static gr.uoa.ec.shopeeng.utils.Constants.RATING_SCORE;
 import static gr.uoa.ec.shopeeng.utils.Constants.REVIEW;
@@ -19,15 +22,13 @@ import static gr.uoa.ec.shopeeng.utils.Constants.REVIEW;
 
 public class AddReviewRequest extends AsyncTask<Void, Void, Void> {
     private Review review;
-    private long rating;
-    private int ratingsNumber;
+    private List<Review> existingReviews;
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
-    public AddReviewRequest(Review review, int ratingsNumber, long rating, FragmentManager fragmentManager, Context applicationContext) {
+    public AddReviewRequest(Review review, List<Review> existingReviews, FragmentManager fragmentManager, Context applicationContext) {
         this.review = review;
-        this.rating = rating;
-        this.ratingsNumber = ratingsNumber;
+        this.existingReviews = existingReviews;
         this.fragmentManager = fragmentManager;
         this.applicationContext = applicationContext;
     }
@@ -35,14 +36,12 @@ public class AddReviewRequest extends AsyncTask<Void, Void, Void> {
     @Override
     protected Void doInBackground(Void... params) {
         try {
-
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-
-            // restTemplate.postForObject(buildCommentUrl(), review, Void.class);
+            restTemplate.postForObject(buildReviewUrl(), review, Void.class);
 
         } catch (Exception e) {
-            Log.e("AddReviewRequest", e.getMessage(), e);
+            Log.e("Added Review Request", e.getMessage(), e);
         }
 
         return null;
@@ -53,30 +52,35 @@ public class AddReviewRequest extends AsyncTask<Void, Void, Void> {
         StoreFragment storeFragment = new StoreFragment();
         storeFragment.setApplicationContext(applicationContext);
         storeFragment.setFragmentManager(fragmentManager);
+
         Bundle args = new Bundle();
         args.putParcelable(REVIEW, review);
-        rating = (rating + review.getRating()) / ratingsNumber;
+
+        existingReviews.add(review);
+
+        args.putInt(Constants.REVIEWS_NUMBER, existingReviews.size());
+
+        double rating = 0;
+        for (Review r : existingReviews) {
+            rating += Double.parseDouble(r.getRating());
+        }
+        rating = rating / existingReviews.size();
+
         args.putDouble(RATING_SCORE, rating);
+
         storeFragment.setArguments(args);
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.fragment_container, storeFragment);
         transaction.addToBackStack(null);
         transaction.commit();
     }
-    private String buildRatingUrl(String storeId) throws Exception {
-        StringBuilder url = new StringBuilder();
-        url.append(Util.getProperty("endpoint", applicationContext));
-        url.append(Util.getProperty("ratings", applicationContext));
-        Log.i("rating url", String.format(url.toString(), storeId));
-        return String.format(url.toString(), storeId);
-    }
 
-    private String buildCommentUrl(String storeId) throws Exception {
+    private String buildReviewUrl() throws Exception {
         StringBuilder url = new StringBuilder();
         url.append(Util.getProperty("endpoint", applicationContext));
-        url.append(Util.getProperty("addReview", applicationContext));
-        Log.i("add review url", String.format(url.toString(), storeId));
-        return String.format(url.toString(), storeId);
+        url.append(Util.getProperty("review", applicationContext));
+        Log.i("review url", url.toString());
+        return url.toString();
     }
 
 

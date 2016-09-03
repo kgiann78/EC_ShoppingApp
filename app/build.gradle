@@ -30,14 +30,16 @@ android {
 
 }
 
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 //    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:24.0.0'
-    compile 'com.android.support:design:24.0.0'
+    //    compile 'com.google.android.gms:play-services:9.4.0'
+
+
+    compile 'com.android.support:appcompat-v7:24.2.0'
+    compile 'com.android.support:design:24.2.0'
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.0'
-//    compile 'com.google.android.gms:play-services:9.4.0'
-
-
+    compile 'com.android.support:support-v4:24.2.0'
 }

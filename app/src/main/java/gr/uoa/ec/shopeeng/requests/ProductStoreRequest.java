@@ -12,6 +12,7 @@ import gr.uoa.ec.shopeeng.fragments.ProductStoresFragment;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.models.ProductStoreRequestObject;
+import gr.uoa.ec.shopeeng.utils.Constants;
 import gr.uoa.ec.shopeeng.utils.Util;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
 import org.springframework.web.client.RestTemplate;
@@ -48,11 +49,8 @@ public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Store>>
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
             ArrayList<Store> results = new ArrayList();
-
             results.addAll(Arrays.asList(restTemplate.getForObject((buildUrl(this.productStoreRequestObject)), Store[].class)));
-
             return results;
-
         } catch (Exception e) {
             Log.e(ProductStoreRequest.class.getName(), e.getMessage(), e);
         }
@@ -66,10 +64,11 @@ public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Store>>
         productStoresFragment.setApplicationContext(applicationContext);
         productStoresFragment.setFragmentManager(fragmentManager);
 
-
         Bundle args = new Bundle();
         args.putParcelableArrayList(STORES_PRODUCT_RESULT, stores);
         args.putParcelable(SELECTED_PRODUCT, product);
+
+        args.putString(Constants.LOCATION, productStoreRequestObject.getUserLocation());
         productStoresFragment.setArguments(args);
 
         FragmentTransaction transaction = fragmentManager.beginTransaction();

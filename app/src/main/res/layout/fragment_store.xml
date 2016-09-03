@@ -73,10 +73,12 @@
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/show_directions_label"
-            android:id="@+id/show_directions_button"
+            android:text="ΟΔΗΓΙΕΣ ΠΡΟΣΒΑΣΗΣ"
+            android:id="@+id/directionsButton"
             android:layout_gravity="center_horizontal"
-            android:layout_marginTop="20dp"/>
+            android:layout_marginTop="20dp"
+            android:textColor="@color/abc_background_cache_hint_selector_material_light"
+            android:backgroundTint="@color/abc_btn_colored_borderless_text_material"/>
 
     <TextView
             android:layout_width="wrap_content"
@@ -90,7 +92,13 @@
 
     <ListView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="73dp"
             android:id="@+id/comments_list"
             android:layout_marginTop="20dp"/>
+
+    <Button android:layout_width="112dp" android:layout_height="wrap_content"
+            android:text="ΠΡΟΣΘΕΣΕ ΚΡΙΤΙΚΗ" android:id="@+id/redirectReview"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/abc_background_cache_hint_selector_material_light"
+            android:backgroundTint="@color/abc_btn_colored_borderless_text_material"/>
 </LinearLayout>

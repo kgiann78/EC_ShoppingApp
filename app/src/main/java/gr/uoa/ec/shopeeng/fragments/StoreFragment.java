@@ -1,29 +1,29 @@
 package gr.uoa.ec.shopeeng.fragments;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.StrictMode;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
-import android.util.Log;
+import android.support.v4.app.FragmentManager;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import gr.uoa.ec.shopeeng.R;
-import gr.uoa.ec.shopeeng.adapters.CommentAdapter;
+import gr.uoa.ec.shopeeng.adapters.ReviewAdapter;
 import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
-import gr.uoa.ec.shopeeng.models.Comment;
 import gr.uoa.ec.shopeeng.models.Product;
-import gr.uoa.ec.shopeeng.models.Rating;
+import gr.uoa.ec.shopeeng.models.Review;
 import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.utils.Constants;
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
+import static gr.uoa.ec.shopeeng.utils.Constants.LOCATION;
 
 public class StoreFragment extends Fragment {
     private OnAddToShoppingListListener addToShoppingListListener;
@@ -32,19 +32,21 @@ public class StoreFragment extends Fragment {
     private Context applicationContext;
     private Store store;
     private Product product;
+    private String userlocation;
 
     TextView storeName;
     TextView storeAddress;
     RatingBar ratingBar;
     TextView ratingScoreText;
     ImageButton addToShoppingList;
-    ListView commentsList;
-
-    ArrayList<Comment> comments = new ArrayList<>();
-    ArrayList<Rating> ratings = new ArrayList<>();
-
+    ListView reviewsList;
+    ArrayList<Review> reviews = new ArrayList<>();
     Double ratingScore = 0.00;
+    Button directionsButton;
+    Button redirectReviewButton;
 
+    PopupWindow addReviewPopup;
+    boolean click = true;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -54,8 +56,53 @@ public class StoreFragment extends Fragment {
         ratingBar = (RatingBar) view.findViewById(R.id.store_rating_bar);
         storeAddress = (TextView) view.findViewById(R.id.store_address_text_view);
         ratingScoreText = (TextView) view.findViewById(R.id.rating_score_text_view);
-        commentsList = (ListView) view.findViewById(R.id.comments_list);
+        reviewsList = (ListView) view.findViewById(R.id.comments_list);
         addToShoppingList = (ImageButton) view.findViewById(R.id.add_to_shopping_list_button);
+        directionsButton = (Button) view.findViewById(R.id.directionsButton);
+        addReviewPopup = new PopupWindow();
+
+        //TODO launches google maps on click to get directions
+        directionsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(android.content.Intent.ACTION_VIEW,
+                        Uri.parse("http://maps.google.com/maps?&saddr=" + userlocation + "&daddr=" + storeAddress.getText().toString()));
+                startActivity(intent);
+            }
+        });
+        redirectReviewButton = (Button) view.findViewById(R.id.redirectReview);
+        redirectReviewButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (click) {
+                    addReviewPopup.showAtLocation(v, Gravity.BOTTOM, 10, 10);
+                    addReviewPopup.update(50, 50, 300, 80);
+
+                    click = false;
+                } else {
+                    addReviewPopup.dismiss();
+                    click = true;
+                }
+
+
+                /*    AddReviewFragment addReviewFragment = new AddReviewFragment();
+                addReviewFragment.setApplicationContext(applicationContext);
+                addReviewFragment.setFragmentManager(fragmentManager);
+
+                //add reviews list so we can update it with the new one (?)
+                Bundle args = new Bundle();
+                args.putParcelableArrayList(REVIEWS_LIST, reviews);
+                args.putInt(Constants.REVIEWS_NUMBER, reviews.size());
+
+                storeFragment.setArguments(args);
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.fragment_container, storeFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+*/
+            }
+        });
         return view;
     }
 
@@ -65,7 +112,7 @@ public class StoreFragment extends Fragment {
 
         getData();
 
-        ratingScoreText.setText(getContext().getString(R.string.rating_score_value, ratingScore.toString(), ratings.size()));
+        ratingScoreText.setText(getContext().getString(R.string.rating_score_value, ratingScore.toString(), reviews.size()));
         addToShoppingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +120,8 @@ public class StoreFragment extends Fragment {
             }
         });
         getListViews();
+
+
     }
 
 
@@ -80,26 +129,23 @@ public class StoreFragment extends Fragment {
         final Bundle args = getArguments();
 
         if (args != null) {
-            comments = args.getParcelableArrayList(Constants.COMMENTS_RESULTS);
-            Log.i("comments results", Arrays.toString(comments.toArray()));
-
-            ratings = args.getParcelableArrayList(Constants.RATING_RESULTS);
-            Log.i("ratings results", Arrays.toString(ratings.toArray()));
-
+            reviews = args.getParcelableArrayList(Constants.REVIEWS_LIST);
             ratingScore = args.getDouble(Constants.RATING_SCORE);
             store = args.getParcelable(Constants.STORE_RESULT);
             product = args.getParcelable(Constants.PRODUCT_RESULT);
+            userlocation = args.getString(LOCATION);
 
             storeName.setText(store.getName());
             storeAddress.setText(store.getAddress());
             ratingBar.setRating(ratingScore.floatValue());
+            ratingBar.setNumStars((int) (ratingScore * 5 / 10));
         }
     }
 
     private void getListViews() {
-        commentsList.setAdapter(new CommentAdapter(getContext(), comments));
+        reviewsList.setAdapter(new ReviewAdapter(getContext(), reviews));
         if (getFragmentManager().findFragmentById(R.id.fragment_container) != null) {
-            commentsList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+            reviewsList.setChoiceMode(ListView.CHOICE_MODE_SINGLE);
         }
     }
 
@@ -116,6 +162,7 @@ public class StoreFragment extends Fragment {
                     + " must implement OnAddToShoppingListListener");
         }
     }
+
 
     public void setFragmentManager(FragmentManager fragmentManager) {
         this.fragmentManager = fragmentManager;

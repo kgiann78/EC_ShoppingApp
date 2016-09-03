@@ -16,7 +16,7 @@ public class StoreAdapter extends ArrayAdapter<Store> {
 
     private static class StoreViewHolder {
         TextView storeName;
-        TextView storeRating;
+        TextView price;
     }
 
     public StoreAdapter(Context context, @NonNull List<Store> objects) {
@@ -33,7 +33,8 @@ public class StoreAdapter extends ArrayAdapter<Store> {
 
             storeViewHolder = new StoreViewHolder();
             storeViewHolder.storeName = (TextView) convertView.findViewById(R.id.store_name);
-            storeViewHolder.storeRating = (TextView) convertView.findViewById(R.id.store_rating);
+            //TODO here fix this
+            storeViewHolder.price = (TextView) convertView.findViewById(R.id.price);
 
             convertView.setTag(storeViewHolder);
         } else {
@@ -44,7 +45,8 @@ public class StoreAdapter extends ArrayAdapter<Store> {
 
         if (store != null) {
             storeViewHolder.storeName.setText(store.getName());
-            storeViewHolder.storeRating.setText("@@@@");//store.getName());
+            //TODO here fix
+            storeViewHolder.price.setText(store.getPrice());//store.getName());
         }
 
         return convertView;

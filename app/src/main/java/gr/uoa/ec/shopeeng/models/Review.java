@@ -4,21 +4,34 @@ package gr.uoa.ec.shopeeng.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class Review implements Parcelable {
-    String user;
-    String date;
-    int rating;
+import java.io.Serializable;
+
+public class Review implements Parcelable, Serializable {
+    String userId;
+    String rdate;
+    String rating;
     String comment;
+    String storeId;
 
+    public Review() {
+    }
 
-    // Parcelling part
+    public Review(String userId, String rdate, String rating, String comment, String storeId) {
+        this.userId = userId;
+        this.rdate = rdate;
+        this.rating = rating;
+        this.comment = comment;
+        this.storeId = storeId;
+    }
+
     public Review(Parcel in) {
-        String[] data = new String[4];
+        String[] data = new String[5];
         in.readStringArray(data);
-        this.user = data[0];
-        this.rating = Integer.parseInt(data[1]);
+        this.userId = data[0];
+        this.rating = data[1];
         this.comment = data[2];
-        this.date = data[3];
+        this.rdate = data[3];
+        this.storeId = data[4];
 
     }
 
@@ -29,40 +42,40 @@ public class Review implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{this.user, String.valueOf(this.rating), this.comment, this.date});
+        dest.writeStringArray(new String[]{this.userId, String.valueOf(this.rating), this.comment, this.rdate, this.storeId});
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
-        public Product createFromParcel(Parcel in) {
-            return new Product(in);
+        public Review createFromParcel(Parcel in) {
+            return new Review(in);
         }
 
-        public Product[] newArray(int size) {
-            return new Product[size];
+        public Review[] newArray(int size) {
+            return new Review[size];
         }
     };
 
-    public String getUser() {
-        return user;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUser(String user) {
-        this.user = user;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public String getDate() {
-        return date;
+    public String getRdate() {
+        return rdate;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public void setRdate(String rdate) {
+        this.rdate = rdate;
     }
 
-    public int getRating() {
+    public String getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(String rating) {
         this.rating = rating;
     }
 
@@ -73,4 +86,14 @@ public class Review implements Parcelable {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public String getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(String storeId) {
+        this.storeId = storeId;
+    }
+
+
 }

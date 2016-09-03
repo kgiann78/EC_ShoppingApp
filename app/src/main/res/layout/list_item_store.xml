@@ -20,6 +20,6 @@
             android:text="Small Text"
             android:layout_weight="1"
             android:gravity="end"
-            android:id="@+id/store_rating" android:layout_margin="5dp"
+            android:id="@+id/price" android:layout_margin="5dp"
     />
 </LinearLayout>
