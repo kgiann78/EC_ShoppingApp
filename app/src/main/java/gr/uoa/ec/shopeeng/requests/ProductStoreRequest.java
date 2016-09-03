@@ -86,8 +86,6 @@ public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Store>>
         url.append(Util.getProperty("endpoint", applicationContext));
         url.append(Util.getProperty("storesDistance", applicationContext));
         return String.format(url.toString(), requestObject.getProductName(), requestObject.getDistance(), requestObject.getUnit(), requestObject.getTransportMode(), requestObject.getUserLocation(), requestObject.getOrderBy());
-
-
     }
 
     public FragmentManager getFragmentManager() {

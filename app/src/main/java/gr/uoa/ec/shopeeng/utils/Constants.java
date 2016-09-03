@@ -11,6 +11,7 @@ public class Constants {
     public static final String SHOPPING_LIST_NAME = "SHOPPING_LIST_NAME";
     public static final String ITEMS_IN_SHOPPING_LIST = "ITEMS_IN_SHOPPING_LIST";
     public static final String SEARCH_TEXT = "SEARCH_TEXT";
+    public static final String LOCATION = "LOCATION";
     public static final String REVIEW = "REVIEW";
 
 }

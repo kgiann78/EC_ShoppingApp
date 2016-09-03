@@ -1,5 +1,7 @@
 package gr.uoa.ec.shopeeng.utils;
 
+import android.app.PendingIntent;
+import android.content.Intent;
 import android.location.Location;
 import android.location.LocationListener;
 import android.os.Bundle;
