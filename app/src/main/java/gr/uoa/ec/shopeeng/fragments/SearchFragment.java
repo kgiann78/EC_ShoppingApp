@@ -3,6 +3,7 @@ package gr.uoa.ec.shopeeng.fragments;
 import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +39,19 @@ public class SearchFragment extends Fragment {
                 }
             });
         }
+
+        //Show registration page on click
+        Button registerBtn = (Button) view.findViewById(R.id.createAccountButton);
+        registerBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                CreateAccountFragment createAccountFragment = CreateAccountFragment.newInstance(getContext());
+                FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                transaction.replace(R.id.fragment_container, createAccountFragment);
+                transaction.addToBackStack(null);
+                transaction.commit();
+            }
+        });
         return view;
     }
 

@@ -18,6 +18,9 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        debug {
+            debuggable true
+        }
     }
 
     packagingOptions {
@@ -27,6 +30,11 @@ android {
         exclude 'META-INF/NOTICE'
         exclude 'META-INF/notice.txt'
     }
+
+}
+
+repositories {
+    maven { url 'https://oss.sonatype.org/content/repositories/ksoap2-android-releases' }
 
 }
 
@@ -42,4 +50,6 @@ dependencies {
     compile 'org.springframework.android:spring-android-rest-template:2.0.0.M3'
     compile 'com.fasterxml.jackson.core:jackson-databind:2.7.0'
     compile 'com.android.support:support-v4:24.2.0'
+    compile 'com.google.code.ksoap2-android:ksoap2-android:3.6.1'
+    compile group: 'com.google.code.gson', name: 'gson', version: '2.7'
 }

@@ -9,9 +9,8 @@ public class ProductStoreRequestObject {
     private String unit;
     private String orderBy;
     private String transportMode;
-    private String userId;
 
-    public ProductStoreRequestObject(String productName, String userLocation, String distance, String duration, String unit, String orderBy, String transportMode, String userId) {
+    public ProductStoreRequestObject(String productName, String userLocation, String distance, String duration, String unit, String orderBy, String transportMode) {
         this.productName = productName;
         this.userLocation = userLocation;
         this.distance = distance;
@@ -19,7 +18,7 @@ public class ProductStoreRequestObject {
         this.unit = unit;
         this.orderBy = orderBy;
         this.transportMode = transportMode;
-        this.userId = userId;
+
     }
 
     public String getProductName() {

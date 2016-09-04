@@ -61,7 +61,7 @@ public class ProductRequest extends AsyncTask<Void, Void, ArrayList<Product>> {
         ProductsFragment productsFragment = new ProductsFragment();
         productsFragment.setApplicationContext(applicationContext);
         productsFragment.setFragmentManager(fragmentManager);
-        ObjectMapper mapper = new ObjectMapper();
+
 
         Bundle args = new Bundle();
         args.putString(Constants.SEARCH_TEXT, this.searchText);

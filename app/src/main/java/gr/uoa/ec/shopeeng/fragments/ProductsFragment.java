@@ -14,7 +14,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.util.CircularArray;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -28,11 +27,11 @@ import android.widget.Toast;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.adapters.ProductAdapter;
 import gr.uoa.ec.shopeeng.listeners.LocationUpdateListener;
+import gr.uoa.ec.shopeeng.listeners.ShoppingLocationListener;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.ProductStoreRequestObject;
 import gr.uoa.ec.shopeeng.requests.ProductStoreRequest;
 import gr.uoa.ec.shopeeng.utils.Constants;
-import gr.uoa.ec.shopeeng.utils.ShoppingLocationListener;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -135,7 +134,7 @@ public class ProductsFragment extends Fragment {
                     String transportMode = "DRIVING";
 
                     new ProductStoreRequest(
-                            new ProductStoreRequestObject(product.getName(), userLocation, distance, duration, unit, orderBy, transportMode, userId),
+                            new ProductStoreRequestObject(product.getName(), userLocation, distance, duration, unit, orderBy, transportMode), userId,
                             product, fragmentManager, applicationContext).execute();
                 }
             });

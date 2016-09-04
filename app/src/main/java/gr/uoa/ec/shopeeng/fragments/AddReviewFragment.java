@@ -1,9 +1,7 @@
 package gr.uoa.ec.shopeeng.fragments;
 
 import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TextInputEditText;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -13,19 +11,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import gr.uoa.ec.shopeeng.R;
-import gr.uoa.ec.shopeeng.utils.Constants;
+import gr.uoa.ec.shopeeng.models.Review;
+import gr.uoa.ec.shopeeng.requests.AddReviewRequest;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import static gr.uoa.ec.shopeeng.utils.Constants.STORE_ID;
 import static gr.uoa.ec.shopeeng.utils.Constants.USER_ID;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link AddReviewFragment.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link AddReviewFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AddReviewFragment extends Fragment {
     private String userId;
     private String storeId;
@@ -61,41 +55,30 @@ public class AddReviewFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
-
         View view = inflater.inflate(R.layout.fragment_add_review, container, false);
-
         submit = (Button) view.findViewById(R.id.submit);
         ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
+        comment = (EditText) view.findViewById(R.id.comment);
+
+        submit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Review review = new Review();
+                review.setComment(comment.getText().toString());
+                review.setRating(String.valueOf(ratingBar.getRating()));
+                review.setUserId(userId);
+                review.setRdate(new SimpleDateFormat().format(Calendar.getInstance().getTime()));
+                review.setStoreId(storeId);
+                new AddReviewRequest(review, applicationContext).execute();
+            }
+        });
         return view;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
-        }
-    }
-
-    @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        mListener = null;
-    }
 
     public void setApplicationContext(Context applicationContext) {
         this.applicationContext = applicationContext;
@@ -115,8 +98,5 @@ public class AddReviewFragment extends Fragment {
      * "http://developer.android.com/training/basics/fragments/communicating.html"
      * >Communicating with Other Fragments</a> for more information.
      */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
-    }
+
 }

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.widget.Toast;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.fragments.StoreFragment;
 import gr.uoa.ec.shopeeng.models.Review;
@@ -22,14 +23,10 @@ import static gr.uoa.ec.shopeeng.utils.Constants.REVIEW;
 
 public class AddReviewRequest extends AsyncTask<Void, Void, Void> {
     private Review review;
-    private List<Review> existingReviews;
-    private FragmentManager fragmentManager;
     private Context applicationContext;
 
-    public AddReviewRequest(Review review, List<Review> existingReviews, FragmentManager fragmentManager, Context applicationContext) {
+    public AddReviewRequest(Review review, Context applicationContext) {
         this.review = review;
-        this.existingReviews = existingReviews;
-        this.fragmentManager = fragmentManager;
         this.applicationContext = applicationContext;
     }
 
@@ -38,8 +35,7 @@ public class AddReviewRequest extends AsyncTask<Void, Void, Void> {
         try {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-            restTemplate.postForObject(buildReviewUrl(), review, Void.class);
-
+            restTemplate.postForObject(buildReviewUrl(), review, String.class);
         } catch (Exception e) {
             Log.e("Added Review Request", e.getMessage(), e);
         }
@@ -49,14 +45,14 @@ public class AddReviewRequest extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void c) {
-        StoreFragment storeFragment = new StoreFragment();
+        Toast.makeText(applicationContext, "Το σχόλιο σου καταχωρήθηκε επιτυχώς !", Toast.LENGTH_SHORT).show();
+
+        /*StoreFragment storeFragment = new StoreFragment();
         storeFragment.setApplicationContext(applicationContext);
         storeFragment.setFragmentManager(fragmentManager);
 
         Bundle args = new Bundle();
         args.putParcelable(REVIEW, review);
-
-        existingReviews.add(review);
 
         args.putInt(Constants.REVIEWS_NUMBER, existingReviews.size());
 
@@ -73,6 +69,9 @@ public class AddReviewRequest extends AsyncTask<Void, Void, Void> {
         transaction.replace(R.id.fragment_container, storeFragment);
         transaction.addToBackStack(null);
         transaction.commit();
+    */
+
+        return;
     }
 
     private String buildReviewUrl() throws Exception {
@@ -81,15 +80,6 @@ public class AddReviewRequest extends AsyncTask<Void, Void, Void> {
         url.append(Util.getProperty("review", applicationContext));
         Log.i("review url", url.toString());
         return url.toString();
-    }
-
-
-    public FragmentManager getFragmentManager() {
-        return fragmentManager;
-    }
-
-    public void setFragmentManager(FragmentManager fragmentManager) {
-        this.fragmentManager = fragmentManager;
     }
 
     public Context getApplicationContext() {

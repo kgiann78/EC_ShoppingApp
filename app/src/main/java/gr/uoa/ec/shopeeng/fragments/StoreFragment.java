@@ -84,7 +84,6 @@ public class StoreFragment extends Fragment {
                 transaction.replace(R.id.fragment_container, addReviewFragment);
                 transaction.addToBackStack(null);
                 transaction.commit();
-
             }
         });
         return view;

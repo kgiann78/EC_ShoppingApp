@@ -82,8 +82,6 @@ public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Store>>
 
 
     private String buildUrl(ProductStoreRequestObject requestObject) throws Exception {
-
-        //search?keywords=%s&distance=%s&unit=%s&transportMode=%s&userLocation=%s&orderBy=%s
         StringBuilder url = new StringBuilder();
         url.append(Util.getProperty("endpoint", applicationContext));
         url.append(Util.getProperty("storesDistance", applicationContext));

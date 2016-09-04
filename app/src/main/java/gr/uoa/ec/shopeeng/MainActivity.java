@@ -1,25 +1,14 @@
 package gr.uoa.ec.shopeeng;
 
-import android.Manifest;
-import android.annotation.TargetApi;
-import android.content.Context;
-import android.content.pm.PackageManager;
-import android.location.*;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.fragments.ShoppingListFragment;
-import gr.uoa.ec.shopeeng.listeners.LocationUpdateListener;
 import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
 import gr.uoa.ec.shopeeng.listeners.OnSearchClickedListener;
 import gr.uoa.ec.shopeeng.models.Product;
@@ -29,9 +18,8 @@ import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.requests.ProductRequest;
 import gr.uoa.ec.shopeeng.utils.Constants;
 import gr.uoa.ec.shopeeng.utils.ShoppingListManager;
-import gr.uoa.ec.shopeeng.utils.ShoppingLocationListener;
 
-import java.util.*;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnSearchClickedListener, OnAddToShoppingListListener {
 
@@ -150,4 +138,6 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
         else
             Toast.makeText(getApplicationContext(), "Μπράβο! Το έβαλες στη λίστα! 'Ελα να βρούμε μαγαζάκι!", Toast.LENGTH_SHORT).show();
     }
+
+
 }

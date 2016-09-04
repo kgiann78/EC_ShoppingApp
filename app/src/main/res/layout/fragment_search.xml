@@ -23,6 +23,12 @@
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:weightSum="1">
+        <Button
+                style="?android:attr/buttonStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="ΕΓΓΡΑΦΗ"
+                android:id="@+id/createAccountButton" android:layout_gravity="right"/>
         <TextView
                 android:text="@string/moto"
                 android:layout_width="162dp"
