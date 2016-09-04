@@ -24,10 +24,7 @@ import gr.uoa.ec.shopeeng.utils.Units;
 import java.util.ArrayList;
 import java.util.List;
 
-import static gr.uoa.ec.shopeeng.utils.Constants.LOCATION;
-import static gr.uoa.ec.shopeeng.utils.Constants.SELECTED_PRODUCT;
-import static gr.uoa.ec.shopeeng.utils.Constants.STORES_PRODUCT_RESULT;
-import static gr.uoa.ec.shopeeng.utils.Constants.TRANSPORT_MODE;
+import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 public class ProductStoresFragment extends Fragment {
 
