@@ -51,7 +51,7 @@
                     android:layout_height="wrap_content"
                     android:text="@string/search_button"
                     android:id="@+id/search_button"
-                    android:textColor="@color/abc_background_cache_hint_selector_material_light"
+                    android:textColor="#ffffff"
                     android:backgroundTint="@color/abc_btn_colored_borderless_text_material"/>
         </LinearLayout>
     </LinearLayout>

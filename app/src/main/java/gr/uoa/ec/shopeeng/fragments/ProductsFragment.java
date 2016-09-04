@@ -31,6 +31,7 @@ import gr.uoa.ec.shopeeng.listeners.ShoppingLocationListener;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.ProductStoreRequestObject;
 import gr.uoa.ec.shopeeng.requests.ProductStoreRequest;
+import gr.uoa.ec.shopeeng.utils.*;
 import gr.uoa.ec.shopeeng.utils.Constants;
 
 import java.io.IOException;
@@ -39,6 +40,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class ProductsFragment extends Fragment {
+
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
@@ -129,9 +131,9 @@ public class ProductsFragment extends Fragment {
 
                     String distance = "100";
                     String duration = "-1";
-                    String unit = "KM";
-                    String orderBy = "DISTANCE";
-                    String transportMode = "DRIVING";
+                    String unit = Units.KM.name();
+                    String orderBy = OrderBy.DISTANCE.name();
+                    String transportMode = TransportMode.DRIVING.name();
 
                     new ProductStoreRequest(
                             new ProductStoreRequestObject(product.getName(), userLocation, distance, duration, unit, orderBy, transportMode), userId,

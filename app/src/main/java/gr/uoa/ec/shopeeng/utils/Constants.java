@@ -16,6 +16,13 @@ public class Constants {
     public static final String USER_ID = "USER_ID";
     public static final String STORE_ID = "STORE_ID";
 
+    public static final String DISTANCE = "DISTANCE";
+    public static final String DURATION = "DURATION";
+    public static final String UNITS = "UNITS";
+    public static final String ORDER_BY = "ORDER_BY";
+    public static final String TRANSPORT_MODE = "TRANSPORT_MODE";
+
+
     public static final String USERNAME = "USERNAME";
     public static final String PASSWORD = "PASSWORD";
     public static final String LASTNAME = "LASTNAME";

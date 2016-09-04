@@ -10,45 +10,67 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.adapters.StoreAdapter;
 import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.requests.ReviewRequest;
+import gr.uoa.ec.shopeeng.utils.OrderBy;
+import gr.uoa.ec.shopeeng.utils.TransportMode;
+import gr.uoa.ec.shopeeng.utils.Units;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import static gr.uoa.ec.shopeeng.utils.Constants.*;
+import static gr.uoa.ec.shopeeng.utils.Constants.LOCATION;
+import static gr.uoa.ec.shopeeng.utils.Constants.SELECTED_PRODUCT;
+import static gr.uoa.ec.shopeeng.utils.Constants.STORES_PRODUCT_RESULT;
+import static gr.uoa.ec.shopeeng.utils.Constants.TRANSPORT_MODE;
 
 public class ProductStoresFragment extends Fragment {
 
     private OnAddToShoppingListListener addToShoppingListListener;
-    private Product product;
-    private String location;
-    private String userId;
+
     private FragmentManager fragmentManager;
     private Context applicationContext;
-
+    private String userId;
     ListView storesList;
     TextView productName;
     TextView productDetails;
     ImageButton addToShoppingList;
+
+    RadioButton priceRadioButton;
+    RadioButton distanceRadioButton;
+    EditText inputDistanceEditText;
+    Switch transportModeSwitch;
+    Switch unitsSwitch;
+
     List<Store> stores;
+    Product product;
+    String location;
+
+    String duration = "";
+    String distance = "";
+    Units units = Units.KM;
+    OrderBy orderBy = OrderBy.DISTANCE;
+    TransportMode transportMode = TransportMode.DRIVING;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_productstore, container, false);
-        storesList = (ListView) view.findViewById(R.id.store_list);
-        productName = (TextView) view.findViewById(R.id.product_name_text_view);
-        productDetails = (TextView) view.findViewById(R.id.product_details_text_view);
-        addToShoppingList = (ImageButton) view.findViewById(R.id.add_to_shopping_list_button);
+        storesList = (ListView) view.findViewById(R.id.storesListView);
+        productName = (TextView) view.findViewById(R.id.productNameTextView);
+        productDetails = (TextView) view.findViewById(R.id.productDetailsTextView);
+        addToShoppingList = (ImageButton) view.findViewById(R.id.addToShoppingListButton);
+
+        priceRadioButton = (RadioButton) view.findViewById(R.id.priceRadioButton);
+        distanceRadioButton = (RadioButton) view.findViewById(R.id.distanceRadioButton);
+        inputDistanceEditText = (EditText) view.findViewById(R.id.inputDistanceEditText);
+        transportModeSwitch = (Switch) view.findViewById(R.id.transportModeSwitch);
+        unitsSwitch = (Switch) view.findViewById(R.id.unitsSwitch);
 
         stores = new ArrayList<>();
         return view;
@@ -66,10 +88,20 @@ public class ProductStoresFragment extends Fragment {
             product = args.getParcelable(SELECTED_PRODUCT);
             productName.setText(product.getName());
             productDetails.setText(product.getDescription());
+
+            duration = args.getString(DURATION);
+            distance = args.getString(DISTANCE);
+
+            units = Units.valueOf(args.getString(UNITS));
+            orderBy = OrderBy.valueOf(args.getString(ORDER_BY));
+            transportMode = TransportMode.valueOf(args.getString(TRANSPORT_MODE));
+
             location = args.getString(LOCATION);
             userId = args.getString(USER_ID);
 
         }
+
+        setSelections();
 
         //show list of stores
         getStoresListView();
@@ -90,10 +122,46 @@ public class ProductStoresFragment extends Fragment {
                 Store store = (Store) parent.getAdapter().getItem(position);
                 Log.i("clicked store", store.toString());
                 //add request for reviews and reviews here!!
-                new ReviewRequest(store, product, location, userId, getFragmentManager(), applicationContext).execute();
-
+                new ReviewRequest(store, product, location, userId,getFragmentManager(), applicationContext).execute();
             }
         });
+    }
+
+    private void setSelections() {
+        inputDistanceEditText.setText(distance);
+
+        switch (orderBy) {
+            case DISTANCE:
+                distanceRadioButton.setChecked(true);
+                break;
+            case PRICE:
+                priceRadioButton.setChecked(true);
+                break;
+            default:
+                break;
+        }
+
+        switch (transportMode) {
+            case DRIVING:
+                transportModeSwitch.setChecked(false);
+                break;
+            case WALKING:
+                transportModeSwitch.setChecked(true);
+                break;
+            default:
+                break;
+        }
+
+        switch (units) {
+            case KM:
+                unitsSwitch.setChecked(false);
+                break;
+            case HOURS:
+                unitsSwitch.setChecked(true);
+                break;
+            default:
+                break;
+        }
     }
 
 
