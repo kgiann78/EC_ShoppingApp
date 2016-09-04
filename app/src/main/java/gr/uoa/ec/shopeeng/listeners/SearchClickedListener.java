@@ -1,6 +1,6 @@
 package gr.uoa.ec.shopeeng.listeners;
 
-public interface OnSearchClickedListener {
+public interface SearchClickedListener {
     void onSearchClicked(String searchText);
 
 }

@@ -9,8 +9,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.fragments.ShoppingListFragment;
-import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
-import gr.uoa.ec.shopeeng.listeners.OnSearchClickedListener;
+import gr.uoa.ec.shopeeng.listeners.AddToShoppingListListener;
+import gr.uoa.ec.shopeeng.listeners.SearchClickedListener;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.ShoppingItem;
 import gr.uoa.ec.shopeeng.models.ShoppingList;
@@ -21,7 +21,7 @@ import gr.uoa.ec.shopeeng.utils.ShoppingListManager;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements OnSearchClickedListener, OnAddToShoppingListListener {
+public class MainActivity extends AppCompatActivity implements SearchClickedListener, AddToShoppingListListener {
 
     private ShoppingListManager shoppingListManager;
 

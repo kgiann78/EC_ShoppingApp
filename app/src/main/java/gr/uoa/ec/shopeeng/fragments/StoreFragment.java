@@ -8,14 +8,13 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.adapters.ReviewAdapter;
-import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
+import gr.uoa.ec.shopeeng.listeners.AddToShoppingListListener;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.Review;
 import gr.uoa.ec.shopeeng.models.Store;
@@ -27,7 +26,7 @@ import static gr.uoa.ec.shopeeng.utils.Constants.LOCATION;
 import static gr.uoa.ec.shopeeng.utils.Constants.USER_ID;
 
 public class StoreFragment extends Fragment {
-    private OnAddToShoppingListListener addToShoppingListListener;
+    private AddToShoppingListListener addToShoppingListListener;
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
@@ -140,10 +139,10 @@ public class StoreFragment extends Fragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception.
         try {
-            addToShoppingListListener = (OnAddToShoppingListListener) context;
+            addToShoppingListListener = (AddToShoppingListListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnAddToShoppingListListener");
+                    + " must implement AddToShoppingListListener");
         }
     }
 

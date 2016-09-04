@@ -7,15 +7,20 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.adapters.StoreAdapter;
-import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
+import gr.uoa.ec.shopeeng.listeners.AddToShoppingListListener;
+import gr.uoa.ec.shopeeng.listeners.FilterChangedListener;
 import gr.uoa.ec.shopeeng.models.Product;
+import gr.uoa.ec.shopeeng.models.ProductStoreRequestObject;
 import gr.uoa.ec.shopeeng.models.Store;
+import gr.uoa.ec.shopeeng.requests.ProductStoreRequest;
 import gr.uoa.ec.shopeeng.requests.ReviewRequest;
 import gr.uoa.ec.shopeeng.utils.OrderBy;
 import gr.uoa.ec.shopeeng.utils.TransportMode;
@@ -27,8 +32,9 @@ import java.util.List;
 import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 public class ProductStoresFragment extends Fragment {
+    FilterChangedListener filterChangedListener;
 
-    private OnAddToShoppingListListener addToShoppingListListener;
+    private AddToShoppingListListener addToShoppingListListener;
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
@@ -54,6 +60,8 @@ public class ProductStoresFragment extends Fragment {
     OrderBy orderBy = OrderBy.DISTANCE;
     TransportMode transportMode = TransportMode.DRIVING;
 
+    boolean hasChanges = false;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -77,6 +85,7 @@ public class ProductStoresFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
+        Log.e(ProductStoresFragment.class.getName(), "Someone invoked me");
 
         //get data from bundles
         Bundle args = getArguments();
@@ -95,10 +104,21 @@ public class ProductStoresFragment extends Fragment {
 
             location = args.getString(LOCATION);
             userId = args.getString(USER_ID);
-
         }
 
+        filterChangedListener = new FilterChangedListener() {
+            @Override
+            public void onFilterChangedListener() {
+                new ProductStoreRequest(
+                        new ProductStoreRequestObject(product.getName(), location, inputDistanceEditText.getText().toString(), duration, units.name(), orderBy.name(), transportMode.name()), userId,
+                        product, fragmentManager, applicationContext).execute();
+            }
+        };
+
         setSelections();
+
+        filtering();
+
 
         //show list of stores
         getStoresListView();
@@ -119,7 +139,88 @@ public class ProductStoresFragment extends Fragment {
                 Store store = (Store) parent.getAdapter().getItem(position);
                 Log.i("clicked store", store.toString());
                 //add request for reviews and reviews here!!
-                new ReviewRequest(store, product, location, userId,getFragmentManager(), applicationContext).execute();
+                new ReviewRequest(store, product, location, userId, getFragmentManager(), applicationContext).execute();
+            }
+        });
+    }
+
+    private void filtering() {
+
+        inputDistanceEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+                if ((i == EditorInfo.IME_ACTION_DONE) || ((keyEvent.getKeyCode() == KeyEvent.KEYCODE_ENTER) && (keyEvent.getAction() == KeyEvent.ACTION_DOWN))) {
+
+                    Toast.makeText(getContext(), "Distance: " + textView.getText().toString(), Toast.LENGTH_SHORT).show();
+
+                    filterChangedListener.onFilterChangedListener();
+
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+        });
+
+        transportModeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    transportMode = TransportMode.WALKING;
+                } else
+                    transportMode = TransportMode.DRIVING;
+
+                Toast.makeText(getContext(), transportMode.name(), Toast.LENGTH_SHORT).show();
+
+                filterChangedListener.onFilterChangedListener();
+            }
+        });
+
+        unitsSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (b) {
+                    units = Units.HOURS;
+                } else
+                    units = Units.KM;
+
+                Toast.makeText(getContext(), units.name(), Toast.LENGTH_SHORT).show();
+
+                new ProductStoreRequest(
+                        new ProductStoreRequestObject(product.getName(), location, inputDistanceEditText.getText().toString(), duration, units.name(), orderBy.name(), transportMode.name()), userId,
+                        product, fragmentManager, applicationContext).execute();
+            }
+        });
+
+        priceRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!orderBy.equals(OrderBy.PRICE) && b) {
+                    if (b)
+                        orderBy = OrderBy.PRICE;
+                    else
+                        orderBy = OrderBy.DISTANCE;
+
+                    Toast.makeText(getContext(), compoundButton.getText(), Toast.LENGTH_SHORT).show();
+
+                    filterChangedListener.onFilterChangedListener();
+                }
+            }
+        });
+
+        distanceRadioButton.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+                if (!orderBy.equals(OrderBy.DISTANCE) && b) {
+                    if (b)
+                        orderBy = OrderBy.DISTANCE;
+                    else
+                        orderBy = OrderBy.PRICE;
+
+                    Toast.makeText(getContext(), compoundButton.getText(), Toast.LENGTH_SHORT).show();
+
+                    filterChangedListener.onFilterChangedListener();
+                }
             }
         });
     }
@@ -186,10 +287,10 @@ public class ProductStoresFragment extends Fragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception.
         try {
-            addToShoppingListListener = (OnAddToShoppingListListener) context;
+            addToShoppingListListener = (AddToShoppingListListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnAddToShoppingListListener");
+                    + " must implement AddToShoppingListListener");
         }
     }
 
@@ -201,6 +302,4 @@ public class ProductStoresFragment extends Fragment {
     public void setApplicationContext(Context applicationContext) {
         this.applicationContext = applicationContext;
     }
-
-
 }

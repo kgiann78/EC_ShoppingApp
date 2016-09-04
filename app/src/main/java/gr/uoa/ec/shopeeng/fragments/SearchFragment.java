@@ -11,13 +11,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import gr.uoa.ec.shopeeng.R;
-import gr.uoa.ec.shopeeng.listeners.OnSearchClickedListener;
+import gr.uoa.ec.shopeeng.listeners.SearchClickedListener;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class SearchFragment extends Fragment {
-    private OnSearchClickedListener searchClickedListener;
+    private SearchClickedListener searchClickedListener;
 
     public SearchFragment() {
     }
@@ -62,10 +62,10 @@ public class SearchFragment extends Fragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception.
         try {
-            searchClickedListener = (OnSearchClickedListener) context;
+            searchClickedListener = (SearchClickedListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement OnSearchClickedListener");
+                    + " must implement SearchClickedListener");
         }
     }
 }

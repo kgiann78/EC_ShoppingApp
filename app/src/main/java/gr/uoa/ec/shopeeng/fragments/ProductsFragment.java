@@ -176,7 +176,6 @@ public class ProductsFragment extends Fragment {
             return;
         }
 
-
         locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         boolean gpsStatus = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 

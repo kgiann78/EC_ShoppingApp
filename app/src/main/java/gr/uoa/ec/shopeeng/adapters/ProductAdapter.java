@@ -1,16 +1,12 @@
 package gr.uoa.ec.shopeeng.adapters;
 
 import android.content.Context;
-import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import gr.uoa.ec.shopeeng.R;
-import gr.uoa.ec.shopeeng.listeners.OnAddToShoppingListListener;
 import gr.uoa.ec.shopeeng.models.Product;
-import gr.uoa.ec.shopeeng.models.ProductStoreRequestObject;
-import gr.uoa.ec.shopeeng.requests.ProductStoreRequest;
 
 import java.util.ArrayList;
 import java.util.List;

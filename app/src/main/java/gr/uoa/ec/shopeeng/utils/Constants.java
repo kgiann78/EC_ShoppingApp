@@ -21,6 +21,8 @@ public class Constants {
     public static final String UNITS = "UNITS";
     public static final String ORDER_BY = "ORDER_BY";
     public static final String TRANSPORT_MODE = "TRANSPORT_MODE";
+    public static final String DRIVING = "DRIVING";
+    public static final String WALKING = "WALKING";
 
 
     public static final String USERNAME = "USERNAME";
