@@ -29,4 +29,6 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="directions_button_label">ΟΔΗΓΙΕΣ ΠΡΟΣΒΑΣΗΣ</string>
     <string name="add_review_label">ΠΡΟΣΘΕΣΕ ΚΡΙΤΙΚΗ</string>
+    <string name="price_radio_button_label">Τιμή</string>
+    <string name="distance_radio_button_label">Απόσταση</string>
 </resources>

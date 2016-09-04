@@ -14,5 +14,12 @@ public class Constants {
     public static final String RATING_SCORE = "RATING_SCORE";
     public static final String REVIEWS_LIST = "REVIEWS_LIST";
 
+    public static final String DISTANCE = "DISTANCE";
+    public static final String DURATION = "DURATION";
+    public static final String UNITS = "UNITS";
+    public static final String ORDER_BY = "ORDER_BY";
+    public static final String TRANSPORT_MODE = "TRANSPORT_MODE";
+
+
 
 }

@@ -19,7 +19,6 @@ import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.Review;
 import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.utils.Constants;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
@@ -57,7 +56,7 @@ public class StoreFragment extends Fragment {
         storeAddress = (TextView) view.findViewById(R.id.store_address_text_view);
         ratingScoreText = (TextView) view.findViewById(R.id.rating_score_text_view);
         reviewsList = (ListView) view.findViewById(R.id.comments_list);
-        addToShoppingList = (ImageButton) view.findViewById(R.id.add_to_shopping_list_button);
+        addToShoppingList = (ImageButton) view.findViewById(R.id.addToShoppingListButton);
         directionsButton = (Button) view.findViewById(R.id.directionsButton);
         addReviewPopup = new PopupWindow();
 

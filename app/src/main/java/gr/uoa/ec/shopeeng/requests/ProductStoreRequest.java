@@ -20,8 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import static gr.uoa.ec.shopeeng.utils.Constants.SELECTED_PRODUCT;
-import static gr.uoa.ec.shopeeng.utils.Constants.STORES_PRODUCT_RESULT;
+import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 
 public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Store>> {
@@ -67,6 +66,11 @@ public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Store>>
         Bundle args = new Bundle();
         args.putParcelableArrayList(STORES_PRODUCT_RESULT, stores);
         args.putParcelable(SELECTED_PRODUCT, product);
+        args.putString(DURATION, this.productStoreRequestObject.getDuration());
+        args.putString(DISTANCE, this.productStoreRequestObject.getDistance());
+        args.putString(UNITS, this.productStoreRequestObject.getUnit());
+        args.putString(ORDER_BY, this.productStoreRequestObject.getOrderBy());
+        args.putString(TRANSPORT_MODE, this.productStoreRequestObject.getTransportMode());
 
         args.putString(Constants.LOCATION, productStoreRequestObject.getUserLocation());
         productStoresFragment.setArguments(args);

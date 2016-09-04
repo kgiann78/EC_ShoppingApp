@@ -11,21 +11,22 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:text="@string/product_name_label"
-                android:id="@+id/product_name_text_view"
+                android:id="@+id/productNameTextView"
                 android:textAlignment="center"
-                android:textSize="30dp"
+                android:textSize="30sp"
                 android:layout_marginTop="44dp"/>
         <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/product_details_label"
-                android:id="@+id/product_details_text_view"
+                android:id="@+id/productDetailsTextView"
                 android:textAlignment="center"/>
         <LinearLayout
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:baselineAligned="false">
             <LinearLayout
                     android:orientation="vertical"
                     android:layout_width="wrap_content"
@@ -37,36 +38,43 @@
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="@string/ordering_label"
-                        android:id="@+id/ordering_text_view"/>
-                <CheckBox
-                        android:layout_width="wrap_content"
+                        android:id="@+id/orderingTextView"/>
+                <RadioGroup
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="@string/price_check_box_label"
-                        android:id="@+id/price_check_box"
-                        android:checked="true"/>
+                        android:id="@+id/orderingRadioGroup">
+                    <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/price_radio_button_label"
+                            android:id="@+id/priceRadioButton"
+                            android:checked="true"/>
+                    <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="@string/distance_radio_button_label"
+                            android:id="@+id/distanceRadioButton"/>
+                </RadioGroup>
 
-                <CheckBox
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="@string/distance_check_box_label"
-                        android:id="@+id/distance_check_box"
-                        android:checked="false"/>
             </LinearLayout>
             <LinearLayout
-                    android:orientation="vertical"
+                    android:orientation="horizontal"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
                     android:gravity="end">
                 <ImageButton
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:id="@+id/add_to_shopping_list_button"
+                        android:id="@+id/addToShoppingListButton"
                         android:src="@mipmap/ic_cart"
                         android:contentDescription="@string/add_to_shopping_list_description"
                         android:clickable="true"
                         android:adjustViewBounds="true"
-                        android:background="@android:color/transparent"/>
+                        android:background="@android:color/transparent"
+                        android:layout_weight="1"
+                        android:layout_gravity="center_vertical"
+                />
             </LinearLayout>
 
         </LinearLayout>
@@ -76,7 +84,7 @@
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="@string/stores_label"
-                android:id="@+id/stores_label"
+                android:id="@+id/storesTextView"
                 android:textAlignment="center"
                 android:textIsSelectable="true"/>
         <LinearLayout
@@ -87,32 +95,32 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:text="@string/show_only_on_distance"
-                    android:id="@+id/show_only_on_distance_label"/>
+                    android:id="@+id/distanceTextView"/>
 
             <EditText
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:inputType="number"
                     android:ems="10"
-                    android:id="@+id/input_distance_text_edit"/>
+                    android:id="@+id/inputDistanceEditText"/>
         </LinearLayout>
         <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/walking_or_driving"
-                android:id="@+id/switch1"
+                android:id="@+id/transportModeSwitch"
                 android:checked="false"/>
 
         <Switch
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/km_or_hour"
-                android:id="@+id/switch2"
+                android:id="@+id/unitsSwitch"
                 android:checked="false"/>
 
         <ListView
                 android:layout_width="match_parent"
                 android:layout_height="260dp"
-                android:id="@+id/store_list"/>
+                android:id="@+id/storesListView"/>
     </LinearLayout>
 </ScrollView>
