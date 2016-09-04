@@ -23,11 +23,9 @@ import static gr.uoa.ec.shopeeng.utils.Constants.USER_ID;
 public class AddReviewFragment extends Fragment {
     private String userId;
     private String storeId;
-
     private Button submit;
     private EditText comment;
     private RatingBar ratingBar;
-
     private Context applicationContext;
     private FragmentManager fragmentManager;
 

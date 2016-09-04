@@ -22,10 +22,11 @@ import gr.uoa.ec.shopeeng.utils.ShoppingListManager;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity implements OnSearchClickedListener, OnAddToShoppingListListener {
-
     private ShoppingListManager shoppingListManager;
-
     private String userId = "1";
+
+    //TODO Product -> bring cheapest price
+    //TODO fix stars rating submission
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +113,7 @@ public class MainActivity extends AppCompatActivity implements OnSearchClickedLi
     public void onSearchClicked(String searchText) {
 
         try {
-            new ProductRequest(searchText,userId, getSupportFragmentManager(), getApplicationContext()).execute();
+            new ProductRequest(searchText, userId, getSupportFragmentManager(), getApplicationContext()).execute();
 
         } catch (Exception e) {
             Log.e(MainActivity.class.toString(), e.getMessage());
