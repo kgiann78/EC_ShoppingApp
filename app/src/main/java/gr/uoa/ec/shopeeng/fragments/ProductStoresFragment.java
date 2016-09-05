@@ -32,35 +32,33 @@ import java.util.List;
 import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 public class ProductStoresFragment extends Fragment {
-    FilterChangedListener filterChangedListener;
+    private FilterChangedListener filterChangedListener;
 
     private AddToShoppingListListener addToShoppingListListener;
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
     private String userId;
-    ListView storesList;
-    TextView productName;
-    TextView productDetails;
-    ImageButton addToShoppingList;
+    private ListView storesList;
+    private TextView productName;
+    private TextView productDetails;
+    private ImageButton addToShoppingList;
 
-    RadioButton priceRadioButton;
-    RadioButton distanceRadioButton;
-    EditText inputDistanceEditText;
-    Switch transportModeSwitch;
-    Switch unitsSwitch;
+    private RadioButton priceRadioButton;
+    private RadioButton distanceRadioButton;
+    private EditText inputDistanceEditText;
+    private Switch transportModeSwitch;
+    private Switch unitsSwitch;
 
-    List<Store> stores;
-    Product product;
-    String location;
+    private List<Store> stores;
+    private Product product;
 
-    String duration = "";
-    String distance = "";
-    Units units = Units.KM;
-    OrderBy orderBy = OrderBy.DISTANCE;
-    TransportMode transportMode = TransportMode.DRIVING;
-
-    boolean hasChanges = false;
+    private String location;
+    private String duration;
+    private String distance;
+    private Units units;
+    private OrderBy orderBy;
+    private TransportMode transportMode;
 
     @Nullable
     @Override
@@ -77,15 +75,19 @@ public class ProductStoresFragment extends Fragment {
         transportModeSwitch = (Switch) view.findViewById(R.id.transportModeSwitch);
         unitsSwitch = (Switch) view.findViewById(R.id.unitsSwitch);
 
+        location = "";
+        duration = "";
+        distance = "";
         stores = new ArrayList<>();
+        units = Units.KM;
+        orderBy = OrderBy.DISTANCE;
+        transportMode = TransportMode.DRIVING;
         return view;
     }
 
     @Override
     public void onStart() {
         super.onStart();
-
-        Log.e(ProductStoresFragment.class.getName(), "Someone invoked me");
 
         //get data from bundles
         Bundle args = getArguments();
@@ -123,9 +125,6 @@ public class ProductStoresFragment extends Fragment {
         //show list of stores
         getStoresListView();
 
-        //catch event when user clicks on a store name-> redirect to store page
-        // for rating, comments and store info
-
         addToShoppingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -137,8 +136,6 @@ public class ProductStoresFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Store store = (Store) parent.getAdapter().getItem(position);
-                Log.i("clicked store", store.toString());
-                //add request for reviews and reviews here!!
                 new ReviewRequest(store, product, location, userId, getFragmentManager(), applicationContext).execute();
             }
         });
@@ -181,8 +178,11 @@ public class ProductStoresFragment extends Fragment {
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
                     units = Units.HOURS;
-                } else
+                    orderBy = OrderBy.DISTANCE;
+                } else {
                     units = Units.KM;
+                    orderBy = OrderBy.DISTANCE;
+                }
 
                 Toast.makeText(getContext(), units.name(), Toast.LENGTH_SHORT).show();
 
@@ -196,10 +196,9 @@ public class ProductStoresFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (!orderBy.equals(OrderBy.PRICE) && b) {
-                    if (b)
-                        orderBy = OrderBy.PRICE;
-                    else
-                        orderBy = OrderBy.DISTANCE;
+                    orderBy = OrderBy.PRICE;
+                    transportModeSwitch.setEnabled(false);
+                    unitsSwitch.setEnabled(false);
 
                     Toast.makeText(getContext(), compoundButton.getText(), Toast.LENGTH_SHORT).show();
 
@@ -212,10 +211,9 @@ public class ProductStoresFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (!orderBy.equals(OrderBy.DISTANCE) && b) {
-                    if (b)
-                        orderBy = OrderBy.DISTANCE;
-                    else
-                        orderBy = OrderBy.PRICE;
+                    orderBy = OrderBy.DISTANCE;
+                    transportModeSwitch.setEnabled(true);
+                    unitsSwitch.setEnabled(true);
 
                     Toast.makeText(getContext(), compoundButton.getText(), Toast.LENGTH_SHORT).show();
 
@@ -231,9 +229,13 @@ public class ProductStoresFragment extends Fragment {
         switch (orderBy) {
             case DISTANCE:
                 distanceRadioButton.setChecked(true);
+                transportModeSwitch.setEnabled(true);
+                unitsSwitch.setEnabled(true);
                 break;
             case PRICE:
                 priceRadioButton.setChecked(true);
+                transportModeSwitch.setEnabled(false);
+                unitsSwitch.setEnabled(false);
                 break;
             default:
                 break;

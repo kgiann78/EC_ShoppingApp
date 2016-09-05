@@ -58,9 +58,9 @@ public class AddReviewFragment extends Fragment {
         // Inflate the layout for this fragment
 
         View view = inflater.inflate(R.layout.fragment_add_review, container, false);
-        submit = (Button) view.findViewById(R.id.submit);
+        submit = (Button) view.findViewById(R.id.submitButton);
         ratingBar = (RatingBar) view.findViewById(R.id.ratingBar);
-        comment = (EditText) view.findViewById(R.id.comment);
+        comment = (EditText) view.findViewById(R.id.commentEditText);
 
         submit.setOnClickListener(new View.OnClickListener() {
             @Override

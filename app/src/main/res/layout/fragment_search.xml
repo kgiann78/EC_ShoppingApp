@@ -27,7 +27,7 @@
                 style="?android:attr/buttonStyleSmall"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="ΕΓΓΡΑΦΗ"
+                android:text="@string/create_account_label"
                 android:id="@+id/createAccountButton" android:layout_gravity="right"/>
         <TextView
                 android:text="@string/moto"

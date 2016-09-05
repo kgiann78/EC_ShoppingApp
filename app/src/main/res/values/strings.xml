@@ -31,4 +31,14 @@
     <string name="add_review_label">ΠΡΟΣΘΕΣΕ ΚΡΙΤΙΚΗ</string>
     <string name="price_radio_button_label">Τιμή</string>
     <string name="distance_radio_button_label">Απόσταση</string>
+    <string name="add_a_review_label">Βαθμολόγησε το Κατάστημα</string>
+    <string name="leave_a_comment_label">Άφησε Ένα Σχόλιο</string>
+    <string name="submit_button">ΥΠΟΒΟΛΗ</string>
+    <string name="register_title_label">ΔΗΜΙΟΥΡΓΙΑ ΛΟΓΑΡΙΑΣΜΟΥ</string>
+    <string name="username_label">ΟΝΟΜΑ ΧΡΗΣΤΗ</string>
+    <string name="register_password_label">ΚΩΔΙΚΟΣ</string>
+    <string name="name_label">ΟΝΟΜΑ</string>
+    <string name="surname_label">ΕΠΙΘΕΤΟ</string>
+    <string name="register_button">ΕΓΓΡΑΦΗ</string>
+    <string name="create_account_label">ΕΓΓΡΑΦΗ</string>
 </resources>
