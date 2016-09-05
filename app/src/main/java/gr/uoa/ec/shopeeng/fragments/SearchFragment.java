@@ -39,19 +39,6 @@ public class SearchFragment extends Fragment {
                 }
             });
         }
-
-        //Show registration page on click
-        Button registerBtn = (Button) view.findViewById(R.id.createAccountButton);
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreateAccountFragment createAccountFragment = CreateAccountFragment.newInstance(getContext());
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, createAccountFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
         return view;
     }
 

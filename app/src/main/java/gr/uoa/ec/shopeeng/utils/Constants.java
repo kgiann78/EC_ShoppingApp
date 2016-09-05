@@ -31,6 +31,8 @@ public class Constants {
     public static final String NAME = "NAME";
 
     public static final String NAMESPACE = "http://shopeeng/account/";
-    public static final String URL = "http://194.177.192.118:8080/account/ws/";
+    public static final String SERVICE = "usersPort";
+    public static final String URL = "http://10.0.2.2:8080/ws";
+//    public static final String URL = "http://194.177.192.118:8080/account/ws/";
 
 }

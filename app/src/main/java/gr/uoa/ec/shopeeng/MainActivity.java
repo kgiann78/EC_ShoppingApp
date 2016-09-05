@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import gr.uoa.ec.shopeeng.fragments.LoginAccountFragment;
+import gr.uoa.ec.shopeeng.fragments.RegisterAccountFragment;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.fragments.ShoppingListFragment;
 import gr.uoa.ec.shopeeng.listeners.AddToShoppingListListener;
@@ -102,7 +104,15 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, searchFragment)
-                    .addToBackStack(null).commit();
+                    .addToBackStack(null)
+                    .commit();
+        } else if (id == R.id.action_register_login) {
+            LoginAccountFragment loginAccountFragment = LoginAccountFragment.newInstance(getApplicationContext());
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, loginAccountFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
 
 

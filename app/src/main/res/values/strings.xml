@@ -6,6 +6,7 @@
     <string name="search_button">Αναζήτηση</string>
     <string name="action_show_shopping_list">Η λίστα μου</string>
     <string name="action_go_to_search">Αναζήτηση</string>
+    <string name="action_register_login">Εγγραφή/Σύνδεση</string>
     <string name="product_price">%1$s€</string>
     <string name="ordering_label">Ταξινόμηση</string>
     <string name="show_only_on_distance">Δείξε μονο όσα απέχουν</string>
@@ -27,18 +28,21 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="directions_button_label">ΟΔΗΓΙΕΣ ΠΡΟΣΒΑΣΗΣ</string>
-    <string name="add_review_label">ΠΡΟΣΘΕΣΕ ΚΡΙΤΙΚΗ</string>
+    <string name="directions_button_label">Οδηγίες Πρόσβασης</string>
+    <string name="add_review_label">Πρόσθεσε Κριτική</string>
     <string name="price_radio_button_label">Τιμή</string>
     <string name="distance_radio_button_label">Απόσταση</string>
     <string name="add_a_review_label">Βαθμολόγησε το Κατάστημα</string>
     <string name="leave_a_comment_label">Άφησε Ένα Σχόλιο</string>
-    <string name="submit_button">ΥΠΟΒΟΛΗ</string>
-    <string name="register_title_label">ΔΗΜΙΟΥΡΓΙΑ ΛΟΓΑΡΙΑΣΜΟΥ</string>
-    <string name="username_label">ΟΝΟΜΑ ΧΡΗΣΤΗ</string>
-    <string name="register_password_label">ΚΩΔΙΚΟΣ</string>
-    <string name="name_label">ΟΝΟΜΑ</string>
-    <string name="surname_label">ΕΠΙΘΕΤΟ</string>
-    <string name="register_button">ΕΓΓΡΑΦΗ</string>
+    <string name="submit_button">Υποβολή</string>
+    <string name="register_account_text_view">Δημιουργία Λογαριασμού</string>
+    <string name="register_username_hint">Όνομα Χρήστη</string>
+    <string name="login_username_hint">Όνομα Χρήστη</string>
+    <string name="register_password_hint">Κωδικός</string>
+    <string name="login_password_hint">Κωδικός</string>
+    <string name="register_name_hint">Όνομα</string>
+    <string name="register_surname_hint">Επίθετο</string>
+    <string name="register_button">Εγγραφή</string>
+    <string name="login_button">Σύνδεση</string>
     <string name="create_account_label">ΕΓΓΡΑΦΗ</string>
 </resources>
