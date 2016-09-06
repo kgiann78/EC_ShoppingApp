@@ -51,7 +51,7 @@ public class ProductsFragment extends Fragment {
     LocationManager locationManager;
     ShoppingLocationListener locationListener;
 
-    private String userId;
+    private String username;
 
     private static final String[] LOCATION_PERMS = {
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -80,7 +80,7 @@ public class ProductsFragment extends Fragment {
         final Bundle args = getArguments();
 
         if (args != null) {
-            userId = args.getString(Constants.USER_ID);
+            username = args.getString(Constants.USER_ID);
             products = args.getParcelableArrayList(Constants.PRODUCT_RESULT);
             searchText.setText(args.getString(Constants.SEARCH_TEXT));
 
@@ -136,7 +136,7 @@ public class ProductsFragment extends Fragment {
                     String transportMode = TransportMode.DRIVING.name();
 
                     new ProductStoreRequest(
-                            new ProductStoreRequestObject(product.getName(), userLocation, distance, duration, unit, orderBy, transportMode), userId,
+                            new ProductStoreRequestObject(product.getName(), userLocation, distance, duration, unit, orderBy, transportMode), username,
                             product, fragmentManager, applicationContext).execute();
                 }
             });

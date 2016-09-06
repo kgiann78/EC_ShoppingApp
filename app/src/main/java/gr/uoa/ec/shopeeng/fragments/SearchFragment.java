@@ -13,6 +13,8 @@ import android.widget.EditText;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.listeners.SearchClickedListener;
 
+import static gr.uoa.ec.shopeeng.utils.Constants.USER_ID;
+
 /**
  * A placeholder fragment containing a simple view.
  */

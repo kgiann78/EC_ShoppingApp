@@ -7,14 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.adapters.ReviewAdapter;
-import gr.uoa.ec.shopeeng.listeners.AddToShoppingListListener;
+import gr.uoa.ec.shopeeng.listeners.ShoppingListListener;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.Review;
 import gr.uoa.ec.shopeeng.models.Store;
@@ -26,14 +25,14 @@ import static gr.uoa.ec.shopeeng.utils.Constants.LOCATION;
 import static gr.uoa.ec.shopeeng.utils.Constants.USER_ID;
 
 public class StoreFragment extends Fragment {
-    private AddToShoppingListListener addToShoppingListListener;
+    private ShoppingListListener shoppingListListener;
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
     private Store store;
     private Product product;
     private String userlocation;
-    private String userId;
+    private String username;
 
 
     TextView storeName;
@@ -75,13 +74,13 @@ public class StoreFragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-                AddReviewFragment addReviewFragment = AddReviewFragment.newInstance(userId, store.getStoreId());
+                AddReviewFragment addReviewFragment = AddReviewFragment.newInstance(username, store.getStoreId());
                 addReviewFragment.setFragmentManager(fragmentManager);
                 addReviewFragment.setApplicationContext(applicationContext);
-                FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.fragment_container, addReviewFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
+                fragmentManager.beginTransaction()
+                        .replace(R.id.fragment_container, addReviewFragment)
+                        .addToBackStack(null)
+                        .commit();
             }
         });
         return view;
@@ -97,7 +96,7 @@ public class StoreFragment extends Fragment {
         addToShoppingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addToShoppingListListener.onAddProductToShoppingClicked(product, store);
+                shoppingListListener.onAddItemToShoppingListClicked(product, store);
             }
         });
         getListViews();
@@ -119,9 +118,9 @@ public class StoreFragment extends Fragment {
             storeName.setText(store.getName());
             storeAddress.setText(store.getAddress());
             ratingBar.setRating(ratingScore.floatValue());
-            ratingBar.setNumStars((int) (ratingScore * 5 / 10));
+            ratingBar.setNumStars((int) (ratingScore.floatValue()));
 
-            userId = args.getString(USER_ID);
+            username = args.getString(USER_ID);
         }
     }
 
@@ -139,10 +138,10 @@ public class StoreFragment extends Fragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception.
         try {
-            addToShoppingListListener = (AddToShoppingListListener) context;
+            shoppingListListener = (ShoppingListListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement AddToShoppingListListener");
+                    + " must implement ShoppingListListener");
         }
     }
 

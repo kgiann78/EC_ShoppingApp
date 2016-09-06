@@ -3,12 +3,9 @@ package gr.uoa.ec.shopeeng.requests;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import gr.uoa.ec.shopeeng.R;
-import gr.uoa.ec.shopeeng.fragments.ProductsFragment;
 import gr.uoa.ec.shopeeng.fragments.StoreFragment;
 import gr.uoa.ec.shopeeng.models.*;
 import gr.uoa.ec.shopeeng.utils.Constants;
@@ -18,13 +15,12 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 
 import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 
 public class ReviewRequest extends AsyncTask<Void, Void, ArrayList<Review>> {
-    private final String userId;
+    private final String username;
     private Store store;
     private Product product;
     private String userlocation;
@@ -32,11 +28,11 @@ public class ReviewRequest extends AsyncTask<Void, Void, ArrayList<Review>> {
     private Context applicationContext;
 
 
-    public ReviewRequest(Store store, Product product, String userlocation, String userId, FragmentManager fragmentManager, Context applicationContext) {
+    public ReviewRequest(Store store, Product product, String userlocation, String username, FragmentManager fragmentManager, Context applicationContext) {
         this.store = store;
         this.product = product;
 
-        this.userId = userId;
+        this.username = username;
         this.userlocation = userlocation;
         this.fragmentManager = fragmentManager;
         this.applicationContext = applicationContext;
@@ -80,13 +76,13 @@ public class ReviewRequest extends AsyncTask<Void, Void, ArrayList<Review>> {
         args.putParcelable(STORE_RESULT, store);
         args.putParcelable(PRODUCT_RESULT, product);
         args.putString(LOCATION, userlocation);
-        args.putString(USER_ID, userId);
+        args.putString(USER_ID, username);
 
         storeFragment.setArguments(args);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, storeFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, storeFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
 

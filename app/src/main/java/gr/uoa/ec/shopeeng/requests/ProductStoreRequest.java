@@ -4,7 +4,6 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import gr.uoa.ec.shopeeng.R;
 
@@ -25,20 +24,19 @@ import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Store>> {
 
-    private final String userId;
+    private final String username;
     private Product product;
     private ProductStoreRequestObject productStoreRequestObject;
     private FragmentManager fragmentManager;
     private Context applicationContext;
 
-
     public ProductStoreRequest(ProductStoreRequestObject productStoreRequestObject,
-                               String userId,
+                               String username,
                                Product product,
                                FragmentManager fragmentManager,
                                Context applicationContext) {
         this.product = product;
-        this.userId = userId;
+        this.username = username;
         this.productStoreRequestObject = productStoreRequestObject;
         this.fragmentManager = fragmentManager;
         this.applicationContext = applicationContext;
@@ -69,7 +67,7 @@ public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Store>>
         Bundle args = new Bundle();
         args.putParcelableArrayList(STORES_PRODUCT_RESULT, stores);
         args.putParcelable(SELECTED_PRODUCT, product);
-        args.putString(Constants.USER_ID, userId);
+        args.putString(Constants.USER_ID, username);
         args.putString(DURATION, this.productStoreRequestObject.getDuration());
         args.putString(DISTANCE, this.productStoreRequestObject.getDistance());
         args.putString(UNITS, this.productStoreRequestObject.getUnit());
@@ -79,10 +77,10 @@ public class ProductStoreRequest extends AsyncTask<Void, Void, ArrayList<Store>>
         args.putString(Constants.LOCATION, productStoreRequestObject.getUserLocation());
         productStoresFragment.setArguments(args);
 
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, productStoresFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
+        fragmentManager.beginTransaction()
+                .replace(R.id.fragment_container, productStoresFragment)
+                .addToBackStack(null)
+                .commit();
     }
 
 

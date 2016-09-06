@@ -6,7 +6,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +14,7 @@ import android.view.inputmethod.EditorInfo;
 import android.widget.*;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.adapters.StoreAdapter;
-import gr.uoa.ec.shopeeng.listeners.AddToShoppingListListener;
+import gr.uoa.ec.shopeeng.listeners.ShoppingListListener;
 import gr.uoa.ec.shopeeng.listeners.FilterChangedListener;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.ProductStoreRequestObject;
@@ -34,11 +33,11 @@ import static gr.uoa.ec.shopeeng.utils.Constants.*;
 public class ProductStoresFragment extends Fragment {
     private FilterChangedListener filterChangedListener;
 
-    private AddToShoppingListListener addToShoppingListListener;
+    private ShoppingListListener shoppingListListener;
 
     private FragmentManager fragmentManager;
     private Context applicationContext;
-    private String userId;
+    private String username;
     private ListView storesList;
     private TextView productName;
     private TextView productDetails;
@@ -105,14 +104,14 @@ public class ProductStoresFragment extends Fragment {
             transportMode = TransportMode.valueOf(args.getString(TRANSPORT_MODE));
 
             location = args.getString(LOCATION);
-            userId = args.getString(USER_ID);
+            username = args.getString(USER_ID);
         }
 
         filterChangedListener = new FilterChangedListener() {
             @Override
             public void onFilterChangedListener() {
                 new ProductStoreRequest(
-                        new ProductStoreRequestObject(product.getName(), location, inputDistanceEditText.getText().toString(), duration, units.name(), orderBy.name(), transportMode.name()), userId,
+                        new ProductStoreRequestObject(product.getName(), location, inputDistanceEditText.getText().toString(), duration, units.name(), orderBy.name(), transportMode.name()), username,
                         product, fragmentManager, applicationContext).execute();
             }
         };
@@ -128,7 +127,7 @@ public class ProductStoresFragment extends Fragment {
         addToShoppingList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                addToShoppingListListener.onAddProductToShoppingClicked(product, null);
+                shoppingListListener.onAddItemToShoppingListClicked(product, null);
             }
         });
 
@@ -136,7 +135,7 @@ public class ProductStoresFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Store store = (Store) parent.getAdapter().getItem(position);
-                new ReviewRequest(store, product, location, userId, getFragmentManager(), applicationContext).execute();
+                new ReviewRequest(store, product, location, username, getFragmentManager(), applicationContext).execute();
             }
         });
     }
@@ -187,7 +186,7 @@ public class ProductStoresFragment extends Fragment {
                 Toast.makeText(getContext(), units.name(), Toast.LENGTH_SHORT).show();
 
                 new ProductStoreRequest(
-                        new ProductStoreRequestObject(product.getName(), location, inputDistanceEditText.getText().toString(), duration, units.name(), orderBy.name(), transportMode.name()), userId,
+                        new ProductStoreRequestObject(product.getName(), location, inputDistanceEditText.getText().toString(), duration, units.name(), orderBy.name(), transportMode.name()), username,
                         product, fragmentManager, applicationContext).execute();
             }
         });
@@ -289,10 +288,10 @@ public class ProductStoresFragment extends Fragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception.
         try {
-            addToShoppingListListener = (AddToShoppingListListener) context;
+            shoppingListListener = (ShoppingListListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement AddToShoppingListListener");
+                    + " must implement ShoppingListListener");
         }
     }
 

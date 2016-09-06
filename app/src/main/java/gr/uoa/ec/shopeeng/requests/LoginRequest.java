@@ -1,16 +1,19 @@
 package gr.uoa.ec.shopeeng.requests;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+import gr.uoa.ec.shopeeng.MainActivity;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.UserConverter;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.models.Login;
 import gr.uoa.ec.shopeeng.models.User;
+import gr.uoa.ec.shopeeng.utils.Constants;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
@@ -21,9 +24,7 @@ import java.util.HashMap;
 import java.util.Hashtable;
 import java.util.Map;
 
-import static gr.uoa.ec.shopeeng.utils.Constants.NAMESPACE;
-import static gr.uoa.ec.shopeeng.utils.Constants.SERVICE;
-import static gr.uoa.ec.shopeeng.utils.Constants.URL;
+import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 
 public class LoginRequest extends AsyncTask<String, Void, User> {
@@ -86,10 +87,6 @@ public class LoginRequest extends AsyncTask<String, Void, User> {
                         "Επιτυχής σύνδεση!", Toast.LENGTH_SHORT).show();
 
                 SearchFragment searchFragment = new SearchFragment();
-                Bundle args = new Bundle();
-                args.putSerializable("USER", user);
-                searchFragment.setArguments(args);
-
                 fragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment_container, searchFragment)

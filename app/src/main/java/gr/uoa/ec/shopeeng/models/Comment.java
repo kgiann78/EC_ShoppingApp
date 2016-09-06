@@ -4,10 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 import java.io.Serializable;
-import java.util.UUID;
 
 public class Comment implements Serializable, Parcelable {
-    private String userId;
+    private String username;
     private String storeId;
     private String commentId;
     private String comment;
@@ -16,8 +15,8 @@ public class Comment implements Serializable, Parcelable {
     public Comment() {
     }
 
-    public Comment(String userId, String storeId, String commentId, String comment, String date) {
-        this.userId = userId;
+    public Comment(String username, String storeId, String commentId, String comment, String date) {
+        this.username = username;
         this.storeId = storeId;
         this.commentId = commentId;
         this.comment = comment;
@@ -28,7 +27,7 @@ public class Comment implements Serializable, Parcelable {
     public Comment(Parcel in) {
         String[] data = new String[3];
         in.readStringArray(data);
-        this.userId = data[0];
+        this.username = data[0];
         this.storeId = data[1];
         this.commentId = data[2];
         this.comment = data[3];
@@ -43,7 +42,7 @@ public class Comment implements Serializable, Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{this.userId, this.storeId, this.commentId, this.comment, this.date});
+        dest.writeStringArray(new String[]{this.username, this.storeId, this.commentId, this.comment, this.date});
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -64,12 +63,12 @@ public class Comment implements Serializable, Parcelable {
         this.date = date;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getStoreId() {
@@ -98,7 +97,7 @@ public class Comment implements Serializable, Parcelable {
 
     @Override
     public String toString() {
-        return "Comment By " + userId + " on " + date + " :" + comment;
+        return "Comment By " + username + " on " + date + " :" + comment;
 
     }
 }

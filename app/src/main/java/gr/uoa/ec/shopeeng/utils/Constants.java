@@ -35,4 +35,14 @@ public class Constants {
     public static final String URL = "http://10.0.2.2:8080/ws";
 //    public static final String URL = "http://194.177.192.118:8080/account/ws/";
 
+
+    // Fragment tags for backStack
+    public static final String ADD_REVIEW = "ADD_REVIEW";
+    public static final String PRODUCTS = "PRODUCTS";
+    public static final String PRODUCT_STORE = "PRODUCT_STORE";
+    public static final String REGISTER_ACCOUNT = "REGISTER_ACCOUNT";
+    public static final String LOGIN_ACCOUNT = "LOGIN_ACCOUNT";
+    public static final String SEARCH = "SEARCH";
+    public static final String SHOPPING_LIST = "SHOPPING_LIST";
+    public static final String STORE = "STORE";
 }

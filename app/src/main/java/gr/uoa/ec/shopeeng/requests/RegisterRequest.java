@@ -16,9 +16,7 @@ import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
-import static gr.uoa.ec.shopeeng.utils.Constants.NAMESPACE;
-import static gr.uoa.ec.shopeeng.utils.Constants.SERVICE;
-import static gr.uoa.ec.shopeeng.utils.Constants.URL;
+import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 
 public class RegisterRequest extends AsyncTask<String, Void, User> {
