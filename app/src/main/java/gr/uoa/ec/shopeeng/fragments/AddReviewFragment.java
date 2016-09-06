@@ -11,18 +11,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RatingBar;
 import gr.uoa.ec.shopeeng.R;
+import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.Review;
+import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.requests.AddReviewRequest;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-import static gr.uoa.ec.shopeeng.utils.Constants.STORE_ID;
-import static gr.uoa.ec.shopeeng.utils.Constants.USER_ID;
+import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 public class AddReviewFragment extends Fragment {
     private String username;
-    private String storeId;
+    private Store store;
+    private Product product;
+    private String userLocation;
+
     private Button submit;
     private EditText comment;
     private RatingBar ratingBar;
@@ -33,13 +37,16 @@ public class AddReviewFragment extends Fragment {
     }
 
 
-    // TODO: Rename and change types and number of parameters
-    public static AddReviewFragment newInstance(String username, String storeId) {
+    public static AddReviewFragment newInstance(Context context, String username,
+                                                Store store, Product product, String userLocation) {
         AddReviewFragment fragment = new AddReviewFragment();
         Bundle args = new Bundle();
-        args.putString(STORE_ID, storeId);
+        args.putParcelable(STORE_RESULT, store);
+        args.putParcelable(PRODUCT_RESULT, product);
         args.putString(USER_ID, username);
+        args.putString(LOCATION, userLocation);
         fragment.setArguments(args);
+        fragment.setApplicationContext(context);
         return fragment;
     }
 
@@ -47,8 +54,10 @@ public class AddReviewFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            storeId = getArguments().getString(STORE_ID);
+            store = getArguments().getParcelable(STORE_RESULT);
+            product = getArguments().getParcelable(PRODUCT_RESULT);
             username = getArguments().getString(USER_ID);
+            userLocation = getArguments().getString(LOCATION);
         }
     }
 
@@ -70,8 +79,9 @@ public class AddReviewFragment extends Fragment {
                 review.setRating(String.valueOf(ratingBar.getRating()));
                 review.setUsername(username);
                 review.setRdate(new SimpleDateFormat().format(Calendar.getInstance().getTime()));
-                review.setStoreId(storeId);
-                new AddReviewRequest(review, applicationContext).execute();
+                review.setStoreId(store.getStoreId());
+                new AddReviewRequest(getApplicationContext(), getFragmentManager(), review,
+                        store, product, userLocation, username).execute();
             }
         });
         return view;
@@ -80,6 +90,10 @@ public class AddReviewFragment extends Fragment {
 
     public void setApplicationContext(Context applicationContext) {
         this.applicationContext = applicationContext;
+    }
+
+    public Context getApplicationContext() {
+        return this.applicationContext;
     }
 
     public void setFragmentManager(FragmentManager fragmentManager) {

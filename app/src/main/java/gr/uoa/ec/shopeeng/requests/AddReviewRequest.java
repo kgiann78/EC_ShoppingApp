@@ -9,7 +9,9 @@ import android.util.Log;
 import android.widget.Toast;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.fragments.StoreFragment;
+import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.Review;
+import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.utils.Constants;
 import gr.uoa.ec.shopeeng.utils.Util;
 import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
@@ -22,12 +24,24 @@ import static gr.uoa.ec.shopeeng.utils.Constants.REVIEW;
 
 
 public class AddReviewRequest extends AsyncTask<Void, Void, Void> {
-    private Review review;
     private Context applicationContext;
+    private FragmentManager fragmentManager;
+    private Review review;
+    private Store store;
+    private Product product;
+    private String userLocation;
+    private String username;
 
-    public AddReviewRequest(Review review, Context applicationContext) {
-        this.review = review;
+    public AddReviewRequest(Context applicationContext, FragmentManager fragmentManager,
+                            Review review, Store store, Product product, String userLocation,
+                            String username) {
         this.applicationContext = applicationContext;
+        this.fragmentManager = fragmentManager;
+        this.review = review;
+        this.store = store;
+        this.product = product;
+        this.userLocation = userLocation;
+        this.username = username;
     }
 
     @Override
@@ -46,32 +60,7 @@ public class AddReviewRequest extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void c) {
         Toast.makeText(applicationContext, "Το σχόλιο σου καταχωρήθηκε επιτυχώς !", Toast.LENGTH_SHORT).show();
-
-        /*StoreFragment storeFragment = new StoreFragment();
-        storeFragment.setApplicationContext(applicationContext);
-        storeFragment.setFragmentManager(fragmentManager);
-
-        Bundle args = new Bundle();
-        args.putParcelable(REVIEW, review);
-
-        args.putInt(Constants.REVIEWS_NUMBER, existingReviews.size());
-
-        double rating = 0;
-        for (Review r : existingReviews) {
-            rating += Double.parseDouble(r.getRating());
-        }
-        rating = rating / existingReviews.size();
-
-        args.putDouble(RATING_SCORE, rating);
-
-        storeFragment.setArguments(args);
-        FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.fragment_container, storeFragment);
-        transaction.addToBackStack(null);
-        transaction.commit();
-    */
-
-        return;
+        new ReviewRequest(store, product, userLocation, username, fragmentManager, applicationContext).execute();
     }
 
     private String buildReviewUrl() throws Exception {

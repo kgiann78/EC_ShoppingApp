@@ -13,6 +13,9 @@ import gr.uoa.ec.shopeeng.models.Review;
 
 import java.util.List;
 
+import static gr.uoa.ec.shopeeng.utils.Constants.MAXIMUM_RATING;
+import static gr.uoa.ec.shopeeng.utils.Constants.RATING_STARS;
+
 public class ReviewAdapter extends ArrayAdapter<Review> {
 
     private static class ReviewViewHolder {
@@ -31,7 +34,7 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
 
         if (convertView == null) {
             LayoutInflater layoutInflater = LayoutInflater.from(getContext());
-            convertView = layoutInflater.inflate(R.layout.list_item_comment, parent, false);
+            convertView = layoutInflater.inflate(R.layout.list_item_review, parent, false);
             reviewViewHolder = new ReviewViewHolder();
             reviewViewHolder.userName = (TextView) convertView.findViewById(R.id.user_name);
             reviewViewHolder.userComment = (TextView) convertView.findViewById(R.id.user_comment);
@@ -45,7 +48,12 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         if (review != null) {
             reviewViewHolder.userName.setText(review.getUsername());
             reviewViewHolder.userComment.setText(review.getComment());
-            reviewViewHolder.userRating.setNumStars((int) (Double.valueOf(review.getRating()) * 5 / 10));
+            reviewViewHolder.userRating.setEnabled(false);
+            reviewViewHolder.userRating.setPressed(false);
+            reviewViewHolder.userRating.setClickable(false);
+            reviewViewHolder.userRating.setStepSize(0.5f);
+            reviewViewHolder.userRating.setNumStars(RATING_STARS);
+            reviewViewHolder.userRating.setRating(Float.valueOf(review.getRating()) * RATING_STARS/MAXIMUM_RATING);
         }
         return convertView;
     }
