@@ -45,4 +45,10 @@ public class Constants {
     public static final String SEARCH = "SEARCH";
     public static final String SHOPPING_LIST = "SHOPPING_LIST";
     public static final String STORE = "STORE";
+
+
+    public static final int RATING_STARS = 5;
+    public static final int MAXIMUM_RATING = 5;
+
+
 }

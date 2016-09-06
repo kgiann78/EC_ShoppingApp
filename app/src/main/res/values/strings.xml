@@ -36,6 +36,7 @@
     <string name="leave_a_comment_label">Άφησε Ένα Σχόλιο</string>
     <string name="submit_button">Υποβολή</string>
     <string name="register_account_text_view">Δημιουργία Λογαριασμού</string>
+    <string name="login_account_text_view">Σύνδεση Λογαριασμού</string>
     <string name="register_username_hint">Όνομα Χρήστη</string>
     <string name="login_username_hint">Όνομα Χρήστη</string>
     <string name="register_password_hint">Κωδικός</string>

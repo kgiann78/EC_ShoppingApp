@@ -46,7 +46,7 @@ public class LoginAccountFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_login_account, container, false);
         loginButton = (Button) view.findViewById(R.id.loginButton);
-        registerButton = (Button) view.findViewById(R.id.registerButton);
+        registerButton = (Button) view.findViewById(R.id.loginLayoutRegisterButton);
         username = (AutoCompleteTextView) view.findViewById(R.id.login_username);
         password = (EditText) view.findViewById(R.id.login_password);
 
@@ -67,7 +67,6 @@ public class LoginAccountFragment extends Fragment {
 
                 try {
                     if (response != null && response.get() != null) {
-                        Log.i(LoginAccountFragment.class.getName(), "Successfull Login? Send onSuccessfullLogin event");
                         loginListener.onSuccessfullLogin(response.get().getUsername());
                     }
                 } catch (InterruptedException e) {
@@ -82,7 +81,7 @@ public class LoginAccountFragment extends Fragment {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                RegisterAccountFragment registerAccountFragment = new RegisterAccountFragment();
+                RegisterAccountFragment registerAccountFragment = RegisterAccountFragment.newInstance(getApplicationContext());
                 getFragmentManager()
                         .beginTransaction()
                         .replace(R.id.fragment_container, registerAccountFragment)
@@ -99,8 +98,6 @@ public class LoginAccountFragment extends Fragment {
         // This makes sure that the container activity has implemented
         // the callback interface. If not, it throws an exception.
         try {
-            Log.i(LoginAccountFragment.class.getName(), "Attaching LoginAccountFragment");
-
             loginListener = (LoginListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()

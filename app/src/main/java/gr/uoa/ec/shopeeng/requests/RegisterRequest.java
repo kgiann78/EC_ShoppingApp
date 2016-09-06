@@ -8,6 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.UserConverter;
+import gr.uoa.ec.shopeeng.fragments.LoginAccountFragment;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.models.User;
 import org.ksoap2.SoapEnvelope;
@@ -80,16 +81,12 @@ public class RegisterRequest extends AsyncTask<String, Void, User> {
                         "Η εγγραφή σου απέτυχε... Προσπάθησε ξανά!", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(applicationContext,
-                        "Επιτυχής εγγραφή!", Toast.LENGTH_SHORT).show();
+                        "Επιτυχής εγγραφή! Μπορείτε να συνδεθείτε!", Toast.LENGTH_SHORT).show();
 
-                SearchFragment searchFragment = new SearchFragment();
-                Bundle args = new Bundle();
-                args.putSerializable("USER", user);
-                searchFragment.setArguments(args);
-
+                LoginAccountFragment loginFragment = LoginAccountFragment.newInstance(applicationContext);
                 fragmentManager
                         .beginTransaction()
-                        .replace(R.id.fragment_container, searchFragment)
+                        .replace(R.id.fragment_container, loginFragment)
                         .addToBackStack(null)
                         .commit();
             }
