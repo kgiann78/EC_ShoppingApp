@@ -2,6 +2,7 @@ package gr.uoa.ec.shopeeng.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import com.fasterxml.jackson.databind.ser.std.UUIDSerializer;
 
 import java.io.Serializable;
 import java.util.UUID;
