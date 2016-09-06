@@ -2,7 +2,7 @@
              xmlns:tools="http://schemas.android.com/tools"
              android:layout_width="match_parent"
              android:layout_height="match_parent"
-             tools:context=".fragments.AddReviewFragment">
+             tools:applicationContext=".fragments.AddReviewFragment">
 
     <!-- TODO: Update blank fragment layout -->
     <TextView
@@ -45,6 +45,6 @@
             android:text="@string/submit_button"
             android:id="@+id/submitButton" android:layout_below="@+id/commentEditText" android:layout_alignStart="@+id/commentEditText"
             android:layout_marginTop="42dp" android:backgroundTint="@color/abc_btn_colored_borderless_text_material"
-            android:textColor="@color/abc_background_cache_hint_selector_material_light"/>
+            android:textColor="#ffffff"/>
 
 </RelativeLayout>

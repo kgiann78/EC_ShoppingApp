@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 public class Rating implements Serializable, Parcelable {
     private String rating;
-    private String userId;
+    private String username;
     private String storeId;
 
     public Rating() {
@@ -16,9 +16,9 @@ public class Rating implements Serializable, Parcelable {
 
     ;
 
-    public Rating(String rating, String userId, String storeId) {
+    public Rating(String rating, String username, String storeId) {
         this.rating = rating;
-        this.userId = userId;
+        this.username = username;
         this.storeId = storeId;
     }
 
@@ -29,7 +29,7 @@ public class Rating implements Serializable, Parcelable {
         String[] data = new String[3];
         in.readStringArray(data);
         this.rating = data[0];
-        this.userId = data[1];
+        this.username = data[1];
         this.storeId = data[2];
 
     }
@@ -42,7 +42,7 @@ public class Rating implements Serializable, Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeStringArray(new String[]{this.rating,
-                this.userId,
+                this.username,
                 this.storeId});
     }
 
@@ -64,12 +64,12 @@ public class Rating implements Serializable, Parcelable {
         this.rating = rating;
     }
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getStoreId() {
@@ -82,6 +82,6 @@ public class Rating implements Serializable, Parcelable {
 
     @Override
     public String toString() {
-        return "Rating : " + rating + "/10 by " + userId;
+        return "Rating : " + rating + "/10 by " + username;
     }
 }

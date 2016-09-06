@@ -43,7 +43,7 @@ public class ReviewAdapter extends ArrayAdapter<Review> {
         Review review = getItem(position);
 
         if (review != null) {
-            reviewViewHolder.userName.setText(review.getUserId());
+            reviewViewHolder.userName.setText(review.getUsername());
             reviewViewHolder.userComment.setText(review.getComment());
             reviewViewHolder.userRating.setNumStars((int) (Double.valueOf(review.getRating()) * 5 / 10));
         }

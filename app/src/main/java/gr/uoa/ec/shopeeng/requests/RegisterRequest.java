@@ -1,25 +1,35 @@
 package gr.uoa.ec.shopeeng.requests;
 
+import android.support.v4.app.FragmentManager;
 import android.content.Context;
+import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
+import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.UserConverter;
+import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.models.User;
-import gr.uoa.ec.shopeeng.utils.SoapRequest;
+import org.ksoap2.SoapEnvelope;
+import org.ksoap2.serialization.PropertyInfo;
 import org.ksoap2.serialization.SoapObject;
+import org.ksoap2.serialization.SoapSerializationEnvelope;
+import org.ksoap2.transport.HttpTransportSE;
 
-import java.util.HashMap;
-import java.util.Map;
-
-import static gr.uoa.ec.shopeeng.utils.Constants.URL;
+import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 
-public class RegisterRequest extends SoapRequest {
+public class RegisterRequest extends AsyncTask<String, Void, User> {
     private final String name;
     private final String lastname;
     private String username;
     private String password;
+    private Context applicationContext;
+    private FragmentManager fragmentManager;
 
-    public RegisterRequest(String username, String password, String name, String lastname) {
+    public RegisterRequest(Context applicationContext, FragmentManager fragmentManager, String username, String password, String name, String lastname) {
+        this.applicationContext = applicationContext;
+        this.fragmentManager = fragmentManager;
         this.username = username;
         this.password = password;
         this.name = name;
@@ -30,13 +40,29 @@ public class RegisterRequest extends SoapRequest {
     @Override
     protected User doInBackground(String... params) {
         try {
-            Map requestParameters = new HashMap<>();
-            requestParameters.put("username", username);
-            requestParameters.put("password", password);
-            requestParameters.put("name", name);
-            requestParameters.put("lastname", lastname);
+            String methodName = "registerRequest";
+            String soapAction = NAMESPACE + SERVICE + "/registerRequest";
 
-            SoapObject response = (SoapObject) super.soapCallWithProperties("registerRequest", URL, requestParameters);
+            SoapObject request = new SoapObject(NAMESPACE, methodName);
+            SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
+            envelope.implicitTypes = true;
+
+            PropertyInfo userPropertyInfo = new PropertyInfo();
+            userPropertyInfo.setNamespace(NAMESPACE);
+            userPropertyInfo.setName("user");
+            userPropertyInfo.setValue(new User(username, password, name, lastname));
+            userPropertyInfo.setType(User.class);
+
+            request.addProperty(userPropertyInfo);
+            envelope.setOutputSoapObject(request);
+            envelope.dotNet = false;
+
+            HttpTransportSE httpTransport = new HttpTransportSE(URL);
+            httpTransport.debug = true;
+
+            httpTransport.call(soapAction, envelope);
+
+            SoapObject response = (SoapObject) envelope.getResponse();
 
             return UserConverter.ConvertFromSoap(response);
         } catch (Exception e) {
@@ -47,15 +73,28 @@ public class RegisterRequest extends SoapRequest {
     }
 
     @Override
-    protected void onPostExecute(final Object user) {
-/*add error here*/
-        /*
-        if (user != null) {
-            finish();
-        } else {
-            mPasswordView.setError(getString(R.string.error_incorrect_password));
-            mPasswordView.requestFocus();
-        }*/
+    protected void onPostExecute(final User user) {
+        try {
+            if (user == null) {
+                Toast.makeText(applicationContext,
+                        "Η εγγραφή σου απέτυχε... Προσπάθησε ξανά!", Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(applicationContext,
+                        "Επιτυχής εγγραφή!", Toast.LENGTH_SHORT).show();
 
+                SearchFragment searchFragment = new SearchFragment();
+                Bundle args = new Bundle();
+                args.putSerializable("USER", user);
+                searchFragment.setArguments(args);
+
+                fragmentManager
+                        .beginTransaction()
+                        .replace(R.id.fragment_container, searchFragment)
+                        .addToBackStack(null)
+                        .commit();
+            }
+        } catch (Exception e) {
+            Log.e("Registration Error", e.toString());
+        }
     }
 }

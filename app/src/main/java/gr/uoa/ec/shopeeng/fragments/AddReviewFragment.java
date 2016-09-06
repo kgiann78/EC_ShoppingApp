@@ -21,7 +21,7 @@ import static gr.uoa.ec.shopeeng.utils.Constants.STORE_ID;
 import static gr.uoa.ec.shopeeng.utils.Constants.USER_ID;
 
 public class AddReviewFragment extends Fragment {
-    private String userId;
+    private String username;
     private String storeId;
     private Button submit;
     private EditText comment;
@@ -34,11 +34,11 @@ public class AddReviewFragment extends Fragment {
 
 
     // TODO: Rename and change types and number of parameters
-    public static AddReviewFragment newInstance(String userId, String storeId) {
+    public static AddReviewFragment newInstance(String username, String storeId) {
         AddReviewFragment fragment = new AddReviewFragment();
         Bundle args = new Bundle();
         args.putString(STORE_ID, storeId);
-        args.putString(USER_ID, userId);
+        args.putString(USER_ID, username);
         fragment.setArguments(args);
         return fragment;
     }
@@ -48,7 +48,7 @@ public class AddReviewFragment extends Fragment {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
             storeId = getArguments().getString(STORE_ID);
-            userId = getArguments().getString(USER_ID);
+            username = getArguments().getString(USER_ID);
         }
     }
 
@@ -68,7 +68,7 @@ public class AddReviewFragment extends Fragment {
                 Review review = new Review();
                 review.setComment(comment.getText().toString());
                 review.setRating(String.valueOf(ratingBar.getRating()));
-                review.setUserId(userId);
+                review.setUsername(username);
                 review.setRdate(new SimpleDateFormat().format(Calendar.getInstance().getTime()));
                 review.setStoreId(storeId);
                 new AddReviewRequest(review, applicationContext).execute();

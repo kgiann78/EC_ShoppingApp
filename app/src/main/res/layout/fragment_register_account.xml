@@ -8,14 +8,14 @@
         android:paddingRight="@dimen/activity_horizontal_margin"
         android:paddingTop="@dimen/activity_vertical_margin"
         android:paddingBottom="@dimen/activity_vertical_margin"
-        tools:context=".fragments.CreateAccountFragment">
+        tools:applicationContext=".fragments.CreateAccountFragment">
 
     <ScrollView
             android:id="@+id/account_form"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
         <LinearLayout
-                android:id="@+id/create_account_form"
+                android:id="@+id/register_account_form"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
@@ -24,8 +24,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="46dp"
                     android:textAppearance="?android:attr/textAppearanceLarge"
-                    android:text="@string/register_title_label"
-                    android:id="@+id/registerTitle" android:layout_gravity="center_horizontal"/>
+                    android:text="@string/register_account_text_view"
+                    android:id="@+id/registerTextView" android:layout_gravity="center_horizontal"/>
 
             <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
@@ -35,7 +35,7 @@
                         android:id="@+id/register_username"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/username_label"
+                        android:hint="@string/register_username_hint"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:singleLine="true"/>
@@ -50,7 +50,7 @@
                         android:id="@+id/register_password"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/register_password_label"
+                        android:hint="@string/register_password_hint"
                         android:imeActionId="@+id/create_account"
                         android:imeOptions="actionUnspecified"
                         android:inputType="textPassword"
@@ -67,7 +67,7 @@
                         android:id="@+id/register_name"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/name_label"
+                        android:hint="@string/register_name_hint"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:singleLine="true"/>
@@ -82,7 +82,7 @@
                         android:id="@+id/register_surname"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:hint="@string/surname_label"
+                        android:hint="@string/register_surname_hint"
                         android:inputType="textEmailAddress"
                         android:maxLines="1"
                         android:singleLine="true"/>

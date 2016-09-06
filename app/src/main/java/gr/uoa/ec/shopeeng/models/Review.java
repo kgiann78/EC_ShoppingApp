@@ -7,7 +7,7 @@ import android.os.Parcelable;
 import java.io.Serializable;
 
 public class Review implements Parcelable, Serializable {
-    String userId;
+    String username;
     String rdate;
     String rating;
     String comment;
@@ -16,8 +16,8 @@ public class Review implements Parcelable, Serializable {
     public Review() {
     }
 
-    public Review(String userId, String rdate, String rating, String comment, String storeId) {
-        this.userId = userId;
+    public Review(String username, String rdate, String rating, String comment, String storeId) {
+        this.username = username;
         this.rdate = rdate;
         this.rating = rating;
         this.comment = comment;
@@ -27,7 +27,7 @@ public class Review implements Parcelable, Serializable {
     public Review(Parcel in) {
         String[] data = new String[5];
         in.readStringArray(data);
-        this.userId = data[0];
+        this.username = data[0];
         this.rating = data[1];
         this.comment = data[2];
         this.rdate = data[3];
@@ -42,7 +42,7 @@ public class Review implements Parcelable, Serializable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeStringArray(new String[]{this.userId, String.valueOf(this.rating), this.comment, this.rdate, this.storeId});
+        dest.writeStringArray(new String[]{this.username, String.valueOf(this.rating), this.comment, this.rdate, this.storeId});
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
@@ -55,12 +55,12 @@ public class Review implements Parcelable, Serializable {
         }
     };
 
-    public String getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getRdate() {

@@ -13,6 +13,8 @@ import android.widget.EditText;
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.listeners.SearchClickedListener;
 
+import static gr.uoa.ec.shopeeng.utils.Constants.USER_ID;
+
 /**
  * A placeholder fragment containing a simple view.
  */
@@ -39,19 +41,6 @@ public class SearchFragment extends Fragment {
                 }
             });
         }
-
-        //Show registration page on click
-        Button registerBtn = (Button) view.findViewById(R.id.createAccountButton);
-        registerBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                CreateAccountFragment createAccountFragment = CreateAccountFragment.newInstance(getContext());
-                FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                transaction.replace(R.id.fragment_container, createAccountFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
         return view;
     }
 

@@ -7,9 +7,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import gr.uoa.ec.shopeeng.fragments.LoginAccountFragment;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.fragments.ShoppingListFragment;
-import gr.uoa.ec.shopeeng.listeners.AddToShoppingListListener;
+import gr.uoa.ec.shopeeng.listeners.ShoppingListListener;
+import gr.uoa.ec.shopeeng.listeners.LoginListener;
 import gr.uoa.ec.shopeeng.listeners.SearchClickedListener;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.ShoppingItem;
@@ -21,9 +23,9 @@ import gr.uoa.ec.shopeeng.utils.ShoppingListManager;
 
 import java.util.ArrayList;
 
-public class MainActivity extends AppCompatActivity implements SearchClickedListener, AddToShoppingListListener {
+public class MainActivity extends AppCompatActivity implements SearchClickedListener, ShoppingListListener, LoginListener {
     private ShoppingListManager shoppingListManager;
-    private String userId = "1";
+    private String username = "Not Logged In";
 
     //TODO Product -> bring cheapest price
     //TODO fix stars rating submission
@@ -94,7 +96,8 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, shoppingListFragment)
-                    .addToBackStack(null).commit();
+                    .addToBackStack(null)
+                    .commit();
 
         } else if (id == R.id.action_go_to_search) {
             SearchFragment searchFragment = new SearchFragment();
@@ -102,7 +105,15 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
             getSupportFragmentManager()
                     .beginTransaction()
                     .replace(R.id.fragment_container, searchFragment)
-                    .addToBackStack(null).commit();
+                    .addToBackStack(null)
+                    .commit();
+        } else if (id == R.id.action_register_login) {
+            LoginAccountFragment loginAccountFragment = LoginAccountFragment.newInstance(getApplicationContext());
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, loginAccountFragment)
+                    .addToBackStack(null)
+                    .commit();
         }
 
 
@@ -113,7 +124,7 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
     public void onSearchClicked(String searchText) {
 
         try {
-            new ProductRequest(searchText, userId, getSupportFragmentManager(), getApplicationContext()).execute();
+            new ProductRequest(searchText, username, getSupportFragmentManager(), getApplicationContext()).execute();
 
         } catch (Exception e) {
             Log.e(MainActivity.class.toString(), e.getMessage());
@@ -121,7 +132,7 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
     }
 
     @Override
-    public void onAddProductToShoppingClicked(Product product, Store store) {
+    public void onAddItemToShoppingListClicked(Product product, Store store) {
         try {
             if (shoppingListManager.productAlreadyInList(product) && store == null) {
                 Toast.makeText(getApplicationContext(), "Χμμμ! Υπάρχει ήδη στη λίστα!", Toast.LENGTH_SHORT).show();
@@ -140,5 +151,21 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
             Toast.makeText(getApplicationContext(), "Μπράβο! Το έβαλες στη λίστα! 'Ελα να βρούμε μαγαζάκι!", Toast.LENGTH_SHORT).show();
     }
 
+    @Override
+    public void onDeleteItemFromShoppingListClicked(Product product) {
+        //TODO implement call to delete item from shopping list
+        try {
+            shoppingListManager.removeProduct(product);
+        } catch (Exception e) {
+            Log.e(MainActivity.class.toString(), e.getMessage());
+            return;
+        }
+    }
 
+    @Override
+    public void onSuccessfullLogin(String username) {
+
+        Log.i(MainActivity.class.getName(), username);
+        this.username = username;
+    }
 }
