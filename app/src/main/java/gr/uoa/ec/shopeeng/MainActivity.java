@@ -10,13 +10,14 @@ import android.widget.Toast;
 import gr.uoa.ec.shopeeng.fragments.LoginAccountFragment;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.fragments.ShoppingListFragment;
-import gr.uoa.ec.shopeeng.listeners.ShoppingListListener;
 import gr.uoa.ec.shopeeng.listeners.LoginListener;
 import gr.uoa.ec.shopeeng.listeners.SearchClickedListener;
+import gr.uoa.ec.shopeeng.listeners.ShoppingListListener;
 import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.ShoppingItem;
 import gr.uoa.ec.shopeeng.models.ShoppingList;
 import gr.uoa.ec.shopeeng.models.Store;
+import gr.uoa.ec.shopeeng.requests.AddToListRequest;
 import gr.uoa.ec.shopeeng.requests.ProductRequest;
 import gr.uoa.ec.shopeeng.utils.Constants;
 import gr.uoa.ec.shopeeng.utils.ShoppingListManager;
@@ -139,6 +140,8 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
                 return;
             } else {
                 shoppingListManager.addProduct(product, store);
+                new AddToListRequest(username, product.getProductId(), store.getStoreId(),
+                        store.getPrice(), getApplicationContext()).execute();
             }
         } catch (Exception e) {
             Log.e(MainActivity.class.toString(), e.getMessage());
@@ -168,4 +171,5 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
         Log.i(MainActivity.class.getName(), username);
         this.username = username;
     }
+
 }
