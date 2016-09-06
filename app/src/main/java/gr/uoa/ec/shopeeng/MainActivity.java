@@ -167,8 +167,6 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
 
     @Override
     public void onSuccessfullLogin(String username) {
-
-        Log.i(MainActivity.class.getName(), username);
         this.username = username;
     }
 

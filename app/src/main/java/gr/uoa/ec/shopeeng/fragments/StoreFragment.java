@@ -21,8 +21,7 @@ import gr.uoa.ec.shopeeng.utils.Constants;
 
 import java.util.ArrayList;
 
-import static gr.uoa.ec.shopeeng.utils.Constants.LOCATION;
-import static gr.uoa.ec.shopeeng.utils.Constants.USER_ID;
+import static gr.uoa.ec.shopeeng.utils.Constants.*;
 
 public class StoreFragment extends Fragment {
     private ShoppingListListener shoppingListListener;
@@ -117,8 +116,8 @@ public class StoreFragment extends Fragment {
 
             storeName.setText(store.getName());
             storeAddress.setText(store.getAddress());
-            ratingBar.setRating(ratingScore.floatValue());
-            ratingBar.setNumStars((int) (ratingScore.floatValue()));
+            ratingBar.setNumStars(RATING_STARS);
+            ratingBar.setRating(ratingScore.floatValue() * RATING_STARS/MAXIMUM_RATING);
 
             username = args.getString(USER_ID);
         }

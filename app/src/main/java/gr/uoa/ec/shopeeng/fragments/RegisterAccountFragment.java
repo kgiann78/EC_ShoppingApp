@@ -53,7 +53,7 @@ public class RegisterAccountFragment extends Fragment {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                RegisterRequest registerRequest = new RegisterRequest(applicationContext, getFragmentManager(), username.getText().toString(),
+                RegisterRequest registerRequest = new RegisterRequest(getApplicationContext(), getFragmentManager(), username.getText().toString(),
                         password.getText().toString(), name.getText().toString(), lastname.getText().toString());
                 AsyncTask<String, Void, User> response = registerRequest.execute();
             }
