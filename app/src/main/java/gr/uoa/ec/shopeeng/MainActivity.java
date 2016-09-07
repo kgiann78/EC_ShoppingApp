@@ -153,9 +153,20 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
 
     @Override
     public void onDeleteItemFromShoppingListClicked(Product product) {
-        //TODO implement call to delete item from shopping list
         try {
             shoppingListManager.removeProduct(product);
+            ShoppingListFragment shoppingListFragment = new ShoppingListFragment();
+            Bundle args = new Bundle();
+
+            ArrayList<ShoppingItem> shoppingItems = shoppingListManager.getShoppingItems();
+
+            args.putParcelableArrayList(Constants.ITEMS_IN_SHOPPING_LIST, shoppingItems);
+            shoppingListFragment.setArguments(args);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, shoppingListFragment)
+                    .addToBackStack(null)
+                    .commit();
         } catch (Exception e) {
             Log.e(MainActivity.class.toString(), e.getMessage());
             return;
