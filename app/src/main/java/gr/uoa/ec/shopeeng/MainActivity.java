@@ -18,6 +18,7 @@ import gr.uoa.ec.shopeeng.models.ShoppingItem;
 import gr.uoa.ec.shopeeng.models.ShoppingList;
 import gr.uoa.ec.shopeeng.models.Store;
 import gr.uoa.ec.shopeeng.requests.AddToListRequest;
+import gr.uoa.ec.shopeeng.requests.DeleteItemListRequest;
 import gr.uoa.ec.shopeeng.requests.ProductRequest;
 import gr.uoa.ec.shopeeng.utils.Constants;
 import gr.uoa.ec.shopeeng.utils.ShoppingListManager;
@@ -27,9 +28,6 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements SearchClickedListener, ShoppingListListener, LoginListener {
     private ShoppingListManager shoppingListManager;
     private String username = "Not Logged In";
-
-    //TODO Product -> bring cheapest price
-    //TODO fix stars rating submission
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -155,10 +153,13 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
     }
 
     @Override
-    public void onDeleteItemFromShoppingListClicked(Product product) {
+    public void onDeleteItemFromShoppingListClicked(Product product, Store store) {
         //TODO implement call to delete item from shopping list
         try {
             shoppingListManager.removeProduct(product);
+            new DeleteItemListRequest(username, product.getProductId(), store.getStoreId(),
+                    getApplicationContext()).execute();
+
         } catch (Exception e) {
             Log.e(MainActivity.class.toString(), e.getMessage());
             return;
@@ -168,6 +169,8 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
     @Override
     public void onSuccessfullLogin(String username) {
         this.username = username;
+
+        //shoppingListManager.initList();
     }
 
 }

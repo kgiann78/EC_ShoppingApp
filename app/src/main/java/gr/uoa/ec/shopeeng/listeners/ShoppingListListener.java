@@ -5,5 +5,5 @@ import gr.uoa.ec.shopeeng.models.Store;
 
 public interface ShoppingListListener {
     void onAddItemToShoppingListClicked(Product product, Store store);
-    void onDeleteItemFromShoppingListClicked(Product product);
+    void onDeleteItemFromShoppingListClicked(Product product, Store store);
 }

@@ -4,6 +4,7 @@ import gr.uoa.ec.shopeeng.models.Product;
 import gr.uoa.ec.shopeeng.models.ShoppingItem;
 import gr.uoa.ec.shopeeng.models.ShoppingList;
 import gr.uoa.ec.shopeeng.models.Store;
+import gr.uoa.ec.shopeeng.requests.DeleteItemListRequest;
 
 import java.util.ArrayList;
 
@@ -26,6 +27,7 @@ public class ShoppingListManager {
             shoppingList.getShoppingMap().remove(product.getProductId());
             shoppingList.getProductsMap().remove(product.getProductId());
         }
+
     }
 
     public ArrayList<ShoppingItem> getShoppingItems() {
@@ -37,7 +39,7 @@ public class ShoppingListManager {
                     shoppingList.getShoppingMap().get(productId));
             shoppingItems.add(item);
         }
-        return  shoppingItems;
+        return shoppingItems;
     }
 
     public void setShoppingList(ShoppingList shoppingList) {
