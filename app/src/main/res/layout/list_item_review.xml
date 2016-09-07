@@ -14,7 +14,11 @@
     <RatingBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:scaleX=".5"
+            android:scaleY=".5"
+            android:transformPivotX="0dp"
+            android:transformPivotY="0dp"
             android:id="@+id/user_rate" android:layout_gravity="left"/>
     <TextView
             android:layout_width="wrap_content"

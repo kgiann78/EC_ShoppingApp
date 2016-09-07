@@ -43,7 +43,14 @@ public class StoreFragment extends Fragment {
     ArrayList<Review> reviews = new ArrayList<>();
     Double ratingScore = 0.00;
     Button directionsButton;
-    Button redirectReviewButton;
+    Button reviewButton;
+
+    public static StoreFragment newInstance(Context context, FragmentManager fragmentManager) {
+        StoreFragment storeFragment = new StoreFragment();
+        storeFragment.setApplicationContext(context);
+        storeFragment.setFragmentManager(fragmentManager);
+        return storeFragment;
+    }
 
 
     @Override
@@ -54,7 +61,7 @@ public class StoreFragment extends Fragment {
         ratingBar = (RatingBar) view.findViewById(R.id.store_rating_bar);
         storeAddress = (TextView) view.findViewById(R.id.store_address_text_view);
         ratingScoreText = (TextView) view.findViewById(R.id.rating_score_text_view);
-        reviewsList = (ListView) view.findViewById(R.id.comments_list);
+        reviewsList = (ListView) view.findViewById(R.id.review_list);
         addToShoppingList = (ImageButton) view.findViewById(R.id.addToShoppingListButton);
         directionsButton = (Button) view.findViewById(R.id.directionsButton);
 
@@ -68,14 +75,14 @@ public class StoreFragment extends Fragment {
                 startActivity(intent);
             }
         });
-        redirectReviewButton = (Button) view.findViewById(R.id.redirectReview);
-        redirectReviewButton.setOnClickListener(new View.OnClickListener() {
+        reviewButton = (Button) view.findViewById(R.id.reviewButton);
+        reviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                AddReviewFragment addReviewFragment = AddReviewFragment.newInstance(username, store.getStoreId());
+                AddReviewFragment addReviewFragment =
+                        AddReviewFragment.newInstance(applicationContext, username, store, product, userlocation);
                 addReviewFragment.setFragmentManager(fragmentManager);
-                addReviewFragment.setApplicationContext(applicationContext);
                 fragmentManager.beginTransaction()
                         .replace(R.id.fragment_container, addReviewFragment)
                         .addToBackStack(null)
@@ -116,6 +123,10 @@ public class StoreFragment extends Fragment {
 
             storeName.setText(store.getName());
             storeAddress.setText(store.getAddress());
+            ratingBar.setEnabled(false);
+            ratingBar.setPressed(false);
+            ratingBar.setClickable(false);
+            ratingBar.setStepSize(0.5f);
             ratingBar.setNumStars(RATING_STARS);
             ratingBar.setRating(ratingScore.floatValue() * RATING_STARS/MAXIMUM_RATING);
 
@@ -153,4 +164,7 @@ public class StoreFragment extends Fragment {
         this.applicationContext = applicationContext;
     }
 
+    public Context getApplicationContext() {
+        return this.applicationContext;
+    }
 }

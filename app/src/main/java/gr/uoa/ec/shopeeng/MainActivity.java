@@ -10,6 +10,7 @@ import android.widget.Toast;
 import gr.uoa.ec.shopeeng.fragments.LoginAccountFragment;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.fragments.ShoppingListFragment;
+import gr.uoa.ec.shopeeng.listeners.ShoppingListListener;
 import gr.uoa.ec.shopeeng.listeners.LoginListener;
 import gr.uoa.ec.shopeeng.listeners.SearchClickedListener;
 import gr.uoa.ec.shopeeng.listeners.ShoppingListListener;
@@ -28,6 +29,9 @@ import java.util.ArrayList;
 public class MainActivity extends AppCompatActivity implements SearchClickedListener, ShoppingListListener, LoginListener {
     private ShoppingListManager shoppingListManager;
     private String username = "Not Logged In";
+
+    //TODO Product -> bring cheapest price
+    //TODO fix stars rating submission
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,10 +157,21 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
     }
 
     @Override
-    public void onDeleteItemFromShoppingListClicked(Product product, Store store) {
-        //TODO implement call to delete item from shopping list
+    public void onDeleteItemFromShoppingListClicked(Product product) {
         try {
             shoppingListManager.removeProduct(product);
+            ShoppingListFragment shoppingListFragment = new ShoppingListFragment();
+            Bundle args = new Bundle();
+
+            ArrayList<ShoppingItem> shoppingItems = shoppingListManager.getShoppingItems();
+
+            args.putParcelableArrayList(Constants.ITEMS_IN_SHOPPING_LIST, shoppingItems);
+            shoppingListFragment.setArguments(args);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, shoppingListFragment)
+                    .addToBackStack(null)
+                    .commit();
             new DeleteItemListRequest(username, product.getProductId(), store.getStoreId(),
                     getApplicationContext()).execute();
 
@@ -169,8 +184,5 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
     @Override
     public void onSuccessfullLogin(String username) {
         this.username = username;
-
-        //shoppingListManager.initList();
     }
-
 }

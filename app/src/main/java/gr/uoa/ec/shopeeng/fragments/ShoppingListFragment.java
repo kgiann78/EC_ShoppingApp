@@ -1,6 +1,8 @@
 package gr.uoa.ec.shopeeng.fragments;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -8,26 +10,28 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
+import com.baoyz.swipemenulistview.SwipeMenu;
+import com.baoyz.swipemenulistview.SwipeMenuCreator;
+import com.baoyz.swipemenulistview.SwipeMenuItem;
+import com.baoyz.swipemenulistview.SwipeMenuListView;
+
+
 import gr.uoa.ec.shopeeng.R;
 import gr.uoa.ec.shopeeng.adapters.ShoppingItemAdapter;
 import gr.uoa.ec.shopeeng.listeners.LocationUpdateListener;
+import gr.uoa.ec.shopeeng.listeners.ShoppingListListener;
 import gr.uoa.ec.shopeeng.listeners.ShoppingLocationListener;
 import gr.uoa.ec.shopeeng.models.ProductStoreRequestObject;
 import gr.uoa.ec.shopeeng.models.ShoppingItem;
-import gr.uoa.ec.shopeeng.models.ShoppingList;
 import gr.uoa.ec.shopeeng.requests.ProductStoreRequest;
 import gr.uoa.ec.shopeeng.requests.ReviewRequest;
-import gr.uoa.ec.shopeeng.utils.Constants;
-import gr.uoa.ec.shopeeng.utils.OrderBy;
-import gr.uoa.ec.shopeeng.utils.TransportMode;
-import gr.uoa.ec.shopeeng.utils.Units;
+import gr.uoa.ec.shopeeng.utils.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -36,10 +40,8 @@ import java.util.Locale;
 
 import static gr.uoa.ec.shopeeng.utils.Constants.USER_ID;
 
-/**
- * A placeholder fragment containing a simple view.
- */
 public class ShoppingListFragment extends Fragment {
+    private ShoppingListListener shoppingListListener;
 
     private LocationManager locationManager;
     private ShoppingLocationListener locationListener;
@@ -47,8 +49,8 @@ public class ShoppingListFragment extends Fragment {
     private String username;
     private String userLocation;
 
+    private SwipeMenuListView shoppingListView;
 
-    private ListView shoppingListView;
     public ShoppingListFragment() {
     }
 
@@ -56,10 +58,27 @@ public class ShoppingListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_shopping_list, container, false);
+        shoppingListView = (SwipeMenuListView) view.findViewById(R.id.shopping_list);
+
+        SwipeMenuCreator creator = new SwipeMenuCreator() {
+
+            @Override
+            public void create(SwipeMenu menu) {
+                SwipeMenuItem openItem = new SwipeMenuItem(getContext());
+                openItem.setBackground(new ColorDrawable(Color.rgb(0xF9, 0x3F, 0x25)));
+                openItem.setWidth(dp2px(90));
+                openItem.setTitle("Delete");
+                openItem.setTitleSize(18);
+                openItem.setTitleColor(Color.WHITE);
+                menu.addMenuItem(openItem);
+            }
+        };
+
+        shoppingListView.setMenuCreator(creator);
+        shoppingListView.setSwipeDirection(SwipeMenuListView.DIRECTION_LEFT);
 
         if (getArguments() != null) {
             Bundle args = getArguments();
-            shoppingListView = (ListView) view.findViewById(R.id.shopping_list);
             ArrayList<ShoppingItem> shoppingItems = args.getParcelableArrayList(Constants.ITEMS_IN_SHOPPING_LIST);
 
             shoppingListView.setAdapter(new ShoppingItemAdapter(getActivity(), shoppingItems));
@@ -78,7 +97,7 @@ public class ShoppingListFragment extends Fragment {
             username = args.getString(USER_ID);
         }
 
-        locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
+        this.locationManager = (LocationManager) getContext().getSystemService(Context.LOCATION_SERVICE);
         locationListener = new ShoppingLocationListener();
         locationListener.onLocationUpdated(new LocationUpdateListener() {
             @Override
@@ -104,6 +123,16 @@ public class ShoppingListFragment extends Fragment {
             userLocation += ", " + addresses.get(0).getPostalCode();
         }
 
+        shoppingListView.setOnMenuItemClickListener(new SwipeMenuListView.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(int position, SwipeMenu menu, int index) {
+                ShoppingItem shoppingItem = (ShoppingItem) shoppingListView.getAdapter().getItem(position);
+                shoppingListListener.onDeleteItemFromShoppingListClicked(shoppingItem.getProduct());
+                // false : close the menu; true : not close the menu
+                return false;
+            }
+        });
+
         shoppingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -124,5 +153,22 @@ public class ShoppingListFragment extends Fragment {
                 }
             }
         });
+    }
+
+    private int dp2px(int dp) {
+        return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp,
+                getResources().getDisplayMetrics());
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        try {
+            shoppingListListener = (ShoppingListListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement ShoppingListListener");
+        }
     }
 }
