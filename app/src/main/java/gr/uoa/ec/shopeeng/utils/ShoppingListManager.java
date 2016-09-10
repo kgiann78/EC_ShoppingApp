@@ -1,15 +1,12 @@
 package gr.uoa.ec.shopeeng.utils;
 
-import gr.uoa.ec.shopeeng.models.Product;
-import gr.uoa.ec.shopeeng.models.ShoppingItem;
-import gr.uoa.ec.shopeeng.models.ShoppingList;
-import gr.uoa.ec.shopeeng.models.Store;
+import gr.uoa.ec.shopeeng.models.*;
 import gr.uoa.ec.shopeeng.requests.DeleteItemListRequest;
 
 import java.util.ArrayList;
 
 public class ShoppingListManager {
-    ShoppingList shoppingList;
+    ShoppingList shoppingList = new ShoppingList();
 
     public boolean productAlreadyInList(Product product) {
         return shoppingList.getShoppingMap().containsKey(product.getProductId());
@@ -44,5 +41,15 @@ public class ShoppingListManager {
 
     public void setShoppingList(ShoppingList shoppingList) {
         this.shoppingList = shoppingList;
+    }
+
+    public void initList(ArrayList<ListItem> listItems) {
+
+        for (ListItem item : listItems) {
+            Store s = new Store(item.getStoreId(), item.getStoreName(), item.getStoreAddress(), item.getStoreCountry(), " ", " ", item.getStorePrice(), "0", "0");
+            Product p = new Product(item.getProductId(), item.getProductName(), item.getProductCategory(), item.getProductDescription(), item.getStorePrice());
+            shoppingList.getProductsMap().put(p.getProductId(), p);
+            shoppingList.getShoppingMap().put(p.getProductId(), s);
+        }
     }
 }

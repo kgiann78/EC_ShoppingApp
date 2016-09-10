@@ -13,13 +13,11 @@ import java.util.ArrayList;
 public class DeleteItemListRequest extends AsyncTask<Void, Void, ArrayList<Void>> {
     private String username;
     private String productId;
-    private String storeId;
     private Context applicationContext;
 
-    public DeleteItemListRequest(String username, String productId, String storeId, Context applicationContext) {
+    public DeleteItemListRequest(String username, String productId, Context applicationContext) {
         this.username = username;
         this.productId = productId;
-        this.storeId = storeId;
 
         this.applicationContext = applicationContext;
     }
@@ -29,7 +27,7 @@ public class DeleteItemListRequest extends AsyncTask<Void, Void, ArrayList<Void>
         try {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-            restTemplate.postForObject(buildUrl(productId, storeId, username), null, null);
+            restTemplate.postForObject(buildUrl(productId, username),Void.class,null);
             Log.i("Deleted item ", productId);
         } catch (Exception e) {
             Log.e(DeleteItemListRequest.class.getName(), e.getMessage(), e);
@@ -38,13 +36,13 @@ public class DeleteItemListRequest extends AsyncTask<Void, Void, ArrayList<Void>
     }
 
 
-    private String buildUrl(String productId, String storeId, String username) throws Exception {
+    private String buildUrl(String productId, String username) throws Exception {
         StringBuilder url = new StringBuilder();
         url.append(Util.getProperty("endpoint", applicationContext));
         url.append(Util.getProperty("deleteItemList", applicationContext));
 
-        Log.i(" buildUrl", String.format(url.toString(), username, productId, storeId));
-        return String.format(url.toString(), username, productId, storeId);
+        Log.i(" buildUrl", String.format(url.toString(), username, productId));
+        return String.format(url.toString(), username, productId);
     }
 
 }

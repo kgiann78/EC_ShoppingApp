@@ -1,5 +1,6 @@
 package gr.uoa.ec.shopeeng;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -10,21 +11,20 @@ import android.widget.Toast;
 import gr.uoa.ec.shopeeng.fragments.LoginAccountFragment;
 import gr.uoa.ec.shopeeng.fragments.SearchFragment;
 import gr.uoa.ec.shopeeng.fragments.ShoppingListFragment;
-import gr.uoa.ec.shopeeng.listeners.ShoppingListListener;
 import gr.uoa.ec.shopeeng.listeners.LoginListener;
 import gr.uoa.ec.shopeeng.listeners.SearchClickedListener;
 import gr.uoa.ec.shopeeng.listeners.ShoppingListListener;
-import gr.uoa.ec.shopeeng.models.Product;
-import gr.uoa.ec.shopeeng.models.ShoppingItem;
-import gr.uoa.ec.shopeeng.models.ShoppingList;
-import gr.uoa.ec.shopeeng.models.Store;
+import gr.uoa.ec.shopeeng.models.*;
 import gr.uoa.ec.shopeeng.requests.AddToListRequest;
 import gr.uoa.ec.shopeeng.requests.DeleteItemListRequest;
+import gr.uoa.ec.shopeeng.requests.GetListRequest;
 import gr.uoa.ec.shopeeng.requests.ProductRequest;
 import gr.uoa.ec.shopeeng.utils.Constants;
 import gr.uoa.ec.shopeeng.utils.ShoppingListManager;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.concurrent.ExecutionException;
 
 public class MainActivity extends AppCompatActivity implements SearchClickedListener, ShoppingListListener, LoginListener {
     private ShoppingListManager shoppingListManager;
@@ -156,6 +156,7 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
             Toast.makeText(getApplicationContext(), "Μπράβο! Το έβαλες στη λίστα! 'Ελα να βρούμε μαγαζάκι!", Toast.LENGTH_SHORT).show();
     }
 
+
     @Override
     public void onDeleteItemFromShoppingListClicked(Product product) {
         try {
@@ -172,8 +173,7 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
                     .replace(R.id.fragment_container, shoppingListFragment)
                     .addToBackStack(null)
                     .commit();
-            new DeleteItemListRequest(username, product.getProductId(), store.getStoreId(),
-                    getApplicationContext()).execute();
+            new DeleteItemListRequest(username, product.getProductId(), getApplicationContext()).execute();
 
         } catch (Exception e) {
             Log.e(MainActivity.class.toString(), e.getMessage());
@@ -184,5 +184,22 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
     @Override
     public void onSuccessfullLogin(String username) {
         this.username = username;
+
+        try {
+            AsyncTask<Void, Void, ArrayList<ListItem>> getListRequest = new GetListRequest(username, getApplicationContext()).execute();
+            /*while (true) {
+                if (getListRequest.getStatus().equals(AsyncTask.Status.FINISHED)) {
+                    break;
+                }
+            }*/
+
+            Log.i("get list req", Arrays.toString(getListRequest.get().toArray()));
+            shoppingListManager.initList(getListRequest.get());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
     }
 }
