@@ -142,11 +142,13 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
                 return;
             } else {
                 shoppingListManager.addProduct(product, store);
-                if (store != null) {
-                    new AddToListRequest(username, product.getProductId(), store.getStoreId(),
-                            store.getPrice(), getApplicationContext()).execute();
-                } else {
-                    new AddToListRequest(username, product.getProductId(), " ", "0", getApplicationContext()).execute();
+                if (username != "Not Logged In") {
+                    if (store != null) {
+                        new AddToListRequest(username, product.getProductId(), store.getStoreId(),
+                                store.getPrice(), getApplicationContext()).execute();
+                    } else {
+                        new AddToListRequest(username, product.getProductId(), " ", "0", getApplicationContext()).execute();
+                    }
                 }
             }
         } catch (Exception e) {
@@ -177,8 +179,9 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
                     .replace(R.id.fragment_container, shoppingListFragment)
                     .addToBackStack(null)
                     .commit();
-            new DeleteItemListRequest(username, product.getProductId(), getApplicationContext()).execute();
-
+            if (username != "Not Logged In") {
+                new DeleteItemListRequest(username, product.getProductId(), getApplicationContext()).execute();
+            }
         } catch (Exception e) {
             Log.e(MainActivity.class.toString(), e.getMessage());
             return;
