@@ -32,7 +32,7 @@ public class AddToListRequest extends AsyncTask<Void, Void, ArrayList<Void>> {
         try {
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.getMessageConverters().add(new MappingJackson2HttpMessageConverter());
-            restTemplate.postForObject(buildAddToListUrl(productId, storeId, username, price), Void.class, null);
+            restTemplate.postForObject(buildAddToListUrl(productId, storeId, username, price), String.class, null);
             Log.i("Item added to list!! :", productId);
         } catch (Exception e) {
             Log.e(AddToListRequest.class.getName(), e.getMessage(), e);
