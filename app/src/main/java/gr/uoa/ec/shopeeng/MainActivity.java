@@ -142,8 +142,12 @@ public class MainActivity extends AppCompatActivity implements SearchClickedList
                 return;
             } else {
                 shoppingListManager.addProduct(product, store);
-                new AddToListRequest(username, product.getProductId(), store.getStoreId(),
-                        store.getPrice(), getApplicationContext()).execute();
+                if (store != null) {
+                    new AddToListRequest(username, product.getProductId(), store.getStoreId(),
+                            store.getPrice(), getApplicationContext()).execute();
+                } else {
+                    new AddToListRequest(username, product.getProductId(), " ", "0", getApplicationContext()).execute();
+                }
             }
         } catch (Exception e) {
             Log.e(MainActivity.class.toString(), e.getMessage());

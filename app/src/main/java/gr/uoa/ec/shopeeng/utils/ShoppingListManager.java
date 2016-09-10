@@ -46,10 +46,15 @@ public class ShoppingListManager {
     public void initList(ArrayList<ListItem> listItems) {
 
         for (ListItem item : listItems) {
-            Store s = new Store(item.getStoreId(), item.getStoreName(), item.getStoreAddress(), item.getStoreCountry(), " ", " ", item.getStorePrice(), "0", "0");
-            Product p = new Product(item.getProductId(), item.getProductName(), item.getProductCategory(), item.getProductDescription(), item.getStorePrice());
-            shoppingList.getProductsMap().put(p.getProductId(), p);
-            shoppingList.getShoppingMap().put(p.getProductId(), s);
+            if (item.getStoreId() != null && !item.getStoreId().isEmpty()) {
+                Store s = new Store(item.getStoreId(), item.getStoreName(), item.getStoreAddress(), item.getStoreCountry(), " ", " ", item.getStorePrice(), "0", "0");
+                Product p = new Product(item.getProductId(), item.getProductName(), item.getProductCategory(), item.getProductDescription(), item.getStorePrice());
+                shoppingList.getProductsMap().put(p.getProductId(), p);
+                shoppingList.getShoppingMap().put(p.getProductId(), s);
+            } else {
+                Product p = new Product(item.getProductId(), item.getProductName(), item.getProductCategory(), item.getProductDescription(), "0");
+                shoppingList.getProductsMap().put(p.getProductId(), p);
+            }
         }
     }
 }
